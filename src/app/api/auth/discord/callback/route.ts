@@ -81,21 +81,24 @@ export async function GET(req: Request) {
       : null;
 
     // 3. Find user by discordId first
-    let user = await prisma.user.findUnique({
+    let user = await prisma.user.findFirst({
       where: { discordId },
     });
 
-    // Only auto-link by email if the Discord email is verified AND target account is NOT an ADMIN
+    // If not found by discordId, find by verified email
     if (!user && verifiedEmail) {
-      const emailUser = await prisma.user.findUnique({
-        where: { email: verifiedEmail },
+      user = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: verifiedEmail },
+            { email: verifiedEmail.toLowerCase() },
+          ],
+        },
       });
-      if (emailUser && emailUser.role !== "ADMIN") {
-        user = emailUser;
-      }
     }
 
     if (user) {
+      // Link Discord Account to existing user (USER or ADMIN)
       user = await prisma.user.update({
         where: { id: user.id },
         data: {
@@ -104,26 +107,56 @@ export async function GET(req: Request) {
         },
       });
     } else {
-      let uniqueUsername = String(discordUser.username || "")
+      let baseUsername = String(discordUser.username || "user")
         .replace(/[^a-zA-Z0-9_]/g, "")
-        .slice(0, 20);
-      if (uniqueUsername.length < 3) uniqueUsername = `discord_${discordId.slice(-6)}`;
+        .toLowerCase()
+        .slice(0, 15);
+      if (baseUsername.length < 3) baseUsername = `discord_${discordId.slice(-6)}`;
 
-      const existingName = await prisma.user.findUnique({ where: { username: uniqueUsername } });
-      if (existingName) {
-        uniqueUsername = `${uniqueUsername.slice(0, 16)}_${Math.floor(1000 + Math.random() * 9000)}`;
+      let uniqueUsername = baseUsername;
+      let attempts = 0;
+      while (attempts < 10) {
+        const existingName = await prisma.user.findUnique({ where: { username: uniqueUsername } });
+        if (!existingName) break;
+        attempts++;
+        uniqueUsername = `${baseUsername.slice(0, 10)}_${Math.floor(1000 + Math.random() * 9000)}`;
       }
 
-      user = await prisma.user.create({
-        data: {
-          username: uniqueUsername,
-          email: verifiedEmail || `discord_${discordId}@discord.user`,
-          discordId,
-          avatar,
-          role: "USER",
-          balance: 0.0,
+      const existingFinal = await prisma.user.findUnique({ where: { username: uniqueUsername } });
+      if (existingFinal) {
+        uniqueUsername = `u_${Date.now().toString(36)}_${Math.floor(Math.random() * 1000)}`;
+      }
+
+      const finalEmail = verifiedEmail || `discord_${discordId}@discord.user`;
+      const emailCollision = await prisma.user.findFirst({
+        where: {
+          OR: [
+            { email: finalEmail },
+            { email: finalEmail.toLowerCase() },
+          ],
         },
       });
+
+      if (emailCollision) {
+        user = await prisma.user.update({
+          where: { id: emailCollision.id },
+          data: {
+            discordId,
+            avatar: avatar || emailCollision.avatar,
+          },
+        });
+      } else {
+        user = await prisma.user.create({
+          data: {
+            username: uniqueUsername,
+            email: finalEmail,
+            discordId,
+            avatar,
+            role: "USER",
+            balance: 0.0,
+          },
+        });
+      }
     }
 
     // 4. Generate JWT & Set Cookie
