@@ -10,9 +10,9 @@ export async function GET() {
     timestamp: new Date().toISOString(),
     cfContext: null,
     cfError: null,
-    d1Query: null,
+    stmtInfo: null,
     prismaError: null,
-    userCount: null,
+    prismaCount: null,
   };
 
   try {
@@ -24,22 +24,40 @@ export async function GET() {
     };
 
     if ((ctx?.env as any)?.DB) {
-      // Test direct D1 query first!
-      try {
-        const raw = await (ctx.env as any).DB.prepare("SELECT count(*) as cnt FROM User").first();
-        result.d1Query = raw;
-      } catch (d1Err: any) {
-        result.d1Query = { error: d1Err.message || String(d1Err) };
-      }
+      const db = (ctx.env as any).DB;
+      const stmt = db.prepare("SELECT count(*) as cnt FROM User");
+      result.stmtInfo = {
+        stmtType: typeof stmt,
+        hasBind: typeof stmt?.bind,
+        bindCall: typeof stmt?.bind(),
+      };
 
-      // Test Prisma with D1 adapter
       try {
-        const adapter = new PrismaD1((ctx.env as any).DB);
+        const adapter = new PrismaD1(db);
+        result.adapterInfo = {
+          adapterType: typeof adapter,
+          adapterName: (adapter as any).adapterName,
+          provider: (adapter as any).provider,
+        };
+
         const p = new PrismaClient({ adapter });
+        result.clientCreated = true;
+
+        // Try raw query on prisma first
+        try {
+          const rawResult = await p.$queryRawUnsafe("SELECT 1 as num");
+          result.prismaRaw = rawResult;
+        } catch (rawErr: any) {
+          result.prismaRawError = rawErr.message || String(rawErr);
+        }
+
         const count = await p.user.count();
-        result.userCount = count;
+        result.prismaCount = count;
       } catch (pErr: any) {
-        result.prismaError = pErr.message || String(pErr);
+        result.prismaError = {
+          message: pErr.message || String(pErr),
+          stack: pErr.stack || String(pErr),
+        };
       }
     }
   } catch (err: any) {
