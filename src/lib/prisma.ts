@@ -2,13 +2,18 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
+let cachedD1Client: PrismaClient | null = null;
+
 function getClient(): PrismaClient {
   try {
     const ctx = getCloudflareContext();
     const cfEnv = ctx?.env as { DB?: any } | undefined;
     if (cfEnv?.DB) {
-      const adapter = new PrismaD1(cfEnv.DB) as any;
-      return new PrismaClient({ adapter });
+      if (!cachedD1Client) {
+        const adapter = new PrismaD1(cfEnv.DB);
+        cachedD1Client = new PrismaClient({ adapter });
+      }
+      return cachedD1Client;
     }
   } catch {
     // Outside Cloudflare worker context (e.g. local dev, CLI, build step)
