@@ -33,51 +33,39 @@ export default function StatsCounter() {
       value: stats.users,
       unit: "คน",
       icon: Users,
-      color: "text-sky-400",
-      bg: "bg-sky-500/10",
-      border: "border-sky-500/20",
     },
     {
       label: "สินค้าทั้งหมด",
       value: stats.products,
       unit: "รายการ",
       icon: ShoppingBag,
-      color: "text-purple-400",
-      bg: "bg-purple-500/10",
-      border: "border-purple-500/20",
     },
     {
       label: "สต็อกพร้อมส่ง",
       value: stats.inStock,
       unit: "ชิ้น",
       icon: Box,
-      color: "text-emerald-400",
-      bg: "bg-emerald-500/10",
-      border: "border-emerald-500/20",
     },
     {
       label: "ทำรายการสำเร็จ",
       value: stats.orders,
       unit: "รายการ",
       icon: CheckCircle2,
-      color: "text-amber-400",
-      bg: "bg-amber-500/10",
-      border: "border-amber-500/20",
     },
   ];
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-6 sm:my-8">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl glass-panel shadow-xl">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl glass-panel shadow-xl border border-white/[0.08]">
         {statItems.map((item, idx) => {
           const Icon = item.icon;
           return (
             <div
               key={idx}
-              className="flex items-center gap-3.5 p-3 sm:p-3.5 rounded-xl bg-black/40 border border-white/[0.04] hover:border-white/10 transition-colors"
+              className="flex items-center gap-3.5 p-3 sm:p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:border-white/20 transition-all group"
             >
               <div
-                className={`w-10 h-10 rounded-xl ${item.bg} border ${item.border} ${item.color} flex items-center justify-center shrink-0 shadow-sm`}
+                className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:bg-white group-hover:text-black transition-all"
               >
                 <Icon className="w-4 h-4" />
               </div>
@@ -87,7 +75,7 @@ export default function StatsCounter() {
                 </div>
                 <div className="font-extrabold text-sm sm:text-base text-white font-mono tracking-tight mt-0.5">
                   {item.value.toLocaleString()}{" "}
-                  <span className="text-[10px] font-normal text-neutral-500 font-sans">
+                  <span className="text-[10px] font-normal text-neutral-400 font-sans">
                     {item.unit}
                   </span>
                 </div>

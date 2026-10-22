@@ -122,21 +122,21 @@ export default function Navbar() {
               href="/reviews"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
-              <Star className="w-3.5 h-3.5 text-amber-400" />
+              <Star className="w-3.5 h-3.5 text-white/80" />
               <span>รีวิว</span>
             </Link>
             <Link
               href="/news"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
-              <Newspaper className="w-3.5 h-3.5 text-cyan-400" />
+              <Newspaper className="w-3.5 h-3.5 text-white/80" />
               <span>ข่าวสาร</span>
             </Link>
             <Link
               href="/topup"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 text-white/80" />
               <span>เติมเงิน</span>
             </Link>
           </nav>

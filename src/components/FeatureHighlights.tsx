@@ -2,11 +2,8 @@
 
 import React from "react";
 import { ShieldCheck, Zap, Lock, Headphones } from "lucide-react";
-import { useStore } from "@/context/StoreContext";
 
 export default function FeatureHighlights() {
-  const { setting } = useStore();
-
   const features = [
     {
       icon: ShieldCheck,
@@ -38,10 +35,10 @@ export default function FeatureHighlights() {
           return (
             <div
               key={i}
-              className="p-5 rounded-2xl glass-panel interactive-card group"
+              className="p-5 rounded-2xl glass-panel interactive-card border border-white/[0.08] group"
             >
-              <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 text-white flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
-                <Icon className="w-5 h-5 text-emerald-400" />
+              <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center mb-3 group-hover:bg-white group-hover:text-black transition-all">
+                <Icon className="w-5 h-5 text-white group-hover:text-black transition-colors" />
               </div>
               <h3 className="font-bold text-sm text-white mb-1">
                 {f.title}

@@ -27,8 +27,8 @@ export default function RecentOrdersTicker() {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-4">
-      <div className="glass-panel rounded-2xl p-3 flex flex-col sm:flex-row items-center gap-3 overflow-hidden shadow-md">
-        <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold shrink-0">
+      <div className="glass-panel rounded-2xl p-3 flex flex-col sm:flex-row items-center gap-3 overflow-hidden shadow-md border border-white/[0.08]">
+        <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-semibold shrink-0">
           <ShoppingCart className="w-3.5 h-3.5" />
           <span>รายการซื้อล่าสุด</span>
         </div>
@@ -38,16 +38,16 @@ export default function RecentOrdersTicker() {
             {[...orders, ...orders].map((item, idx) => (
               <div
                 key={`${item.id}-${idx}`}
-                className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-black/40 border border-white/[0.04] shrink-0 text-xs shadow-sm hover:border-white/10 transition-colors"
+                className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.06] shrink-0 text-xs shadow-sm hover:border-white/20 transition-colors"
               >
-                <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                <div className="w-1.5 h-1.5 rounded-full bg-white" />
                 <span className="font-medium text-white max-w-[150px] truncate">
                   {item.productName}
                 </span>
-                <span className="font-mono font-bold text-neutral-300">
+                <span className="font-mono font-bold text-white">
                   ฿{item.price.toFixed(2)}
                 </span>
-                <span className="text-[10px] text-neutral-500 font-mono">
+                <span className="text-[10px] text-neutral-400 font-mono">
                   {item.timeAgo} • {item.username}
                 </span>
               </div>

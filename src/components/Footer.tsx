@@ -27,7 +27,7 @@ export default function Footer() {
                 "ระบบจำหน่ายสินค้าดิจิทัล ไอดีเกม บัตรเติมเงิน และแอปพรีเมียมระบบอัตโนมัติ 24 ชั่วโมง สแกนจ่ายด้วยสลิปพร้อมเพย์ รับสินค้าได้ทันที"}
             </p>
             <div className="flex items-center gap-2 text-xs text-neutral-500">
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              <ShieldCheck className="w-4 h-4 text-white" />
               <span>การันตีความปลอดภัย 100% เชื่อมต่อระบบตรวจสลิปมาตรฐาน</span>
             </div>
           </div>

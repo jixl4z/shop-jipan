@@ -61,7 +61,7 @@ export default function HomePage() {
   }, [products, selectedCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-white flex flex-col selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col selection:bg-white selection:text-black">
       {/* Navigation */}
       <Navbar />
 

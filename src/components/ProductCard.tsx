@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { ShoppingCart, Sparkles, Tag, CheckCircle2 } from "lucide-react";
+import { ShoppingCart, Sparkles, Tag } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -27,12 +27,12 @@ export default function ProductCard({ product }: { product: Product }) {
   const inStock = product.stockCount > 0;
 
   return (
-    <div className="flex flex-col rounded-2xl glass-panel interactive-card overflow-hidden group relative">
+    <div className="flex flex-col rounded-2xl glass-panel interactive-card overflow-hidden group relative border border-white/[0.08]">
       
       {/* Product Image Container */}
       <Link
         href={`/products/${product.slug}`}
-        className="block relative w-full aspect-[16/10] bg-[#07080c] overflow-hidden"
+        className="block relative w-full aspect-[16/10] bg-[#07080a] overflow-hidden"
       >
         <img
           src={product.image}
@@ -41,30 +41,30 @@ export default function ProductCard({ product }: { product: Product }) {
           loading="lazy"
         />
 
-        {/* Top Badges */}
+        {/* Top Badges (Monochrome Contrast) */}
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
           {product.badge ? (
-            <span className="px-2.5 py-0.5 rounded-md bg-gradient-to-r from-amber-500 to-amber-600 text-black text-[10px] font-black uppercase tracking-wider shadow-md backdrop-blur-md flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-md bg-white text-black text-[10px] font-black uppercase tracking-wider shadow-md backdrop-blur-md flex items-center gap-1">
               <Sparkles className="w-3 h-3 fill-black" />
               <span>{product.badge}</span>
             </span>
           ) : (
-            <span className="px-2.5 py-0.5 rounded-md bg-black/70 border border-white/10 text-neutral-300 text-[10px] font-mono backdrop-blur-md">
+            <span className="px-2.5 py-0.5 rounded-md bg-black/80 border border-white/20 text-white text-[10px] font-mono backdrop-blur-md">
               HOT ITEM
             </span>
           )}
         </div>
 
-        {/* Stock Status Pill */}
+        {/* Stock Status Pill (Monochrome Glass) */}
         <div className="absolute bottom-2.5 right-2.5 z-10">
           {inStock ? (
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#0a1a12]/90 border border-emerald-500/40 text-emerald-400 text-[11px] font-medium backdrop-blur-md shadow-md">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/75 border border-white/30 text-white text-[11px] font-medium backdrop-blur-md shadow-md">
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
               <span>พร้อมขาย</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1a0a0e]/90 border border-rose-500/40 text-rose-400 text-[11px] font-medium backdrop-blur-md shadow-md">
-              <span className="w-2 h-2 rounded-full bg-rose-400" />
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/75 border border-neutral-750 text-neutral-400 text-[11px] font-medium backdrop-blur-md shadow-md">
+              <span className="w-2 h-2 rounded-full bg-neutral-500" />
               <span>สินค้าหมด</span>
             </div>
           )}
@@ -84,7 +84,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
           {/* Product Title */}
           <Link href={`/products/${product.slug}`} className="block">
-            <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-emerald-400 line-clamp-2 leading-snug transition-colors">
+            <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-neutral-200 line-clamp-2 leading-snug transition-colors">
               {product.name}
             </h3>
           </Link>
@@ -93,16 +93,16 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className="mt-2 text-xs font-mono text-neutral-400 flex items-center gap-1.5">
             {inStock ? (
               <span>
-                คงเหลือ <strong className="text-emerald-400 font-semibold">{product.stockCount}</strong> ชิ้น
+                คงเหลือ <strong className="text-white font-semibold">{product.stockCount}</strong> ชิ้น
               </span>
             ) : (
-              <span className="text-rose-400/80">สินค้าหมดชั่วคราว</span>
+              <span className="text-neutral-500">สินค้าหมดชั่วคราว</span>
             )}
           </div>
         </div>
 
         {/* Price & CTA Button */}
-        <div className="pt-3 border-t border-white/[0.06] space-y-3">
+        <div className="pt-3 border-t border-white/[0.08] space-y-3">
           <div className="flex items-baseline justify-between">
             <span className="text-[11px] text-neutral-400 font-light">ราคาสินค้า</span>
             <div className="flex items-baseline gap-1.5">
@@ -117,14 +117,14 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
           </div>
 
-          {/* Order Button with subtle shine sweep effect */}
+          {/* Order Button (High-Contrast Monochrome) */}
           <button
             onClick={() => openBuyModal(product)}
             disabled={!inStock}
             className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all duration-200 shadow-md cursor-pointer ${
               inStock
                 ? "bg-white text-black hover:bg-neutral-200 active:scale-[0.98] btn-shine"
-                : "bg-neutral-800 text-neutral-500 cursor-not-allowed border border-neutral-700/50"
+                : "bg-neutral-900 text-neutral-500 cursor-not-allowed border border-neutral-800"
             }`}
           >
             <ShoppingCart className="w-4 h-4" />

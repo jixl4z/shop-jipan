@@ -56,15 +56,15 @@ const FEATURED_REVIEWS: ReviewItem[] = [
 export default function CustomerReviewsShowcase() {
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 my-10 sm:my-14 space-y-6">
-      {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/[0.06]">
+      {/* Section Header (Monochrome) */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/[0.08]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold mb-2">
+            <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>ความประทับใจจากผู้ใช้งานจริง</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
-            <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
+            <Star className="w-5 h-5 text-white fill-white" />
             <span>รีวิวและความประทับใจ (Customer Reviews)</span>
           </h2>
           <p className="text-xs text-neutral-400 mt-1 font-light">
@@ -74,9 +74,9 @@ export default function CustomerReviewsShowcase() {
 
         <Link
           href="/reviews"
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl glass-panel hover:bg-neutral-800/80 text-neutral-200 hover:text-white text-xs font-semibold transition-all hover:scale-[1.02] cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl glass-panel hover:bg-white hover:text-black text-neutral-200 text-xs font-semibold transition-all hover:scale-[1.02] cursor-pointer border border-white/[0.12]"
         >
-          <MessageSquare className="w-4 h-4 text-amber-400" />
+          <MessageSquare className="w-4 h-4" />
           <span>ดูรีวิวทั้งหมด & เขียนรีวิว</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </Link>
@@ -87,36 +87,36 @@ export default function CustomerReviewsShowcase() {
         {FEATURED_REVIEWS.map((rev) => (
           <div
             key={rev.id}
-            className="p-5 rounded-2xl glass-panel interactive-card flex flex-col justify-between space-y-4"
+            className="p-5 rounded-2xl glass-panel interactive-card flex flex-col justify-between space-y-4 border border-white/[0.08]"
           >
             <div className="space-y-3">
               {/* Reviewer Header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-neutral-800 to-neutral-700 border border-neutral-700 flex items-center justify-center font-bold text-xs text-white">
+                  <div className="w-8 h-8 rounded-full bg-white/[0.08] border border-white/15 flex items-center justify-center font-bold text-xs text-white">
                     {rev.author.slice(0, 1).toUpperCase()}
                   </div>
                   <div>
                     <div className="font-bold text-xs text-white truncate max-w-[110px]">
                       {rev.author}
                     </div>
-                    <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-medium">
-                      <CheckCircle2 className="w-3 h-3" />
+                    <div className="flex items-center gap-1 text-[10px] text-white/90 font-medium">
+                      <CheckCircle2 className="w-3 h-3 text-white" />
                       <span>ซื้อจริง</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Stars */}
-                <div className="flex items-center gap-0.5 text-amber-400">
+                {/* Stars (Monochrome Silver/White) */}
+                <div className="flex items-center gap-0.5 text-white">
                   {[...Array(rev.rating)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-amber-400" />
+                    <Star key={i} className="w-3 h-3 fill-white text-white" />
                   ))}
                 </div>
               </div>
 
               {/* Product Name */}
-              <div className="text-[11px] text-neutral-400 bg-black/40 px-2.5 py-1 rounded-lg border border-white/[0.04] font-medium truncate">
+              <div className="text-[11px] text-neutral-300 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/[0.08] font-medium truncate">
                 📦 {rev.product}
               </div>
 
@@ -127,10 +127,10 @@ export default function CustomerReviewsShowcase() {
             </div>
 
             {/* Footer */}
-            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+            <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-neutral-400 font-mono">
               <span>{rev.date}</span>
-              <div className="flex items-center gap-1 text-neutral-400">
-                <ThumbsUp className="w-3 h-3 text-neutral-500" />
+              <div className="flex items-center gap-1 text-neutral-300">
+                <ThumbsUp className="w-3 h-3 text-neutral-400" />
                 <span>{rev.likes}</span>
               </div>
             </div>
