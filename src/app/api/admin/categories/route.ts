@@ -9,12 +9,25 @@ export async function GET() {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    const categories = await prisma.category.findMany({
-      orderBy: { order: "asc" },
-      include: {
-        _count: { select: { products: true } },
-      },
-    });
+    let categories;
+    try {
+      categories = await prisma.category.findMany({
+        orderBy: { order: "asc" },
+        include: {
+          _count: { select: { products: true } },
+        },
+      });
+    } catch (countErr) {
+      console.warn("[Admin Categories GET _count fallback]:", countErr);
+      const rawCategories = await prisma.category.findMany({
+        orderBy: { order: "asc" },
+      });
+      categories = rawCategories.map((c) => ({
+        ...c,
+        _count: { products: 0 },
+      }));
+    }
+
     return NextResponse.json({ categories });
   } catch (err: unknown) {
     console.error("[Admin Categories GET Error]:", err);

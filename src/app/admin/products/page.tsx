@@ -74,13 +74,54 @@ export default function AdminProductsPage() {
   const [stockItems, setStockItems] = useState<StockRecord[]>([]);
   const [loadingStock, setLoadingStock] = useState(false);
 
+  const fetchCategories = async (): Promise<CategoryItem[]> => {
+    // 1. Try /api/admin/categories
+    try {
+      const res = await fetch("/api/admin/categories");
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.categories) && data.categories.length > 0) {
+          const list: CategoryItem[] = data.categories.map((c: any) => ({
+            id: c.id,
+            name: c.name,
+          }));
+          setCategories(list);
+          return list;
+        }
+      }
+    } catch (e) {
+      console.warn("Admin categories failed, trying fallback:", e);
+    }
+
+    // 2. Fallback to public /api/categories (always accessible)
+    try {
+      const res = await fetch("/api/categories");
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.categories) && data.categories.length > 0) {
+          const list: CategoryItem[] = data.categories.map((c: any) => ({
+            id: c.id,
+            name: c.name,
+          }));
+          setCategories(list);
+          return list;
+        }
+      }
+    } catch (e) {
+      console.error("Public categories fallback failed:", e);
+    }
+
+    return [];
+  };
+
   const loadData = async () => {
     setLoading(true);
     try {
-      const [prodRes, catRes] = await Promise.all([
+      const [prodRes, cats] = await Promise.all([
         fetch("/api/admin/products"),
-        fetch("/api/admin/categories"),
+        fetchCategories(),
       ]);
+
       if (!prodRes.ok) {
         const prodErr = await prodRes.json().catch(() => ({}));
         setFeedback({
@@ -89,14 +130,12 @@ export default function AdminProductsPage() {
         });
         return;
       }
+
       const prodData = await prodRes.json();
-      const catData = await catRes.json();
       if (prodData.products) setProducts(prodData.products);
-      if (catData.categories) {
-        setCategories(catData.categories);
-        if (catData.categories.length > 0 && !formCategoryId) {
-          setFormCategoryId(catData.categories[0].id);
-        }
+
+      if (cats && cats.length > 0 && !formCategoryId) {
+        setFormCategoryId(cats[0].id);
       }
     } catch (e) {
       console.error(e);
@@ -123,7 +162,7 @@ export default function AdminProductsPage() {
     }
   };
 
-  const openEditModal = (prod: ProductItem) => {
+  const openEditModal = async (prod: ProductItem) => {
     setSelectedProduct(prod);
     setFormName(prod.name);
     setFormCategoryId(prod.categoryId);
@@ -135,6 +174,15 @@ export default function AdminProductsPage() {
     setFormIsActive(prod.isActive);
     setFormIsRecommended(prod.isRecommended);
     setFeedback(null);
+
+    let currentCats = categories;
+    if (currentCats.length === 0) {
+      currentCats = await fetchCategories();
+    }
+    if (!prod.categoryId && currentCats.length > 0) {
+      setFormCategoryId(currentCats[0].id);
+    }
+
     setIsEditOpen(true);
   };
 
@@ -308,7 +356,7 @@ export default function AdminProductsPage() {
         </div>
 
         <button
-          onClick={() => {
+          onClick={async () => {
             setFeedback(null);
             setFormName("");
             setFormPrice("");
@@ -318,6 +366,13 @@ export default function AdminProductsPage() {
             setFormDesc("");
             setFormIsRecommended(false);
             setFormInitialStock("");
+            let currentCats = categories;
+            if (currentCats.length === 0) {
+              currentCats = await fetchCategories();
+            }
+            if (currentCats.length > 0) {
+              setFormCategoryId(currentCats[0].id);
+            }
             setIsAddOpen(true);
           }}
           className="px-4 py-2.5 rounded-xl bg-white text-black font-semibold text-xs flex items-center justify-center gap-2 hover:bg-neutral-200 transition-colors shadow-lg cursor-pointer"
@@ -500,19 +555,40 @@ export default function AdminProductsPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">
-                    หมวดหมู่ *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-neutral-300 font-medium">
+                      หมวดหมู่ *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={fetchCategories}
+                      className="text-[11px] text-neutral-400 hover:text-white underline cursor-pointer"
+                    >
+                      รีโหลดหมวดหมู่
+                    </button>
+                  </div>
                   <select
                     value={formCategoryId}
                     onChange={(e) => setFormCategoryId(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500"
+                    required
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 cursor-pointer"
                   >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
+                    {categories.length === 0 ? (
+                      <option value="" disabled className="bg-neutral-900 text-neutral-400">
+                        กำลังโหลดหมวดหมู่ หรือยังไม่มีหมวดหมู่...
                       </option>
-                    ))}
+                    ) : (
+                      <>
+                        <option value="" disabled className="bg-neutral-900 text-neutral-400">
+                          -- กรุณาเลือกหมวดหมู่สินค้า --
+                        </option>
+                        {categories.map((c) => (
+                          <option key={c.id} value={c.id} className="bg-neutral-900 text-white">
+                            {c.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                 </div>
                 <div>
@@ -661,19 +737,40 @@ export default function AdminProductsPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">
-                    หมวดหมู่ *
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-neutral-300 font-medium">
+                      หมวดหมู่ *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={fetchCategories}
+                      className="text-[11px] text-neutral-400 hover:text-white underline cursor-pointer"
+                    >
+                      รีโหลดหมวดหมู่
+                    </button>
+                  </div>
                   <select
                     value={formCategoryId}
                     onChange={(e) => setFormCategoryId(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500"
+                    required
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 cursor-pointer"
                   >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
+                    {categories.length === 0 ? (
+                      <option value="" disabled className="bg-neutral-900 text-neutral-400">
+                        กำลังโหลดหมวดหมู่ หรือยังไม่มีหมวดหมู่...
                       </option>
-                    ))}
+                    ) : (
+                      <>
+                        <option value="" disabled className="bg-neutral-900 text-neutral-400">
+                          -- กรุณาเลือกหมวดหมู่สินค้า --
+                        </option>
+                        {categories.map((c) => (
+                          <option key={c.id} value={c.id} className="bg-neutral-900 text-white">
+                            {c.name}
+                          </option>
+                        ))}
+                      </>
+                    )}
                   </select>
                 </div>
                 <div>
