@@ -49,12 +49,18 @@ export default function AuthModal() {
 
       if (!res.ok) {
         setErrorMsg(data.error || "เกิดข้อผิดพลาดในการทำรายการ");
+        setLoading(false);
         return;
       }
 
-      addToast(authTab === "login" ? "เข้าสู่ระบบสำเร็จ!" : "สมัครสมาชิกสำเร็จ!", "success");
-      await refreshUser();
+      // Close modal instantly and update session without blocking UI
       closeAuth();
+      if (data.user) {
+        refreshUser(data.user);
+      } else {
+        refreshUser();
+      }
+      addToast(authTab === "login" ? "เข้าสู่ระบบสำเร็จ!" : "สมัครสมาชิกสำเร็จ!", "success");
     } catch {
       setErrorMsg("ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้");
     } finally {

@@ -38,7 +38,7 @@ interface ToastMessage {
 interface StoreContextType {
   user: UserSession | null;
   loadingUser: boolean;
-  refreshUser: () => Promise<void>;
+  refreshUser: (initialUser?: UserSession | null) => Promise<void>;
   setting: PublicSetting | null;
   refreshSetting: () => Promise<void>;
   themeColor: ThemeColor;
@@ -101,7 +101,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  const refreshUser = async () => {
+  const refreshUser = async (initialUser?: UserSession | null) => {
+    if (initialUser !== undefined) {
+      setUser(initialUser);
+      setLoadingUser(false);
+      return;
+    }
     try {
       const res = await fetch("/api/auth/me");
       if (res.ok) {
