@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { StoreProvider } from "@/context/StoreContext";
+import FloatingChat from "@/components/FloatingChat";
 
 export const metadata: Metadata = {
   title: "JIPAN STORE — ศูนย์รวมสินค้าดิจิทัลและบริการไอดีเกมระบบอัตโนมัติ 24 ชม.",
@@ -24,7 +25,10 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-neutral-950 text-neutral-100 min-h-screen antialiased">
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          {children}
+          <FloatingChat />
+        </StoreProvider>
       </body>
     </html>
   );

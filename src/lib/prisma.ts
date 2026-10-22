@@ -11,7 +11,7 @@ function createPrismaClient(): PrismaClient {
     const ctx = getCloudflareContext({ async: false });
     const cfEnv = ctx?.env as { DB?: any } | undefined;
     if (cfEnv?.DB) {
-      const adapter = new PrismaD1(cfEnv.DB);
+      const adapter = new PrismaD1(cfEnv.DB) as any;
       return new PrismaClient({ adapter });
     }
   } catch {

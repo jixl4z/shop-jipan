@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { ShoppingCart, CheckCircle2, AlertCircle } from "lucide-react";
+import { ShoppingCart, CheckCircle2, AlertCircle, Sparkles, Tag } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -27,32 +27,40 @@ export default function ProductCard({ product }: { product: Product }) {
   const inStock = product.stockCount > 0;
 
   return (
-    <div className="flex flex-col rounded-2xl bg-neutral-900/70 border border-neutral-800/80 hover:border-neutral-700/90 overflow-hidden transition-all duration-300 group glow-card">
+    <div className="flex flex-col rounded-2xl bg-[#0d0f17]/90 border border-white/[0.08] hover:border-white/20 overflow-hidden transition-all duration-300 group hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-black/60 relative">
+      
       {/* Product Image Container */}
-      <Link href={`/products/${product.slug}`} className="block relative w-full aspect-video sm:aspect-[4/3] bg-neutral-950 overflow-hidden">
+      <Link href={`/products/${product.slug}`} className="block relative w-full aspect-[4/3] bg-[#07080c] overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
         />
 
-        {/* Badge */}
-        {product.badge && (
-          <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-neutral-950/80 backdrop-blur-md border border-white/20 text-[10px] font-bold text-white uppercase tracking-wider">
-            {product.badge}
-          </div>
-        )}
+        {/* Top Badges (Best Seller / Custom) */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
+          {product.badge ? (
+            <span className="px-2.5 py-1 rounded-md bg-gradient-to-r from-amber-500/90 to-yellow-600/90 text-black text-[10px] font-black uppercase tracking-wider shadow-md backdrop-blur-md flex items-center gap-1">
+              <Sparkles className="w-3 h-3 fill-black" />
+              {product.badge}
+            </span>
+          ) : (
+            <span className="px-2.5 py-0.5 rounded-md bg-black/60 border border-white/10 text-white/80 text-[10px] font-mono backdrop-blur-md">
+              HOT ITEM
+            </span>
+          )}
+        </div>
 
-        {/* Stock Status Pill */}
-        <div className="absolute bottom-3 right-3">
+        {/* Stock Status Pill (Fluffy 4Tunez style) */}
+        <div className="absolute bottom-2.5 right-2.5 z-10">
           {inStock ? (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/30 text-emerald-300 text-[11px] font-medium backdrop-blur-md shadow-md">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#0a1a12]/90 border border-emerald-500/40 text-emerald-400 text-[11px] font-medium backdrop-blur-md shadow-lg">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>พร้อมส่ง ({product.stockCount})</span>
+              <span>พร้อมขาย</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-950/90 border border-rose-500/30 text-rose-300 text-[11px] font-medium backdrop-blur-md shadow-md">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#1a0a0e]/90 border border-rose-500/40 text-rose-400 text-[11px] font-medium backdrop-blur-md shadow-lg">
               <span className="w-2 h-2 rounded-full bg-rose-400" />
               <span>สินค้าหมด</span>
             </div>
@@ -60,61 +68,68 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
       </Link>
 
-      {/* Content */}
+      {/* Content Body */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Category */}
+          {/* Category Tag */}
           {product.category && (
-            <div className="text-[11px] font-medium text-neutral-400 mb-1">
-              {product.category.name}
+            <div className="text-[11px] font-mono tracking-wider text-slate-400 uppercase mb-1.5 flex items-center gap-1">
+              <Tag className="w-3 h-3 text-slate-500" />
+              <span>{product.category.name}</span>
             </div>
           )}
 
-          {/* Title */}
+          {/* Product Title */}
           <Link href={`/products/${product.slug}`} className="block">
             <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-emerald-400 line-clamp-2 leading-snug transition-colors">
               {product.name}
             </h3>
           </Link>
 
-          {/* Description */}
-          {product.description && (
-            <p className="text-xs text-neutral-400 mt-1.5 line-clamp-2 font-light">
-              {product.description}
-            </p>
-          )}
+          {/* Stock remaining subtext */}
+          <div className="mt-2 text-xs font-mono text-slate-400">
+            {inStock ? (
+              <span className="text-slate-400">
+                สินค้าคงเหลือ <strong className="text-emerald-400 font-semibold">{product.stockCount}</strong> ชิ้น
+              </span>
+            ) : (
+              <span className="text-rose-400/80">สินค้าหมดชั่วคราว</span>
+            )}
+          </div>
         </div>
 
-        {/* Price & Action Button */}
-        <div className="mt-4 pt-3 border-t border-neutral-800/80 flex items-center justify-between gap-3">
-          <div>
-            <div className="text-[10px] text-neutral-400 leading-none">ราคาสินค้า</div>
-            <div className="flex items-baseline gap-1.5 mt-0.5">
-              <span className="text-base sm:text-lg font-bold font-mono text-white">
+        {/* Price & Full Width Buy Button (4Tunez style) */}
+        <div className="mt-5 pt-3.5 border-t border-white/[0.06] flex flex-col gap-3">
+          <div className="flex items-baseline justify-between">
+            <span className="text-[11px] text-slate-400 font-light">ราคาสินค้า</span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-lg sm:text-xl font-extrabold font-mono text-white tracking-tight">
                 ฿{product.price.toFixed(2)}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-xs text-neutral-500 line-through font-mono">
+                <span className="text-xs text-slate-500 line-through font-mono">
                   ฿{product.originalPrice.toFixed(2)}
                 </span>
               )}
             </div>
           </div>
 
+          {/* Full-width Order Button */}
           <button
             onClick={() => openBuyModal(product)}
             disabled={!inStock}
-            className={`px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-md ${
+            className={`w-full py-2.5 px-4 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all duration-200 shadow-md ${
               inStock
-                ? currentTheme.accent
+                ? "bg-white text-black hover:bg-neutral-200 active:scale-[0.98] shadow-white/10 hover:shadow-lg"
                 : "bg-neutral-800 text-neutral-500 cursor-not-allowed border border-neutral-700/50"
             }`}
           >
-            <ShoppingCart className="w-3.5 h-3.5" />
-            <span>{inStock ? "สั่งซื้อ" : "หมด"}</span>
+            <ShoppingCart className="w-4 h-4" />
+            <span>{inStock ? "สั่งซื้อสินค้า" : "สินค้าหมด"}</span>
           </button>
         </div>
       </div>
+
     </div>
   );
 }
