@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String?  @unique
+  password  String?
+  role      String   @default("USER") // "USER" | "ADMIN"
+  balance   Float    @default(0.0)
+  avatar    String?
+  discordId String?  @unique
+  googleId  String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders Order[]
+  topups TopupTransaction[]
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  icon        String?   @default("Package")
+  description String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  products Product[]
+}
+
+model Product {
+  id            String      @id @default(cuid())
+  name          String
+  slug          String      @unique
+  description   String?
+  price         Float
+  originalPrice Float?
+  image         String
+  badge         String?
+  isActive      Boolean     @default(true)
+  isRecommended Boolean     @default(false)
+  categoryId    String
+  category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  stockItems StockItem[]
+  orders     Order[]
+}
+
+model StockItem {
+  id        String    @id @default(cuid())
+  productId String
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  content   String    // รหัสคีย์ / บัญชี:รหัสผ่าน / ลิงก์ดาวน์โหลด
+  isUsed    Boolean   @default(false)
+  orderId   String?
+  order     Order?    @relation(fields: [orderId], references: [id])
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  orderNumber   String      @unique
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id])
+  productName   String
+  price         Float
+  quantity      Int         @default(1)
+  totalAmount   Float
+  deliveredData String      // ข้อมูลสินค้าที่ส่งมอบ (กุญแจ/รหัส)
+  status        String      @default("COMPLETED")
+  createdAt     DateTime    @default(now())
+
+  stockItems StockItem[]
+}
+
+model TopupTransaction {
+  id            String    @id @default(cuid())
+  transactionId String    @unique
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          String    @default("SLIP") // "SLIP" | "TRUEMONEY"
+  amount        Float
+  slipImage     String?
+  transRef      String?   @unique // รหัสอ้างอิงสลิป หรือ voucher hash
+  senderName    String?
+  bank          String?
+  status        String    @default("PENDING") // "PENDING" | "SUCCESS" | "REJECTED"
+  rawPayload    String?
+  createdAt     DateTime  @default(now())
+}
+
+model ShopSetting {
+  id              String   @id @default("default")
+  shopName        String   @default("JIPAN STORE")
+  shopSlogan      String   @default("ร้านค้าไอดีเกมและบริการดิจิทัลอัตโนมัติ 24 ชม.")
+  shopNotice      String   @default("ยินดีต้อนรับสู่ร้านค้า! เติมเงินผ่านระบบตรวจสอบสลิปอัตโนมัติ & ทรูวอเล็ท รับของทันที 24 ชม.")
+  logoUrl         String?  @default("/logo.png")
+  bannerUrls      String   @default("[]")
+  themeColor      String   @default("monochrome") // "monochrome", "purple", "emerald", "blue", "crimson", "amber"
+  themeMode       String   @default("dark")
+  promptPayNumber String   @default("0812345678")
+  promptPayName   String   @default("พร้อมเพย์ร้านค้า")
+  truemoneyNumber String?  @default("") // เบอร์โทรรับซองอั่งเปา TrueMoney Wallet
+  slipApiKey      String?  @default("SLIPOKC43QGIC")
+  slipApiBranch   String?  @default("78463")
+  slipProvider    String   @default("slipok") // "slipok", "easyslip", "openslipcheck", "simulation"
+  turnstileEnabled Boolean  @default(false)
+  turnstileSiteKey String?  @default("")
+  turnstileSecretKey String? @default("")
+  discordWebhookUrl String?  @default("")
+  discordClientId   String?  @default("")
+  discordClientSecret String? @default("")
+  googleClientId    String?  @default("")
+  googleClientSecret String? @default("")
+  contactDiscord  String?  @default("https://discord.gg/")
+  contactFacebook String?  @default("https://facebook.com/")
+  contactLine     String?  @default("https://line.me/ti/p/")
+  updatedAt       DateTime @updatedAt
+}
