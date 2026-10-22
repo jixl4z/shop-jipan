@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, ShoppingBag, Box, CheckCircle2, TrendingUp } from "lucide-react";
+import { Users, ShoppingBag, Box, CheckCircle2 } from "lucide-react";
 
 export default function StatsCounter() {
   const [stats, setStats] = useState({
@@ -33,9 +33,9 @@ export default function StatsCounter() {
       value: stats.users,
       unit: "คน",
       icon: Users,
-      color: "text-blue-400",
-      bg: "bg-blue-500/10",
-      border: "border-blue-500/20",
+      color: "text-sky-400",
+      bg: "bg-sky-500/10",
+      border: "border-sky-500/20",
     },
     {
       label: "สินค้าทั้งหมด",
@@ -67,8 +67,8 @@ export default function StatsCounter() {
   ];
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-8">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 p-4 sm:p-5 rounded-2xl bg-[#0d0f17]/80 border border-white/[0.08] backdrop-blur-xl shadow-xl">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-6 sm:my-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl glass-panel shadow-xl">
         {statItems.map((item, idx) => {
           const Icon = item.icon;
           return (
@@ -77,17 +77,17 @@ export default function StatsCounter() {
               className="flex items-center gap-3.5 p-3 sm:p-3.5 rounded-xl bg-black/40 border border-white/[0.04] hover:border-white/10 transition-colors"
             >
               <div
-                className={`w-11 h-11 rounded-xl ${item.bg} border ${item.border} ${item.color} flex items-center justify-center shrink-0 shadow-sm`}
+                className={`w-10 h-10 rounded-xl ${item.bg} border ${item.border} ${item.color} flex items-center justify-center shrink-0 shadow-sm`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 h-4" />
               </div>
               <div className="min-w-0">
-                <div className="text-[11px] text-slate-400 font-medium truncate">
+                <div className="text-[11px] text-neutral-400 font-medium truncate">
                   {item.label}
                 </div>
-                <div className="font-extrabold text-base sm:text-lg text-white font-mono tracking-tight mt-0.5">
+                <div className="font-extrabold text-sm sm:text-base text-white font-mono tracking-tight mt-0.5">
                   {item.value.toLocaleString()}{" "}
-                  <span className="text-[11px] font-normal text-slate-500 font-sans">
+                  <span className="text-[10px] font-normal text-neutral-500 font-sans">
                     {item.unit}
                   </span>
                 </div>

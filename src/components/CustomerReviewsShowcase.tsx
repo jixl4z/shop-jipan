@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { Star, CheckCircle2, MessageSquare, ThumbsUp, Sparkles, ArrowRight } from "lucide-react";
-import { useStore } from "@/context/StoreContext";
 
 interface ReviewItem {
   id: string;
@@ -55,12 +54,10 @@ const FEATURED_REVIEWS: ReviewItem[] = [
 ];
 
 export default function CustomerReviewsShowcase() {
-  const { currentTheme } = useStore();
-
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 my-10 sm:my-14 space-y-6">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-neutral-900">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/[0.06]">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5" />
@@ -68,7 +65,7 @@ export default function CustomerReviewsShowcase() {
           </div>
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
             <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
-            <span>รีวิวจากลูกค้า (Customer Feedback)</span>
+            <span>รีวิวและความประทับใจ (Customer Reviews)</span>
           </h2>
           <p className="text-xs text-neutral-400 mt-1 font-light">
             การันตีความปลอดภัย ซื่อตรง ส่งรหัสทันที 24 ชม. ด้วยคะแนนเฉลี่ย 4.9/5.0 ดาว
@@ -77,7 +74,7 @@ export default function CustomerReviewsShowcase() {
 
         <Link
           href="/reviews"
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-200 hover:text-white text-xs font-semibold transition-all hover:scale-102"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl glass-panel hover:bg-neutral-800/80 text-neutral-200 hover:text-white text-xs font-semibold transition-all hover:scale-[1.02] cursor-pointer"
         >
           <MessageSquare className="w-4 h-4 text-amber-400" />
           <span>ดูรีวิวทั้งหมด & เขียนรีวิว</span>
@@ -90,7 +87,7 @@ export default function CustomerReviewsShowcase() {
         {FEATURED_REVIEWS.map((rev) => (
           <div
             key={rev.id}
-            className="p-5 rounded-2xl bg-neutral-900/60 border border-neutral-800/80 hover:border-neutral-700 hover:bg-neutral-900 transition-all flex flex-col justify-between space-y-4 group"
+            className="p-5 rounded-2xl glass-panel interactive-card flex flex-col justify-between space-y-4"
           >
             <div className="space-y-3">
               {/* Reviewer Header */}
@@ -119,7 +116,7 @@ export default function CustomerReviewsShowcase() {
               </div>
 
               {/* Product Name */}
-              <div className="text-[11px] text-neutral-400 bg-neutral-950/70 px-2.5 py-1 rounded-lg border border-neutral-850/60 font-medium truncate">
+              <div className="text-[11px] text-neutral-400 bg-black/40 px-2.5 py-1 rounded-lg border border-white/[0.04] font-medium truncate">
                 📦 {rev.product}
               </div>
 
@@ -130,7 +127,7 @@ export default function CustomerReviewsShowcase() {
             </div>
 
             {/* Footer */}
-            <div className="pt-2 border-t border-neutral-850/70 flex items-center justify-between text-[11px] text-neutral-500 font-mono">
+            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between text-[11px] text-neutral-500 font-mono">
               <span>{rev.date}</span>
               <div className="flex items-center gap-1 text-neutral-400">
                 <ThumbsUp className="w-3 h-3 text-neutral-500" />

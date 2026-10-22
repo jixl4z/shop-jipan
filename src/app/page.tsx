@@ -15,11 +15,9 @@ import AuthModal from "@/components/AuthModal";
 import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
-import { Search, ShoppingBag, Loader2, Sparkles } from "lucide-react";
-import { useStore } from "@/context/StoreContext";
+import { Search, ShoppingBag, Loader2 } from "lucide-react";
 
 export default function HomePage() {
-  const { currentTheme } = useStore();
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -63,26 +61,17 @@ export default function HomePage() {
   }, [products, selectedCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#08090d] text-white flex flex-col selection:bg-white selection:text-black">
       {/* Navigation */}
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Banner */}
+        {/* Hero Section (Banner + LED Marquee + 4 Quick Action Dock) */}
         <HeroBanner />
 
-        {/* Live Orders Ticker */}
-        <RecentOrdersTicker />
-
-        {/* Feature Highlights */}
-        <FeatureHighlights />
-
-        {/* Realtime Store Stats Counter (Like Fluffyshop) */}
-        <StatsCounter />
-
-        {/* Storefront Section */}
-        <div id="products" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-          {/* Categories */}
+        {/* Storefront Section (Directly Accessible, Balanced) */}
+        <div id="products" className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+          {/* Categories Horizontal Tabs */}
           <section id="categories">
             <CategoryFilter
               categories={categories}
@@ -92,21 +81,21 @@ export default function HomePage() {
           </section>
 
           {/* Search & Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-neutral-900">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-white/[0.06]">
             <div>
-              <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-neutral-400" />
-                <span>สินค้าทั้งหมด (Products)</span>
-                <span className="text-xs font-mono font-medium text-neutral-400 px-2.5 py-0.5 rounded-full bg-neutral-900 border border-neutral-800">
-                  {filteredProducts.length} ชิ้น
+                <span>สินค้าพร้อมส่ง (Products)</span>
+                <span className="text-xs font-mono font-medium text-neutral-400 px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10">
+                  {filteredProducts.length} รายการ
                 </span>
               </h2>
               <p className="text-xs text-neutral-400 mt-0.5">
-                เลือกซื้อสินค้าดิจิทัลและรับรหัสทันที 24 ชม.
+                เลือกซื้อสินค้าและรับรหัสเข้าคลังสินค้าทันที 24 ชั่วโมง
               </p>
             </div>
 
-            {/* Search Bar */}
+            {/* Minimalist Search Bar */}
             <div className="relative w-full sm:w-72">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
               <input
@@ -114,20 +103,20 @@ export default function HomePage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ค้นหาชื่อสินค้า..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-neutral-900/80 border border-neutral-800 text-white placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-neutral-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2 rounded-xl glass-panel text-white placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-white/30 transition-colors"
               />
             </div>
           </div>
 
           {/* Product Grid */}
           {loading ? (
-            <div className="py-24 flex flex-col items-center justify-center gap-3 text-neutral-400 text-xs">
+            <div className="py-20 flex flex-col items-center justify-center gap-3 text-neutral-400 text-xs">
               <Loader2 className="w-8 h-8 animate-spin text-white" />
               <span>กำลังโหลดรายการสินค้าพร้อมจำหน่าย...</span>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="py-20 text-center rounded-3xl bg-neutral-900/40 border border-neutral-800/80 p-8 space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-neutral-850 flex items-center justify-center mx-auto text-neutral-500 text-xl">
+            <div className="py-16 text-center rounded-2xl glass-panel p-8 space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-white/[0.04] flex items-center justify-center mx-auto text-neutral-400 text-xl">
                 📦
               </div>
               <h3 className="font-bold text-base text-neutral-200">
@@ -155,8 +144,17 @@ export default function HomePage() {
           )}
         </div>
 
+        {/* Live Orders Ticker */}
+        <RecentOrdersTicker />
+
+        {/* Realtime Store Stats Counter */}
+        <StatsCounter />
+
         {/* Customer Reviews Showcase */}
         <CustomerReviewsShowcase />
+
+        {/* Feature Highlights & Guarantees */}
+        <FeatureHighlights />
 
         {/* FAQ Section */}
         <FAQSection />

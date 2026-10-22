@@ -2,14 +2,14 @@
 
 @layer base {
   :root {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --card: #121215;
-    --card-foreground: #fafafa;
-    --border: #27272a;
-    --input: #27272a;
+    --background: #08090d;
+    --foreground: #f4f4f5;
+    --card: #0d0f17;
+    --card-foreground: #f4f4f5;
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(255, 255, 255, 0.1);
     --muted: #71717a;
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 
   body {
@@ -18,20 +18,20 @@
     font-family: -apple-system, BlinkMacSystemFont, "Kanit", "Prompt", "Segoe UI", Roboto, sans-serif;
     overflow-x: hidden;
     background-image: 
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.15), transparent),
-      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 100% 100%, 36px 36px, 36px 36px;
+      radial-gradient(circle 800px at 50% -200px, rgba(16, 185, 129, 0.07), transparent 80%),
+      radial-gradient(circle 600px at 80% 400px, rgba(56, 189, 248, 0.04), transparent 70%),
+      radial-gradient(circle 600px at 20% 800px, rgba(168, 85, 247, 0.04), transparent 70%);
+    background-attachment: fixed;
   }
 }
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #08090d;
 }
 ::-webkit-scrollbar-thumb {
   background: #27272a;
@@ -41,50 +41,72 @@
   background: #3f3f46;
 }
 
-/* Glow effects & micro-interactions */
-.glow-card {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Glass panel */
+.glass-panel {
+  background: rgba(13, 15, 23, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
-.glow-card:hover {
-  border-color: rgba(255, 255, 255, 0.22);
+
+/* Hover lift card with smooth lighting */
+.interactive-card {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+.interactive-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.8), 0 0 20px -5px rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.7), 0 0 24px -4px rgba(255, 255, 255, 0.04);
 }
 
-/* Shimmer animations */
-@keyframes text-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+/* Shimmer light sweep for CTA buttons */
+@keyframes shine-sweep {
+  0% { transform: translateX(-150%) skewX(-20deg); }
+  50%, 100% { transform: translateX(250%) skewX(-20deg); }
 }
 
-.text-shimmer {
-  background: linear-gradient(90deg, #a1a1aa 0%, #ffffff 50%, #a1a1aa 100%);
-  background-size: 200% auto;
-  color: transparent;
-  -webkit-background-clip: text;
-  background-clip: text;
-  animation: text-shimmer 4s ease-in-out infinite;
+.btn-shine {
+  position: relative;
+  overflow: hidden;
 }
-
-/* Float subtle animation */
-@keyframes float-subtle {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: translateX(-150%) skewX(-20deg);
+  pointer-events: none;
 }
-
-.animate-float {
-  animation: float-subtle 4s ease-in-out infinite;
+.btn-shine:hover::after {
+  animation: shine-sweep 1.2s ease-in-out infinite;
 }
 
 /* Pulse glow for status badge */
 @keyframes pulse-glow {
-  0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.6)); }
-  50% { opacity: 0.7; transform: scale(0.96); filter: drop-shadow(0 0 1px rgba(16, 185, 129, 0.2)); }
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.7));
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(0.95);
+    filter: drop-shadow(0 0 2px rgba(16, 185, 129, 0.3));
+  }
 }
 
 .animate-pulse-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse-glow 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Marquee continuous scroll */
@@ -96,9 +118,15 @@
 .animate-marquee {
   display: flex;
   width: max-content;
-  animation: marquee 28s linear infinite;
+  animation: marquee 32s linear infinite;
 }
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+/* Focus styles for keyboard a11y */
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
 }
