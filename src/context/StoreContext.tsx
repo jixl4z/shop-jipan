@@ -76,7 +76,15 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserSession | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [setting, setSetting] = useState<PublicSetting | null>(null);
+  const [setting, setSetting] = useState<PublicSetting | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("jipan_shop_setting");
+        if (cached) return JSON.parse(cached);
+      } catch {}
+    }
+    return null;
+  });
   const [themeColor, setThemeColorState] = useState<ThemeColor>("monochrome");
 
   // Modals
@@ -129,6 +137,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const data = await res.json();
         if (data.setting) {
           setSetting(data.setting);
+          try {
+            localStorage.setItem("jipan_shop_setting", JSON.stringify(data.setting));
+          } catch {}
           // Sync theme if not overridden locally
           const savedTheme = localStorage.getItem("jipan_theme") as ThemeColor;
           if (savedTheme && THEMES[savedTheme]) {

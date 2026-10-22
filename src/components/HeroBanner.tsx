@@ -16,41 +16,32 @@ import {
 export default function HeroBanner() {
   const { setting, openTopup } = useStore();
 
-  const defaultBanners = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80",
-      title: "ยินดีต้อนรับสู่ " + (setting?.shopName || "JIPAN STORE"),
-      subtitle: "บริการจัดส่งรหัสสินค้าดิจิทัลและไอดีเกมอัตโนมัติ 24 ชั่วโมง",
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1600&auto=format&fit=crop&q=80",
-      title: "ระบบสแกนสลิปออโต้ & ทรูมันนี่",
-      subtitle: "เติมเงินปุ๊บ ยอดเข้ากระเป๋าทันที พร้อมเพย์และซองของขวัญ",
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&auto=format&fit=crop&q=80",
-      title: "สินค้าพร้อมส่ง รับประกันคุณภาพ",
-      subtitle: "รับสินค้าและรหัสทันทีหลังชำระเงิน ตรวจสอบได้ตลอดเวลา",
-    },
-  ];
-
-  const banners =
+  const userBanners =
     setting?.bannerUrls && Array.isArray(setting.bannerUrls) && setting.bannerUrls.length > 0
       ? setting.bannerUrls.map((url, idx) => ({
           id: idx + 1,
           image: url,
           title: setting.shopName || "โปรโมชั่นพิเศษ",
-          subtitle: setting.shopSlogan || "ระบบอัตโนมัติส่งของทันที 24 ชั่วโมง",
+          subtitle: setting.shopSlogan || "ระบบจัดส่งอัตโนมัติ 24 ชั่วโมง",
         }))
-      : defaultBanners;
+      : [];
+
+  const defaultBanners = [
+    {
+      id: 1,
+      image: "",
+      title: setting?.shopName || "ยินดีต้อนรับสู่ JIPAN STORE",
+      subtitle: setting?.shopSlogan || "บริการจัดส่งรหัสสินค้าดิจิทัลและไอดีเกมอัตโนมัติ 24 ชั่วโมง",
+    },
+  ];
+
+  const banners = userBanners.length > 0 ? userBanners : defaultBanners;
 
   const [activeBanner, setActiveBanner] = useState(0);
 
-  // Auto slide carousel every 6 seconds
+  // Auto slide carousel every 6 seconds if multiple banners
   useEffect(() => {
+    if (banners.length <= 1) return;
     const timer = setInterval(() => {
       setActiveBanner((prev) => (prev + 1) % banners.length);
     }, 6000);
@@ -91,11 +82,19 @@ export default function HeroBanner() {
                   activeBanner === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
                 }`}
               >
-                <img
-                  src={b.image}
-                  alt={b.title}
-                  className="w-full h-full object-cover"
-                />
+                {b.image ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={b.image}
+                    alt={b.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-neutral-900 via-neutral-950 to-black flex items-center justify-center relative">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,transparent_70%)]" />
+                  </div>
+                )}
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex items-end p-5 sm:p-8">
                   <div className="space-y-1.5 max-w-2xl">
                     <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white px-2.5 py-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
@@ -114,37 +113,41 @@ export default function HeroBanner() {
             ))}
           </div>
 
-          {/* Slider Controls */}
-          <button
-            onClick={() =>
-              setActiveBanner((prev) => (prev - 1 + banners.length) % banners.length)
-            }
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-pointer"
-            aria-label="Previous Slide"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => setActiveBanner((prev) => (prev + 1) % banners.length)}
-            className="absolute right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-pointer"
-            aria-label="Next Slide"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          {/* Indicator Dots */}
-          <div className="absolute bottom-3 right-4 flex items-center gap-1.5 z-20">
-            {banners.map((_, idx) => (
+          {banners.length > 1 && (
+            <>
+              {/* Slider Controls */}
               <button
-                key={idx}
-                onClick={() => setActiveBanner(idx)}
-                className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                  activeBanner === idx ? "w-6 bg-white" : "w-1.5 bg-white/30"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
+                onClick={() =>
+                  setActiveBanner((prev) => (prev - 1 + banners.length) % banners.length)
+                }
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-pointer"
+                aria-label="Previous Slide"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setActiveBanner((prev) => (prev + 1) % banners.length)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white flex items-center justify-center backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-pointer"
+                aria-label="Next Slide"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
+              {/* Indicator Dots */}
+              <div className="absolute bottom-3 right-4 flex items-center gap-1.5 z-20">
+                {banners.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveBanner(idx)}
+                    className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                      activeBanner === idx ? "w-6 bg-white" : "w-1.5 bg-white/30"
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         {/* 4 Monochrome Quick Action Shortcut Cards (Harmonious Black & White Dock) */}
