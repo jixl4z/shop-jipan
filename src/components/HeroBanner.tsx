@@ -73,8 +73,8 @@ export default function HeroBanner() {
         </div>
 
         {/* Banner Carousel Slider */}
-        <div className="relative rounded-3xl overflow-hidden border border-white/[0.08] bg-[#07080a] shadow-2xl group">
-          <div className="relative aspect-[21/9] sm:aspect-[24/9] w-full overflow-hidden">
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.08] bg-[#07080a] shadow-2xl group">
+          <div className="relative aspect-[16/9] sm:aspect-[21/9] md:aspect-[24/9] w-full overflow-hidden">
             {banners.map((b, idx) => (
               <div
                 key={b.id}
@@ -95,13 +95,13 @@ export default function HeroBanner() {
                   </div>
                 )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex items-end p-5 sm:p-8">
-                  <div className="space-y-1.5 max-w-2xl">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex items-end p-4 sm:p-8">
+                  <div className="space-y-1 sm:space-y-1.5 max-w-2xl">
                     <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white px-2.5 py-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
                       <Sparkles className="w-3 h-3 text-white" />
                       <span>FEATURED</span>
                     </span>
-                    <h2 className="font-extrabold text-base sm:text-2xl text-white drop-shadow-md">
+                    <h2 className="font-extrabold text-sm sm:text-2xl text-white drop-shadow-md line-clamp-2">
                       {b.title}
                     </h2>
                     <p className="text-xs sm:text-sm text-neutral-300 drop-shadow-md font-light hidden sm:block">
@@ -151,19 +151,19 @@ export default function HeroBanner() {
         </div>
 
         {/* 4 Monochrome Quick Action Shortcut Cards (Harmonious Black & White Dock) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
           <div
             onClick={openTopup}
-            className="p-4 rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-3.5"
+            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
           >
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <CreditCard className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
+              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
               <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
-                เติมเงินอัตโนมัติ
+                เติมเงิน
               </div>
-              <div className="text-[11px] text-neutral-400 mt-0.5 truncate">
+              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
                 สแกนสลิป & วอเล็ท
               </div>
             </div>
@@ -171,33 +171,33 @@ export default function HeroBanner() {
 
           <Link
             href="/products"
-            className="p-4 rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-3.5"
+            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
           >
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <ShoppingBag className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
+              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
               <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
                 สินค้าทั้งหมด
               </div>
-              <div className="text-[11px] text-neutral-400 mt-0.5 truncate">
-                ไอดีเกม & บริการ
+              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
+                ไอดี & รหัสบริการ
               </div>
             </div>
           </Link>
 
           <Link
             href="/categories"
-            className="p-4 rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-3.5"
+            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
           >
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <Layers className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
+              <Layers className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
               <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
-                หมวดหมู่สินค้า
+                หมวดหมู่
               </div>
-              <div className="text-[11px] text-neutral-400 mt-0.5 truncate">
+              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
                 เลือกตามประเภท
               </div>
             </div>
@@ -205,16 +205,16 @@ export default function HeroBanner() {
 
           <Link
             href="/orders"
-            className="p-4 rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-3.5"
+            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
           >
-            <div className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <KeyRound className="w-5 h-5" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
+              <KeyRound className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
               <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
                 คลังของฉัน
               </div>
-              <div className="text-[11px] text-neutral-400 mt-0.5 truncate">
+              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
                 รับรหัสที่สั่งซื้อ
               </div>
             </div>

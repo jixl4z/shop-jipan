@@ -232,23 +232,23 @@ export default function DedicatedTopupPage() {
         {/* Topup Form Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Topup Box */}
-          <div className="lg:col-span-7 rounded-3xl bg-neutral-900/80 border border-neutral-800 p-6 sm:p-8 space-y-6 shadow-2xl">
+          <div className="lg:col-span-7 rounded-3xl bg-neutral-900/80 border border-neutral-800 p-4 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl">
             {/* Tabs */}
-            <div className="grid grid-cols-2 p-1.5 rounded-2xl bg-neutral-950 border border-neutral-800">
+            <div className="grid grid-cols-2 p-1 rounded-2xl bg-neutral-950 border border-neutral-800 gap-1">
               <button
                 type="button"
                 onClick={() => {
                   setErrorMsg("");
                   setActiveTab("promptpay");
                 }}
-                className={`py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2.5 sm:py-3 px-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${
                   activeTab === "promptpay"
                     ? "bg-neutral-800 text-white shadow-lg"
                     : "text-neutral-400 hover:text-white"
                 }`}
               >
-                <Landmark className="w-4 h-4 text-blue-400" />
-                <span>{isTTB ? "โอนธนาคาร (ทีเอ็มบีธนชาต)" : "สลิปพร้อมเพย์"}</span>
+                <Landmark className="w-4 h-4 text-blue-400 shrink-0" />
+                <span className="truncate">{isTTB ? "ธนาคาร TTB" : "สลิปพร้อมเพย์"}</span>
               </button>
               <button
                 type="button"
@@ -256,14 +256,14 @@ export default function DedicatedTopupPage() {
                   setErrorMsg("");
                   setActiveTab("truemoney");
                 }}
-                className={`py-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2.5 sm:py-3 px-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${
                   activeTab === "truemoney"
                     ? "bg-neutral-800 text-white shadow-lg"
                     : "text-neutral-400 hover:text-white"
                 }`}
               >
-                <Gift className="w-4 h-4 text-amber-400" />
-                <span>ทรูวอเล็ท (ซองอั่งเปา)</span>
+                <Gift className="w-4 h-4 text-amber-400 shrink-0" />
+                <span className="truncate">ทรูวอเล็ท (อั่งเปา)</span>
               </button>
             </div>
 
@@ -276,7 +276,7 @@ export default function DedicatedTopupPage() {
             )}
 
             {!user ? (
-              <div className="p-8 text-center rounded-2xl bg-neutral-950 border border-neutral-850 space-y-3">
+              <div className="p-6 sm:p-8 text-center rounded-2xl bg-neutral-950 border border-neutral-850 space-y-3">
                 <Wallet className="w-10 h-10 text-neutral-600 mx-auto" />
                 <h3 className="font-bold text-sm text-neutral-200">
                   กรุณาเข้าสู่ระบบก่อนทำการเติมเงิน
@@ -293,20 +293,20 @@ export default function DedicatedTopupPage() {
               </div>
             ) : activeTab === "promptpay" ? (
               // PromptPay Tab
-              <div className="space-y-5">
+              <div className="space-y-4 sm:space-y-5">
                 {/* Bank / QR Presentation Box */}
                 {isTTB ? (
-                  <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-4">
+                  <div className="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-3 sm:space-y-4">
                     {/* Bank Header */}
                     <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
-                      <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shadow-inner">
-                          <Landmark className="w-6 h-6 text-blue-400" />
+                      <div className="flex items-center gap-2.5 sm:gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shadow-inner shrink-0">
+                          <Landmark className="w-5 h-5 text-blue-400" />
                         </div>
                         <div>
-                          <div className="font-bold text-white text-base flex items-center gap-2">
+                          <div className="font-bold text-white text-xs sm:text-base flex items-center gap-1.5 sm:gap-2">
                             <span>ธนาคารทีเอ็มบีธนชาต (ttb)</span>
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
                               บัญชีร้านค้า
                             </span>
                           </div>
@@ -318,10 +318,10 @@ export default function DedicatedTopupPage() {
                     </div>
 
                     {/* Account Number Box */}
-                    <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center justify-between gap-3">
+                    <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-950 border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="text-xs text-neutral-400 font-medium">เลขที่บัญชีธนาคาร (Account Number)</div>
-                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider">
+                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider mt-0.5 select-all">
                           {formattedAccountNumber}
                         </div>
                       </div>
@@ -333,7 +333,7 @@ export default function DedicatedTopupPage() {
                           setTimeout(() => setCopiedAccount(false), 2000);
                           addToast("คัดลอกเลขบัญชี " + rawTarget + " แล้ว", "success");
                         }}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
+                        className={`w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm ${
                           copiedAccount
                             ? "bg-emerald-500 text-black font-bold"
                             : "bg-blue-600 hover:bg-blue-500 text-white"
@@ -347,7 +347,7 @@ export default function DedicatedTopupPage() {
                     {/* Account Name */}
                     <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80">
                       <div className="text-neutral-400 text-xs">ชื่อบัญชีผู้รับ</div>
-                      <div className="font-semibold text-neutral-200 text-sm mt-0.5">{accountName}</div>
+                      <div className="font-semibold text-neutral-200 text-xs sm:text-sm mt-0.5">{accountName}</div>
                     </div>
 
                     {/* How-to Notice */}

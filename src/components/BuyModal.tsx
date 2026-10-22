@@ -121,7 +121,7 @@ export default function BuyModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity"
@@ -129,11 +129,11 @@ export default function BuyModal() {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-lg rounded-3xl bg-neutral-900 border border-neutral-800 p-6 sm:p-7 shadow-2xl z-10 max-h-[92vh] overflow-y-auto">
+      <div className="relative w-full max-w-lg rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 p-4 sm:p-7 shadow-2xl z-10 max-h-[94vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer z-10"
         >
           <X className="w-5 h-5" />
         </button>
@@ -155,14 +155,14 @@ export default function BuyModal() {
             </div>
 
             {/* Delivered Box */}
-            <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-neutral-300">
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-semibold text-neutral-300 truncate">
                   ข้อมูลสินค้าที่คุณได้รับ ({orderResult.productName}):
                 </span>
                 <button
                   onClick={handleCopyDelivered}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium transition-colors cursor-pointer"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium transition-colors cursor-pointer shrink-0"
                 >
                   {copied ? (
                     <>
@@ -209,11 +209,11 @@ export default function BuyModal() {
         ) : (
           // Confirmation & Buy Form
           <div>
-            <div className="flex items-start gap-4 mb-5">
+            <div className="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-5 pr-8">
               <img
                 src={buyingProduct.image}
                 alt={buyingProduct.name}
-                className="w-20 h-20 rounded-2xl object-cover border border-neutral-800 shrink-0"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl object-cover border border-neutral-800 shrink-0"
               />
               <div className="min-w-0 flex-1">
                 <div className="text-[11px] text-neutral-400 font-medium">

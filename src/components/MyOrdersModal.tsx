@@ -49,7 +49,7 @@ export default function MyOrdersModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity"
@@ -57,23 +57,23 @@ export default function MyOrdersModal() {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl rounded-3xl bg-neutral-900 border border-neutral-800 p-6 sm:p-7 shadow-2xl z-10 max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-2xl rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 p-4 sm:p-7 shadow-2xl z-10 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-neutral-800 shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-white">
-              <Package className="w-5 h-5 text-emerald-400" />
+        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-neutral-800 shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0 pr-2">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-white shrink-0">
+              <Package className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-white">คลังสินค้าของฉัน (My Inventory)</h2>
-              <p className="text-xs text-neutral-400">
+            <div className="min-w-0">
+              <h2 className="text-sm sm:text-lg font-bold text-white truncate">คลังสินค้าของฉัน (My Inventory)</h2>
+              <p className="text-[11px] sm:text-xs text-neutral-400 truncate">
                 รายการสินค้าและรหัสสินค้าดิจิทัลทั้งหมดที่คุณเคยสั่งซื้อ
               </p>
             </div>
           </div>
           <button
             onClick={closeMyOrders}
-            className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+            className="p-1.5 sm:p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer shrink-0"
           >
             <X className="w-5 h-5" />
           </button>

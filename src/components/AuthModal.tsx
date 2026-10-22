@@ -69,7 +69,7 @@ export default function AuthModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
@@ -77,11 +77,11 @@ export default function AuthModal() {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-md rounded-3xl bg-neutral-900 border border-neutral-800 p-6 sm:p-8 shadow-2xl z-10 overflow-hidden">
+      <div className="relative w-full max-w-md rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 p-5 sm:p-8 shadow-2xl z-10 max-h-[94vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={closeAuth}
-          className="absolute top-5 right-5 p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer z-10"
         >
           <X className="w-5 h-5" />
         </button>

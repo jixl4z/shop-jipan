@@ -79,11 +79,11 @@ export default function ProductCard({ product }: { product: Product }) {
       </Link>
 
       {/* Content Body */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
+      <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between space-y-3 sm:space-y-4">
         <div>
           {/* Category Tag */}
           {product.category && (
-            <div className="text-[11px] font-mono tracking-wider text-neutral-400 uppercase mb-1 flex items-center gap-1">
+            <div className="text-[10px] sm:text-[11px] font-mono tracking-wider text-neutral-400 uppercase mb-1 flex items-center gap-1">
               <Tag className="w-3 h-3 text-neutral-500" />
               <span>{product.category.name}</span>
             </div>
@@ -91,13 +91,13 @@ export default function ProductCard({ product }: { product: Product }) {
 
           {/* Product Title */}
           <Link href={`/products/${product.slug}`} className="block">
-            <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-neutral-200 line-clamp-2 leading-snug transition-colors">
+            <h3 className="font-bold text-xs sm:text-base text-white group-hover:text-neutral-200 line-clamp-2 leading-snug transition-colors">
               {product.name}
             </h3>
           </Link>
 
           {/* Stock remaining info */}
-          <div className="mt-2 text-xs font-mono text-neutral-400 flex items-center gap-1.5">
+          <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-mono text-neutral-400 flex items-center gap-1.5">
             {inStock ? (
               <span>
                 คงเหลือ <strong className="text-white font-semibold">{product.stockCount}</strong> ชิ้น
@@ -109,15 +109,15 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         {/* Price & CTA Button */}
-        <div className="pt-3 border-t border-white/[0.08] space-y-3">
+        <div className="pt-2.5 sm:pt-3 border-t border-white/[0.08] space-y-2.5 sm:space-y-3">
           <div className="flex items-baseline justify-between">
-            <span className="text-[11px] text-neutral-400 font-light">ราคาสินค้า</span>
+            <span className="text-[10px] sm:text-[11px] text-neutral-400 font-light">ราคาสินค้า</span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-lg sm:text-xl font-extrabold font-mono text-white tracking-tight">
+              <span className="text-base sm:text-xl font-extrabold font-mono text-white tracking-tight">
                 ฿{product.price.toFixed(2)}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-xs text-neutral-500 line-through font-mono">
+                <span className="text-[10px] sm:text-xs text-neutral-500 line-through font-mono">
                   ฿{product.originalPrice.toFixed(2)}
                 </span>
               )}
@@ -128,13 +128,13 @@ export default function ProductCard({ product }: { product: Product }) {
           <button
             onClick={() => openBuyModal(product)}
             disabled={!inStock}
-            className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all duration-200 shadow-md cursor-pointer ${
+            className={`w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all duration-200 shadow-md cursor-pointer ${
               inStock
                 ? "bg-white text-black hover:bg-neutral-200 active:scale-[0.98] btn-shine"
                 : "bg-neutral-900 text-neutral-500 cursor-not-allowed border border-neutral-800"
             }`}
           >
-            <ShoppingCart className="w-4 h-4" />
+            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>{inStock ? "สั่งซื้อสินค้า" : "สินค้าหมด"}</span>
           </button>
         </div>

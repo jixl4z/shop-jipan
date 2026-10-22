@@ -176,7 +176,7 @@ export default function TopupModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
       <div
         className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity"
@@ -184,11 +184,11 @@ export default function TopupModal() {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-lg rounded-3xl bg-neutral-900 border border-neutral-800 p-6 sm:p-7 shadow-2xl z-10 max-h-[92vh] overflow-y-auto">
+      <div className="relative w-full max-w-lg rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 p-4 sm:p-6 shadow-2xl z-10 max-h-[94vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={handleClose}
-          className="absolute top-5 right-5 p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer z-10"
         >
           <X className="w-5 h-5" />
         </button>
@@ -200,7 +200,7 @@ export default function TopupModal() {
               <CheckCircle2 className="w-10 h-10" />
             </div>
 
-            <h3 className="text-2xl font-bold text-white">เติมเงินสำเร็จ!</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-white">เติมเงินสำเร็จ!</h3>
             <p className="text-xs sm:text-sm text-neutral-400">
               ช่องทาง: <span className="text-neutral-200 font-semibold">{successInfo.channel}</span>
             </p>
@@ -230,12 +230,12 @@ export default function TopupModal() {
         ) : (
           // Topup Form State
           <div>
-            <div className="mb-4">
+            <div className="mb-4 pr-8">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>ระบบอัตโนมัติ 24 ชม.</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+              <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight">
                 เติมเงินเข้ากระเป๋า (Wallet)
               </h2>
               <p className="text-xs text-neutral-400 mt-0.5">
@@ -244,21 +244,21 @@ export default function TopupModal() {
             </div>
 
             {/* Channel Tabs */}
-            <div className="grid grid-cols-2 p-1 rounded-2xl bg-neutral-950 border border-neutral-800 mb-5">
+            <div className="grid grid-cols-2 p-1 rounded-2xl bg-neutral-950 border border-neutral-800 mb-4 sm:mb-5 gap-1">
               <button
                 type="button"
                 onClick={() => {
                   setErrorMsg("");
                   setActiveTab("promptpay");
                 }}
-                className={`py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2 sm:py-2.5 px-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${
                   activeTab === "promptpay"
                     ? "bg-neutral-800 text-white shadow"
                     : "text-neutral-400 hover:text-white"
                 }`}
               >
-                <Landmark className="w-4 h-4 text-blue-400" />
-                <span>{isTTB ? "โอนธนาคาร (ทีเอ็มบีธนชาต)" : "สลิปพร้อมเพย์"}</span>
+                <Landmark className="w-4 h-4 text-blue-400 shrink-0" />
+                <span className="truncate">{isTTB ? "ธนาคาร TTB" : "สลิปพร้อมเพย์"}</span>
               </button>
               <button
                 type="button"
@@ -266,14 +266,14 @@ export default function TopupModal() {
                   setErrorMsg("");
                   setActiveTab("truemoney");
                 }}
-                className={`py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                className={`py-2 sm:py-2.5 px-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer ${
                   activeTab === "truemoney"
                     ? "bg-neutral-800 text-white shadow"
                     : "text-neutral-400 hover:text-white"
                 }`}
               >
-                <Gift className="w-4 h-4 text-amber-400" />
-                <span>ทรูวอเล็ท (ซองอั่งเปา)</span>
+                <Gift className="w-4 h-4 text-amber-400 shrink-0" />
+                <span className="truncate">ทรูวอเล็ท (อั่งเปา)</span>
               </button>
             </div>
 
@@ -290,17 +290,17 @@ export default function TopupModal() {
               <div>
                 {/* Bank / QR Presentation Card */}
                 {isTTB ? (
-                  <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-4 mb-4">
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-3 sm:space-y-4 mb-4">
                     {/* Bank Header */}
                     <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shadow-inner">
+                      <div className="flex items-center gap-2.5 sm:gap-3">
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shadow-inner shrink-0">
                           <Landmark className="w-5 h-5 text-blue-400" />
                         </div>
                         <div>
-                          <div className="font-bold text-white text-sm flex items-center gap-2">
+                          <div className="font-bold text-white text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
                             <span>ธนาคารทีเอ็มบีธนชาต (ttb)</span>
-                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
                               บัญชีร้านค้า
                             </span>
                           </div>
@@ -312,10 +312,10 @@ export default function TopupModal() {
                     </div>
 
                     {/* Account Number Box */}
-                    <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center justify-between gap-3">
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-neutral-950 border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
                       <div>
                         <div className="text-[11px] text-neutral-400 font-medium">เลขที่บัญชีธนาคาร (Account Number)</div>
-                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider">
+                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider mt-0.5 select-all">
                           {formattedAccountNumber}
                         </div>
                       </div>
@@ -327,7 +327,7 @@ export default function TopupModal() {
                           setTimeout(() => setCopiedAccount(false), 2000);
                           addToast("คัดลอกเลขบัญชี " + rawTarget + " แล้ว", "success");
                         }}
-                        className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
+                        className={`w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm ${
                           copiedAccount
                             ? "bg-emerald-500 text-black font-bold"
                             : "bg-blue-600 hover:bg-blue-500 text-white"
@@ -339,9 +339,9 @@ export default function TopupModal() {
                     </div>
 
                     {/* Account Name */}
-                    <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80">
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80">
                       <div className="text-neutral-400 text-[11px]">ชื่อบัญชีผู้รับ</div>
-                      <div className="font-semibold text-neutral-200 text-sm mt-0.5">{accountName}</div>
+                      <div className="font-semibold text-neutral-200 text-xs sm:text-sm mt-0.5">{accountName}</div>
                     </div>
 
                     {/* How-to Notice */}
