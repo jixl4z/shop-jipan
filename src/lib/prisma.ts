@@ -2,41 +2,33 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaD1 } from "@prisma/adapter-d1";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-function createPrismaClient(): PrismaClient {
+function getClient(): PrismaClient {
   try {
-    const ctx = getCloudflareContext({ async: false });
+    const ctx = getCloudflareContext();
     const cfEnv = ctx?.env as { DB?: any } | undefined;
     if (cfEnv?.DB) {
       const adapter = new PrismaD1(cfEnv.DB) as any;
       return new PrismaClient({ adapter });
     }
   } catch {
-    // Outside Cloudflare worker context (e.g. build step, local CLI, or tests)
+    // Outside Cloudflare worker context (e.g. local dev, CLI, build step)
   }
 
-  // Fallback for local development
-  if (!globalForPrisma.prisma) {
-    globalForPrisma.prisma = new PrismaClient({
+  const g = globalThis as unknown as { prisma?: PrismaClient };
+  if (!g.prisma) {
+    g.prisma = new PrismaClient({
       log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
     });
   }
-  return globalForPrisma.prisma;
+  return g.prisma;
 }
-
-let activePrisma: PrismaClient | null = null;
 
 export const prisma = new Proxy({} as PrismaClient, {
   get(target, prop, receiver) {
-    if (!activePrisma) {
-      activePrisma = createPrismaClient();
-    }
-    const val = Reflect.get(activePrisma, prop, receiver);
+    const client = getClient();
+    const val = Reflect.get(client, prop, receiver);
     if (typeof val === "function") {
-      return val.bind(activePrisma);
+      return val.bind(client);
     }
     return val;
   },
