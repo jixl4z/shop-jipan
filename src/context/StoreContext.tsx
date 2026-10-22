@@ -120,11 +120,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       if (res.ok) {
         const data = await res.json();
         setUser(data.user);
-      } else {
+      } else if (res.status === 401) {
         setUser(null);
       }
     } catch {
-      setUser(null);
+      // Do not wipe user session on temporary network drop or worker reload
     } finally {
       setLoadingUser(false);
     }
