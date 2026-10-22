@@ -8,6 +8,7 @@ import FeatureHighlights from "@/components/FeatureHighlights";
 import CategoryFilter, { Category } from "@/components/CategoryFilter";
 import ProductCard, { Product } from "@/components/ProductCard";
 import StatsCounter from "@/components/StatsCounter";
+import CustomerReviewsShowcase from "@/components/CustomerReviewsShowcase";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import AuthModal from "@/components/AuthModal";
@@ -153,6 +154,9 @@ export default function HomePage() {
             </div>
           )}
         </div>
+
+        {/* Customer Reviews Showcase */}
+        <CustomerReviewsShowcase />
 
         {/* FAQ Section */}
         <FAQSection />
