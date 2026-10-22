@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 export async function GET() {
   try {
@@ -36,13 +37,25 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    const { id, role, balanceDelta, newBalance } = await req.json();
+    const { id, role, balanceDelta, newBalance, newPassword } = await req.json();
 
     if (!id || typeof id !== "string") {
       return NextResponse.json({ error: "User ID required" }, { status: 400 });
     }
 
     const updateData: Record<string, unknown> = {};
+
+    // Password reset by admin
+    if (newPassword && typeof newPassword === "string" && newPassword.trim() !== "") {
+      const trimmedPwd = newPassword.trim();
+      if (trimmedPwd.length < 6 || trimmedPwd.length > 128) {
+        return NextResponse.json(
+          { error: "รหัสผ่านใหม่ต้องมีความยาวระหว่าง 6 ถึง 128 ตัวอักษร" },
+          { status: 400 }
+        );
+      }
+      updateData.password = await bcrypt.hash(trimmedPwd, 10);
+    }
 
     if (role !== undefined) {
       if (role !== "USER" && role !== "ADMIN") {
@@ -85,9 +98,38 @@ export async function PUT(req: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, user: updated });
+    return NextResponse.json({ success: true, user: updated, message: "อัปเดตข้อมูลผู้ใช้เรียบร้อยแล้ว" });
   } catch (err: unknown) {
     console.error("[Admin Users PUT Error]:", err);
     return NextResponse.json({ error: "เกิดข้อผิดพลาดในการแก้ไขข้อมูลสมาชิก" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const user = await getCurrentUser();
+    if (!user || user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Access denied" }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "User ID required" }, { status: 400 });
+    }
+
+    if (id === user.id) {
+      return NextResponse.json({ error: "ไม่สามารถลบบัญชีแอดมินของตัวเองได้" }, { status: 400 });
+    }
+
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ success: true, message: "ลบบัญชีผู้ใช้งานสำเร็จ" });
+  } catch (err: unknown) {
+    console.error("[Admin Users DELETE Error]:", err);
+    return NextResponse.json({ error: "เกิดข้อผิดพลาดในการลบบัญชีผู้ใช้งาน" }, { status: 500 });
   }
 }
