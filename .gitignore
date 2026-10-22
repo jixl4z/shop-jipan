@@ -35,7 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# References & Scratch
-ตัวอย่าง/
-*ตัวอย่าง*
+# OpenNext Cloudflare
+.open-next/
+.wrangler/
+
 
