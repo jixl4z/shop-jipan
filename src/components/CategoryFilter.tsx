@@ -67,7 +67,8 @@ export default function CategoryFilter({
 
         {/* Dynamic Category Tabs */}
         {categories.map((cat) => {
-          const Icon = (cat.icon && ICON_MAP[cat.icon]) || Package;
+          const isIconUrl = cat.icon && (cat.icon.startsWith("http") || cat.icon.startsWith("/"));
+          const Icon = (!isIconUrl && cat.icon && ICON_MAP[cat.icon]) || Package;
           const isSelected = selectedSlug === cat.slug;
 
           return (
@@ -80,7 +81,16 @@ export default function CategoryFilter({
                   : "glass-panel text-neutral-300 hover:text-white hover:bg-neutral-800/80"
               }`}
             >
-              <Icon className="w-3.5 h-3.5" />
+              {isIconUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={cat.icon}
+                  alt={cat.name}
+                  className="w-3.5 h-3.5 rounded object-cover"
+                />
+              ) : (
+                <Icon className="w-3.5 h-3.5" />
+              )}
               <span>{cat.name}</span>
               {cat.productCount > 0 && (
                 <span

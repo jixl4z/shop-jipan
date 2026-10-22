@@ -57,7 +57,11 @@ export default function ReviewsPage() {
 
   const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!comment.trim()) return;
+    const trimmed = comment.trim();
+    if (trimmed.length < 10) {
+      addToast("กรุณาระบุความคิดเห็นอย่างน้อย 10 ตัวอักษร (ไม่รับรีวิวส่งๆ)", "error");
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -66,7 +70,7 @@ export default function ReviewsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           rating,
-          comment,
+          comment: trimmed,
           productName: productName.trim() || undefined,
         }),
       });
@@ -309,38 +313,98 @@ export default function ReviewsPage() {
                 </div>
 
                 {/* Star Rating Select */}
-                <div>
-                  <label className="block text-neutral-400 mb-1.5">ให้คะแนนความพึงพอใจ</label>
-                  <div className="flex items-center gap-2">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => setRating(s)}
-                        className={`p-2 rounded-xl border flex items-center gap-1 transition-all cursor-pointer ${
-                          rating >= s
-                            ? "bg-amber-400/10 border-amber-400/40 text-amber-400"
-                            : "bg-neutral-950 border-neutral-800 text-neutral-600"
-                        }`}
-                      >
-                        <Star className={`w-4 h-4 ${rating >= s ? "fill-amber-400" : ""}`} />
-                        <span className="font-bold text-xs">{s}</span>
-                      </button>
-                    ))}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-neutral-400 font-medium">ให้คะแนนความพึงพอใจ</label>
+                    <span className="text-xs text-amber-400 font-bold">
+                      {rating} / 5 ดาว
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-5 gap-2">
+                    {[1, 2, 3, 4, 5].map((s) => {
+                      const isSelected = rating === s;
+                      const isFilled = rating >= s;
+                      return (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => setRating(s)}
+                          className={`relative py-2.5 px-2 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+                            isSelected
+                              ? "bg-amber-400/20 border-amber-400 text-amber-300 ring-2 ring-amber-400/60 shadow-lg shadow-amber-500/20 scale-[1.03]"
+                              : isFilled
+                              ? "bg-amber-400/10 border-amber-400/40 text-amber-400"
+                              : "bg-neutral-950 border-neutral-800 text-neutral-600 hover:border-neutral-700 hover:text-neutral-400"
+                          }`}
+                        >
+                          {isSelected && (
+                            <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 py-0.2 bg-amber-400 text-black text-[9px] font-black rounded-full uppercase tracking-wider">
+                              เลือก
+                            </span>
+                          )}
+                          <Star
+                            className={`w-4 h-4 transition-transform ${
+                              isFilled ? "fill-amber-400 text-amber-400" : ""
+                            } ${isSelected ? "scale-110" : ""}`}
+                          />
+                          <span className={`text-xs font-bold ${isSelected ? "text-amber-300" : ""}`}>
+                            {s} ดาว
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Rating Confirmation Badge */}
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                      <span className="font-semibold">
+                        เลือกแล้ว: {rating} ดาว (
+                        {rating === 5
+                          ? "ยอดเยี่ยมมาก ประทับใจมาก"
+                          : rating === 4
+                          ? "ดีมาก บริการรวดเร็ว"
+                          : rating === 3
+                          ? "ปานกลาง พอใช้ได้"
+                          : rating === 2
+                          ? "พอใช้ ควรปรับปรุง"
+                          : "ควรปรับปรุง"}
+                        )
+                      </span>
+                    </div>
+                    <span className="font-mono text-[11px] tracking-wider shrink-0">
+                      {"★".repeat(rating)}{"☆".repeat(5 - rating)}
+                    </span>
                   </div>
                 </div>
 
                 {/* Comment Textarea */}
                 <div>
-                  <label className="block text-neutral-400 mb-1">ข้อความรีวิว / ความคิดเห็น</label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-neutral-400 font-medium">ข้อความรีวิว / ความคิดเห็น *</label>
+                    <span
+                      className={`text-[10px] font-mono ${
+                        comment.trim().length >= 10 ? "text-emerald-400" : "text-neutral-500"
+                      }`}
+                    >
+                      {comment.trim().length}/500 ตัวอักษร (ขั้นต่ำ 10)
+                    </span>
+                  </div>
                   <textarea
                     required
                     rows={4}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder="เล่าประสบการณ์การใช้งาน ความรวดเร็ว หรือบริการ..."
+                    placeholder="เล่าประสบการณ์การใช้งาน ความรวดเร็ว หรือบริการอย่างละเอียด..."
                     className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500"
                   />
+                  {comment.trim().length > 0 && comment.trim().length < 10 && (
+                    <p className="text-[11px] text-amber-400/90 mt-1 flex items-center gap-1 font-light">
+                      ⚠️ กรุณาพิมพ์อีก {10 - comment.trim().length} ตัวอักษร (ไม่รับรีวิวส่งๆ หรือตัวอักษรซ้ำๆ)
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 pt-2">
@@ -353,7 +417,7 @@ export default function ReviewsPage() {
                   </button>
                   <button
                     type="submit"
-                    disabled={submitting || !comment.trim()}
+                    disabled={submitting || comment.trim().length < 10}
                     className={`px-5 py-2 rounded-xl font-bold flex items-center gap-2 shadow-lg disabled:opacity-50 cursor-pointer ${currentTheme.accent}`}
                   >
                     {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}

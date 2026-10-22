@@ -31,12 +31,9 @@ export async function GET(req: Request) {
       where,
       include: {
         category: true,
-        _count: {
-          select: {
-            stockItems: {
-              where: { isUsed: false },
-            },
-          },
+        stockItems: {
+          select: { id: true },
+          where: { isUsed: false },
         },
       },
       orderBy: { createdAt: "desc" },
@@ -53,7 +50,7 @@ export async function GET(req: Request) {
       badge: p.badge,
       isRecommended: p.isRecommended,
       category: p.category,
-      stockCount: p._count.stockItems,
+      stockCount: p.stockItems.length,
     }));
 
     return NextResponse.json({ products: formatted });

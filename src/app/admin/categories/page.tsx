@@ -180,7 +180,21 @@ export default function AdminCategoriesPage() {
                   <td className="p-3.5 font-mono text-neutral-400">#{c.order}</td>
                   <td className="p-3.5 font-semibold text-white">{c.name}</td>
                   <td className="p-3.5 font-mono text-neutral-400">{c.slug}</td>
-                  <td className="p-3.5 text-neutral-300 font-mono">{c.icon || "Package"}</td>
+                  <td className="p-3.5 text-neutral-300 font-mono">
+                    {c.icon && (c.icon.startsWith("http") || c.icon.startsWith("/")) ? (
+                      <div className="flex items-center gap-2">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={c.icon}
+                          alt={c.name}
+                          className="w-8 h-8 rounded-lg object-cover border border-neutral-700"
+                        />
+                        <span className="text-[10px] text-neutral-400 font-sans">แบนเนอร์</span>
+                      </div>
+                    ) : (
+                      c.icon || "Package"
+                    )}
+                  </td>
                   <td className="p-3.5 font-mono font-semibold text-emerald-400">
                     {c._count?.products || 0} รายการ
                   </td>
@@ -240,16 +254,32 @@ export default function AdminCategoriesPage() {
                 />
               </div>
 
+              <div>
+                <label className="block text-neutral-300 font-medium mb-1">
+                  รูปภาพแบนเนอร์ / ไอคอนหมวดหมู่ (Banner / Image URL หรือชื่อ Icon)
+                </label>
+                <input
+                  type="text"
+                  value={icon}
+                  onChange={(e) => setIcon(e.target.value)}
+                  placeholder="เช่น https://... (ลิงก์รูปแบนเนอร์) หรือ Package, Gamepad2, Tv, Key, Gift"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none"
+                />
+                <p className="text-[10px] text-neutral-400 mt-1">
+                  💡 วาง URL รูปภาพแบนเนอร์ที่นี่เพื่อให้หมวดหมู่มีรูปปกสวยงาม
+                </p>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-neutral-300 font-medium mb-1">
-                    Slug (ภาษาอังกฤษ)
+                    Slug (รหัส URL เช่น capcut-pro)
                   </label>
                   <input
                     type="text"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
-                    placeholder="เช่น game-accounts"
+                    placeholder="เว้นว่างได้ ระบบสร้างให้อัตโนมัติ"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none"
                   />
                 </div>
@@ -317,15 +347,32 @@ export default function AdminCategoriesPage() {
                 />
               </div>
 
+              <div>
+                <label className="block text-neutral-300 font-medium mb-1">
+                  รูปภาพแบนเนอร์ / ไอคอนหมวดหมู่ (Banner / Image URL หรือชื่อ Icon)
+                </label>
+                <input
+                  type="text"
+                  value={icon}
+                  onChange={(e) => setIcon(e.target.value)}
+                  placeholder="เช่น https://... (ลิงก์รูปแบนเนอร์) หรือ Package, Gamepad2, Tv, Key, Gift"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none"
+                />
+                <p className="text-[10px] text-neutral-400 mt-1">
+                  💡 วาง URL รูปภาพแบนเนอร์ที่นี่เพื่อให้หมวดหมู่มีรูปปกสวยงาม
+                </p>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-neutral-300 font-medium mb-1">
-                    Slug (URL)
+                    Slug (รหัส URL เช่น capcut-pro)
                   </label>
                   <input
                     type="text"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
+                    placeholder="เว้นว่างได้ ระบบสร้างให้อัตโนมัติ"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none"
                   />
                 </div>

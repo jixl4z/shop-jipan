@@ -14,11 +14,13 @@ import { ArrowLeft, Loader2, Layers, ShoppingBag } from "lucide-react";
 
 export default function CategoryDetailPage() {
   const params = useParams();
-  const slug = params?.slug as string;
+  const rawSlug = (params?.slug as string) || "";
+  const slug = decodeURIComponent(rawSlug);
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categoryName, setCategoryName] = useState<string>("");
   const [categoryDesc, setCategoryDesc] = useState<string>("");
+  const [categoryBanner, setCategoryBanner] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,14 +29,18 @@ export default function CategoryDetailPage() {
 
     Promise.all([
       fetch("/api/categories").then((r) => r.json()),
-      fetch(`/api/products?category=${slug}`).then((r) => r.json()),
+      fetch(`/api/products?category=${encodeURIComponent(slug)}`).then((r) => r.json()),
     ])
       .then(([catData, prodData]) => {
         if (catData.categories) {
-          const matched = catData.categories.find((c: { slug: string }) => c.slug === slug);
+          const matched = catData.categories.find(
+            (c: { slug: string; name: string; bannerImage?: string; description?: string }) =>
+              c.slug === slug || c.slug === rawSlug || c.name === slug
+          );
           if (matched) {
             setCategoryName(matched.name);
             setCategoryDesc(matched.description || "");
+            setCategoryBanner(matched.bannerImage || null);
           }
         }
         if (prodData.products) {
@@ -43,7 +49,7 @@ export default function CategoryDetailPage() {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, rawSlug]);
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
@@ -63,18 +69,30 @@ export default function CategoryDetailPage() {
           <span className="text-white font-medium">{categoryName || slug}</span>
         </div>
 
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-neutral-900">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 text-xs font-medium mb-2">
+        {/* Header / Category Banner */}
+        <div className="relative rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-900 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
+          {categoryBanner && (
+            <div className="absolute inset-0 z-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={categoryBanner}
+                alt={categoryName}
+                className="w-full h-full object-cover opacity-30"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent" />
+            </div>
+          )}
+
+          <div className="relative z-10 space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-neutral-300 text-xs font-medium backdrop-blur-md">
               <Layers className="w-3.5 h-3.5" />
               <span>หมวดหมู่สินค้า</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow">
               {categoryName || slug}
             </h1>
             {categoryDesc && (
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1 font-light max-w-2xl">
+              <p className="text-xs sm:text-sm text-neutral-300 mt-1 font-light max-w-2xl drop-shadow">
                 {categoryDesc}
               </p>
             )}
@@ -82,7 +100,7 @@ export default function CategoryDetailPage() {
 
           <Link
             href="/categories"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-xs text-neutral-300 hover:text-white transition-colors shrink-0"
+            className="relative z-10 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-800/90 hover:bg-neutral-700 border border-neutral-700 text-xs text-neutral-200 hover:text-white transition-colors shrink-0 backdrop-blur-md shadow-md"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>ดูหมวดหมู่อื่น</span>

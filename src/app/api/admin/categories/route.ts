@@ -29,15 +29,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    const { name, slug, icon, description, order } = await req.json();
+    let { name, slug, icon, description, order } = await req.json();
 
     if (!name || typeof name !== "string" || !name.trim()) {
       return NextResponse.json({ error: "ชื่อหมวดหมู่จำเป็นต้องกรอก" }, { status: 400 });
     }
 
+    let finalIcon = icon?.trim() || "Package";
+    let rawSlug = slug?.trim() || "";
+
+    // If user mistakenly entered an image URL into slug, save it as banner/icon
+    if (rawSlug.startsWith("http://") || rawSlug.startsWith("https://") || rawSlug.startsWith("/")) {
+      finalIcon = rawSlug;
+      rawSlug = "";
+    }
+
     const generatedSlug =
-      slug?.trim() ||
-      name.toLowerCase().replace(/[^a-z0-9]/g, "-") + "-" + Date.now().toString().slice(-4);
+      rawSlug ||
+      name.toLowerCase().replace(/[^\u0E00-\u0E7Fa-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "") +
+        "-" +
+        Date.now().toString().slice(-4);
 
     const parsedOrder = order !== undefined ? parseInt(String(order), 10) : 0;
 
@@ -45,8 +56,8 @@ export async function POST(req: Request) {
       data: {
         name: name.trim(),
         slug: generatedSlug,
-        icon: icon || "Package",
-        description: description || "",
+        icon: finalIcon,
+        description: description?.trim() || "",
         order: Number.isFinite(parsedOrder) ? parsedOrder : 0,
       },
     });
@@ -65,10 +76,18 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    const { id, name, slug, icon, description, order } = await req.json();
+    let { id, name, slug, icon, description, order } = await req.json();
 
     if (!id) {
       return NextResponse.json({ error: "Category ID required" }, { status: 400 });
+    }
+
+    let finalIcon = icon !== undefined ? icon.trim() : undefined;
+    let rawSlug = slug !== undefined ? slug.trim() : undefined;
+
+    if (rawSlug && (rawSlug.startsWith("http://") || rawSlug.startsWith("https://") || rawSlug.startsWith("/"))) {
+      finalIcon = rawSlug;
+      rawSlug = undefined;
     }
 
     const parsedOrder = order !== undefined ? parseInt(String(order), 10) : undefined;
@@ -76,10 +95,10 @@ export async function PUT(req: Request) {
     const category = await prisma.category.update({
       where: { id },
       data: {
-        name,
-        slug,
-        icon,
-        description,
+        name: name?.trim(),
+        slug: rawSlug || undefined,
+        icon: finalIcon,
+        description: description !== undefined ? description.trim() : undefined,
         order: parsedOrder !== undefined && Number.isFinite(parsedOrder) ? parsedOrder : undefined,
       },
     });
