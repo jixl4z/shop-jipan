@@ -12,19 +12,22 @@ export async function GET() {
     const products = await prisma.product.findMany({
       include: {
         category: true,
-        _count: {
-          select: {
-            stockItems: { where: { isUsed: false } },
-          },
+        stockItems: {
+          where: { isUsed: false },
+          select: { id: true },
         },
       },
       orderBy: { createdAt: "desc" },
     });
 
-    const formatted = products.map((p) => ({
-      ...p,
-      stockCount: p._count?.stockItems ?? 0,
-    }));
+    const formatted = products.map((p) => {
+      const stockCount = Array.isArray(p.stockItems) ? p.stockItems.length : 0;
+      const { stockItems, ...rest } = p;
+      return {
+        ...rest,
+        stockCount,
+      };
+    });
 
     return NextResponse.json({ products: formatted });
   } catch (err: unknown) {
@@ -68,9 +71,14 @@ export async function POST(req: Request) {
         ? Number(originalPrice)
         : null;
 
-    const generatedSlug =
-      slug?.trim() ||
-      name.toLowerCase().replace(/[^a-z0-9]/g, "-") + "-" + Date.now().toString().slice(-4);
+    let cleanSlug = (slug?.trim() || name.trim())
+      .toLowerCase()
+      .replace(/[^\u0E00-\u0E7Fa-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (!cleanSlug) {
+      cleanSlug = "item";
+    }
+    const generatedSlug = `${cleanSlug}-${Date.now().toString().slice(-6)}`;
 
     const product = await prisma.product.create({
       data: {
@@ -109,7 +117,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, product });
   } catch (err: unknown) {
     console.error("[Admin Products POST Error]:", err);
-    return NextResponse.json({ error: "เกิดข้อผิดพลาดในการสร้างสินค้า" }, { status: 500 });
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `เกิดข้อผิดพลาดในการสร้างสินค้า: ${errorMsg}` }, { status: 500 });
   }
 }
 

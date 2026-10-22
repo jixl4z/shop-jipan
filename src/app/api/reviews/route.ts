@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 export async function GET() {
   try {
@@ -45,6 +46,31 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { error: "กรุณาเข้าสู่ระบบก่อนเขียนรีวิว" },
         { status: 401 }
+      );
+    }
+
+    // 1-hour cooldown per user to prevent review spam
+    const rateCheck = checkRateLimit(`review_limit_${user.id}`, 1, 60 * 60 * 1000);
+    if (!rateCheck.success) {
+      const remainingMin = Math.ceil(rateCheck.resetInSec / 60);
+      return NextResponse.json(
+        { error: `คุณสามารถส่งรีวิวได้ 1 ครั้งต่อ 1 ชั่วโมง (กรุณารออีก ${remainingMin} นาที)` },
+        { status: 429 }
+      );
+    }
+
+    // Database check for 1-hour cooldown
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+    const recent = await prisma.review.findFirst({
+      where: {
+        userId: user.id,
+        createdAt: { gte: oneHourAgo },
+      },
+    });
+    if (recent) {
+      return NextResponse.json(
+        { error: "คุณเพิ่งส่งรีวิวไปเมื่อไม่นานมานี้ ระบบจำกัดให้ส่งรีวิวได้ 1 ครั้งต่อ 1 ชั่วโมง" },
+        { status: 429 }
       );
     }
 

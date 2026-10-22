@@ -100,10 +100,9 @@ export async function POST(req: Request) {
       Math.random() * 900 + 100
     )}`;
 
-    // Execute atomic interactive transaction (Anti-Double-Spend & Anti-Stock-Collision)
-    const txResult = await prisma.$transaction(async (tx) => {
-      // 1. Atomic conditional balance deduction (fails if concurrent request spent the balance)
-      const deductRes = await tx.user.updateMany({
+    // 1. Atomic conditional balance deduction (fails if balance is insufficient)
+    if (totalCost > 0) {
+      const deductRes = await prisma.user.updateMany({
         where: {
           id: user.id,
           balance: { gte: totalCost },
@@ -114,11 +113,17 @@ export async function POST(req: Request) {
       });
 
       if (deductRes.count === 0) {
-        throw new Error("INSUFFICIENT_BALANCE");
+        return NextResponse.json(
+          { error: "ยอดเงินคงเหลือไม่เพียงพอสำหรับการทำรายการนี้" },
+          { status: 400 }
+        );
       }
+    }
 
-      // 2. Create order record
-      const newOrder = await tx.order.create({
+    // 2. Create order record
+    let newOrder;
+    try {
+      newOrder = await prisma.order.create({
         data: {
           orderNumber,
           userId: user.id,
@@ -131,35 +136,59 @@ export async function POST(req: Request) {
           status: "COMPLETED",
         },
       });
-
-      // 3. Atomic conditional stock locking (fails if concurrent buyer took any of these stockIds)
-      const stockClaimRes = await tx.stockItem.updateMany({
-        where: {
-          id: { in: stockIds },
-          isUsed: false,
-        },
-        data: {
-          isUsed: true,
-          usedAt: new Date(),
-          orderId: newOrder.id,
-        },
-      });
-
-      if (stockClaimRes.count !== quantity) {
-        throw new Error("STOCK_RACE_CONDITION");
+    } catch (orderErr) {
+      // Refund balance if order creation failed
+      if (totalCost > 0) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { balance: { increment: totalCost } },
+        }).catch(() => {});
       }
+      throw orderErr;
+    }
 
-      // 4. Fetch updated balance
-      const updatedUser = await tx.user.findUnique({
-        where: { id: user.id },
-        select: { balance: true },
-      });
-
-      return {
-        newOrder,
-        newBalance: updatedUser?.balance ?? 0,
-      };
+    // 3. Atomic stock claim
+    const stockClaimRes = await prisma.stockItem.updateMany({
+      where: {
+        id: { in: stockIds },
+        isUsed: false,
+      },
+      data: {
+        isUsed: true,
+        usedAt: new Date(),
+        orderId: newOrder.id,
+      },
     });
+
+    if (stockClaimRes.count !== quantity) {
+      // Refund balance and mark order failed if stock collision
+      if (totalCost > 0) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { balance: { increment: totalCost } },
+        }).catch(() => {});
+      }
+      await prisma.order.update({
+        where: { id: newOrder.id },
+        data: { status: "FAILED" },
+      }).catch(() => {});
+
+      return NextResponse.json(
+        { error: "สินค้าชิ้นนี้เพิ่งถูกสั่งซื้อตัดหน้าไปเมื่อสักครู่ กรุณากดสั่งซื้อใหม่อีกครั้ง" },
+        { status: 409 }
+      );
+    }
+
+    // 4. Fetch updated balance
+    const updatedUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { balance: true },
+    });
+
+    const txResult = {
+      newOrder,
+      newBalance: updatedUser?.balance ?? 0,
+    };
 
     // Optional non-blocking Discord webhook notification
     sendDiscordNotification({
