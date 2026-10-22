@@ -219,7 +219,7 @@ export default function AdminSettingsPage() {
               type="text"
               value={logoUrl}
               onChange={(e) => setLogoUrl(e.target.value)}
-              placeholder="เช่น https://.../logo.png หรือ /images/my-logo.webp"
+              placeholder="เช่น https://.../logo.png หรือ /logo.png"
               className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none focus:border-neutral-500 text-xs"
             />
           </div>
@@ -232,7 +232,7 @@ export default function AdminSettingsPage() {
               rows={3}
               value={bannerUrlsText}
               onChange={(e) => setBannerUrlsText(e.target.value)}
-              placeholder={"/images/4tunez-b1-1791027234.webp\n/images/4tunez-b2-1791027234.webp"}
+              placeholder={"https://images.unsplash.com/photo-1550745165-9bc0b252726f\nhttps://images.unsplash.com/photo-1542751371-adc38448a05e"}
               className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none focus:border-neutral-500 text-xs"
             />
           </div>

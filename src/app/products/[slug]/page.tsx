@@ -20,6 +20,7 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
+  Package,
 } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 
@@ -120,12 +121,19 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Column: Image Showcase */}
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative aspect-video sm:aspect-square w-full rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800 shadow-2xl">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
+            <div className="relative aspect-video sm:aspect-square w-full rounded-3xl overflow-hidden bg-neutral-900 border border-neutral-800 shadow-2xl flex items-center justify-center">
+              {product.image && !product.image.startsWith("/images/") ? (
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-neutral-900 via-neutral-950 to-neutral-900 text-neutral-600">
+                  <Package className="w-20 h-20 stroke-[1.2]" />
+                  <span className="text-xs font-mono mt-3 tracking-widest text-neutral-500 uppercase">JIPAN GOODS</span>
+                </div>
+              )}
 
               {product.badge && (
                 <div className="absolute top-4 left-4 px-3 py-1.5 rounded-xl bg-neutral-950/90 backdrop-blur-md border border-white/20 text-xs font-bold text-white uppercase tracking-wider">

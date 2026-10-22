@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS "Review" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "userId" TEXT NOT NULL,
+    "rating" INTEGER NOT NULL DEFAULT 5,
+    "comment" TEXT NOT NULL,
+    "productName" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);

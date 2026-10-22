@@ -23,6 +23,7 @@ model User {
 
   orders Order[]
   topups TopupTransaction[]
+  reviews Review[]
 }
 
 model Category {
@@ -130,4 +131,14 @@ model ShopSetting {
   contactFacebook String?  @default("https://facebook.com/")
   contactLine     String?  @default("https://line.me/ti/p/")
   updatedAt       DateTime @updatedAt
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating      Int      @default(5)
+  comment     String
+  productName String?
+  createdAt   DateTime @default(now())
 }

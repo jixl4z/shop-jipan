@@ -1,59 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Star, CheckCircle2, MessageSquare, ThumbsUp, Sparkles, ArrowRight } from "lucide-react";
+import { Star, CheckCircle2, MessageSquare, Sparkles, ArrowRight } from "lucide-react";
 
 interface ReviewItem {
   id: string;
   author: string;
+  avatar?: string | null;
   rating: number;
   product: string;
   comment: string;
   date: string;
-  likes: number;
 }
 
-const FEATURED_REVIEWS: ReviewItem[] = [
-  {
-    id: "1",
-    author: "Kittisak_Gamer",
-    rating: 5,
-    product: "บัตรเติมเงิน 1,000 Points",
-    comment: "เติมเงินตอนตี 2 สแกนสลิปพร้อมเพย์เงินเข้าไวมาก ไม่ถึง 30 วินาที รหัสกดใช้ในเกมได้ทันที แนะนำเลยครับ!",
-    date: "19 ต.ค. 2026",
-    likes: 42,
-  },
-  {
-    id: "2",
-    author: "NongDew_99",
-    rating: 5,
-    product: "Premium ดูหนัง 30 วัน (4K)",
-    comment: "จอส่วนตัว คมชัด 4K จริง ไม่มีโฆษณา ไม่หลุด แอดมินดูแลดีมาก ซื้อซ้ำร้านนี้รอบที่ 3 แล้วครับ",
-    date: "18 ต.ค. 2026",
-    likes: 35,
-  },
-  {
-    id: "3",
-    author: "Petch_FastLane",
-    rating: 5,
-    product: "กล่องสุ่ม Diamond ดิจิทัล",
-    comment: "เปิดได้ Steam Key เกมหลักร้อย คุ้มเกินราคา 49 บาทมากกก ระบบส่งของเข้าคลังทันที 24 ชม.",
-    date: "18 ต.ค. 2026",
-    likes: 28,
-  },
-  {
-    id: "4",
-    author: "Art_MetaPlayer",
-    rating: 5,
-    product: "ไอดีเกม VIP โค้ดสกิน Limited",
-    comment: "โค้ดแลกสกินแท้ 100% เปลี่ยนข้อมูลได้ครบถ้วน เว็บสวย ใช้งานง่ายมาก โทนสีสบายตาครับ",
-    date: "17 ต.ค. 2026",
-    likes: 19,
-  },
-];
-
 export default function CustomerReviewsShowcase() {
+  const [reviews, setReviews] = useState<ReviewItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/reviews")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.reviews && Array.isArray(data.reviews)) {
+          setReviews(data.reviews.slice(0, 4));
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  // If loading or no real reviews exist yet, hide section to avoid showing fake/mock data
+  if (loading || reviews.length === 0) {
+    return null;
+  }
+
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 my-10 sm:my-14 space-y-6">
       {/* Section Header (Monochrome) */}
@@ -61,14 +42,14 @@ export default function CustomerReviewsShowcase() {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5 text-white" />
-            <span>ความประทับใจจากผู้ใช้งานจริง</span>
+            <span>ความประทับใจจากลูกค้าจริง</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2.5">
             <Star className="w-5 h-5 text-white fill-white" />
-            <span>รีวิวและความประทับใจ (Customer Reviews)</span>
+            <span>รีวิวจากลูกค้า (Customer Reviews)</span>
           </h2>
           <p className="text-xs text-neutral-400 mt-1 font-light">
-            การันตีความปลอดภัย ซื่อตรง ส่งรหัสทันที 24 ชม. ด้วยคะแนนเฉลี่ย 4.9/5.0 ดาว
+            ความคิดเห็นจากผู้ใช้งานจริง การันตีความปลอดภัยและระบบอัตโนมัติ 24 ชม.
           </p>
         </div>
 
@@ -84,7 +65,7 @@ export default function CustomerReviewsShowcase() {
 
       {/* Reviews Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {FEATURED_REVIEWS.map((rev) => (
+        {reviews.map((rev) => (
           <div
             key={rev.id}
             className="p-5 rounded-2xl glass-panel interactive-card flex flex-col justify-between space-y-4 border border-white/[0.08]"
@@ -102,7 +83,7 @@ export default function CustomerReviewsShowcase() {
                     </div>
                     <div className="flex items-center gap-1 text-[10px] text-white/90 font-medium">
                       <CheckCircle2 className="w-3 h-3 text-white" />
-                      <span>ซื้อจริง</span>
+                      <span>ลูกค้าจริง</span>
                     </div>
                   </div>
                 </div>
@@ -116,9 +97,11 @@ export default function CustomerReviewsShowcase() {
               </div>
 
               {/* Product Name */}
-              <div className="text-[11px] text-neutral-300 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/[0.08] font-medium truncate">
-                📦 {rev.product}
-              </div>
+              {rev.product && (
+                <div className="text-[11px] text-neutral-300 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/[0.08] font-medium truncate">
+                  📦 {rev.product}
+                </div>
+              )}
 
               {/* Comment text */}
               <p className="text-xs text-neutral-300 leading-relaxed font-light line-clamp-3">
@@ -129,10 +112,6 @@ export default function CustomerReviewsShowcase() {
             {/* Footer */}
             <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[11px] text-neutral-400 font-mono">
               <span>{rev.date}</span>
-              <div className="flex items-center gap-1 text-neutral-300">
-                <ThumbsUp className="w-3 h-3 text-neutral-400" />
-                <span>{rev.likes}</span>
-              </div>
             </div>
           </div>
         ))}

@@ -81,6 +81,14 @@ export default function AdminProductsPage() {
         fetch("/api/admin/products"),
         fetch("/api/admin/categories"),
       ]);
+      if (!prodRes.ok) {
+        const prodErr = await prodRes.json().catch(() => ({}));
+        setFeedback({
+          msg: prodErr.error || `เซสชันแอดมินไม่ถูกต้อง หรือไม่สามารถดึงข้อมูลได้ (HTTP ${prodRes.status})`,
+          type: "error",
+        });
+        return;
+      }
       const prodData = await prodRes.json();
       const catData = await catRes.json();
       if (prodData.products) setProducts(prodData.products);
@@ -92,6 +100,7 @@ export default function AdminProductsPage() {
       }
     } catch (e) {
       console.error(e);
+      setFeedback({ msg: "ไม่สามารถเชื่อมต่อฐานข้อมูลสินค้าได้", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -363,11 +372,17 @@ export default function AdminProductsPage() {
                   <tr key={prod.id} className="hover:bg-neutral-850/40 transition-colors">
                     <td className="p-3.5">
                       <div className="flex items-center gap-3">
-                        <img
-                          src={prod.image}
-                          alt={prod.name}
-                          className="w-11 h-11 rounded-lg object-cover border border-neutral-800 shrink-0"
-                        />
+                        {prod.image && !prod.image.startsWith("/images/") ? (
+                          <img
+                            src={prod.image}
+                            alt={prod.name}
+                            className="w-11 h-11 rounded-lg object-cover border border-neutral-800 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-11 h-11 rounded-lg bg-neutral-950 border border-neutral-800 flex items-center justify-center shrink-0 text-neutral-500">
+                            <Package className="w-5 h-5" />
+                          </div>
+                        )}
                         <div className="min-w-0">
                           <div className="font-semibold text-white truncate max-w-xs flex items-center gap-1.5">
                             <span>{prod.name}</span>
@@ -546,13 +561,13 @@ export default function AdminProductsPage() {
 
               <div>
                 <label className="block text-neutral-300 font-medium mb-1">
-                  URL รูปภาพสินค้า (เช่น /images/box-diamond.webp หรือ https://...)
+                  URL รูปภาพสินค้า (เช่น https://images.unsplash.com/... หรือ ปล่อยว่าง)
                 </label>
                 <input
                   type="text"
                   value={formImage}
                   onChange={(e) => setFormImage(e.target.value)}
-                  placeholder="/images/box-diamond.webp"
+                  placeholder="https://..."
                   className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500"
                 />
               </div>

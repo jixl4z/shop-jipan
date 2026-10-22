@@ -81,30 +81,13 @@ export default function CategoriesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {categories.map((cat) => {
               const Icon = (cat.icon && ICON_MAP[cat.icon]) || Package;
-              const catImages: Record<string, string> = {
-                "game-topup": "/images/cat-topup.webp",
-                "premium-apps": "/images/cat-premium.webp",
-                "game-accounts": "/images/cat-account.webp",
-                "mystery-box": "/images/cat-random.webp",
-              };
-              const bgImg = catImages[cat.slug];
-
               return (
                 <Link
                   key={cat.id}
                   href={`/categories/${cat.slug}`}
-                  className="relative p-6 rounded-3xl bg-neutral-900/80 border border-neutral-800 hover:border-neutral-700 transition-all duration-300 group flex flex-col justify-between overflow-hidden shadow-xl"
+                  className="relative p-6 rounded-3xl bg-neutral-900/80 border border-neutral-800 hover:border-neutral-700 transition-all duration-300 group flex flex-col justify-between overflow-hidden shadow-xl hover:shadow-2xl hover:bg-neutral-900"
                 >
-                  {bgImg && (
-                    <div className="absolute inset-0 z-0 opacity-20 group-hover:opacity-35 transition-opacity">
-                      <img
-                        src={bgImg}
-                        alt={cat.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-transparent" />
-                    </div>
-                  )}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] rounded-full blur-2xl group-hover:bg-white/[0.05] transition-all pointer-events-none" />
 
                   <div className="relative z-10">
                     <div className="w-14 h-14 rounded-2xl bg-neutral-800/90 border border-neutral-700/80 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform backdrop-blur-md">

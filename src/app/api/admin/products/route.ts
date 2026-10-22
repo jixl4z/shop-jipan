@@ -23,13 +23,14 @@ export async function GET() {
 
     const formatted = products.map((p) => ({
       ...p,
-      stockCount: p._count.stockItems,
+      stockCount: p._count?.stockItems ?? 0,
     }));
 
     return NextResponse.json({ products: formatted });
   } catch (err: unknown) {
     console.error("[Admin Products GET Error]:", err);
-    return NextResponse.json({ error: "เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า" }, { status: 500 });
+    const errorMsg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: `เกิดข้อผิดพลาดในการดึงข้อมูลสินค้า: ${errorMsg}` }, { status: 500 });
   }
 }
 
@@ -81,7 +82,7 @@ export async function POST(req: Request) {
           parsedOrigPrice !== null && Number.isFinite(parsedOrigPrice) && parsedOrigPrice >= 0
             ? Number(parsedOrigPrice.toFixed(2))
             : null,
-        image: image || "/images/box-diamond.webp",
+        image: image?.trim() || "",
         badge: badge || null,
         categoryId,
         isRecommended: !!isRecommended,

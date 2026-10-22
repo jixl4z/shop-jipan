@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { ShoppingCart, Sparkles, Tag } from "lucide-react";
+import { ShoppingCart, Sparkles, Tag, Package } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -34,12 +34,19 @@ export default function ProductCard({ product }: { product: Product }) {
         href={`/products/${product.slug}`}
         className="block relative w-full aspect-[16/10] bg-[#07080a] overflow-hidden"
       >
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-          loading="lazy"
-        />
+        {product.image && !product.image.startsWith("/images/") ? (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-neutral-900 to-neutral-950 text-neutral-600 group-hover:text-neutral-400 transition-colors">
+            <Package className="w-10 h-10 stroke-[1.2]" />
+            <span className="text-[10px] font-mono mt-2 tracking-widest text-neutral-500 uppercase">JIPAN GOODS</span>
+          </div>
+        )}
 
         {/* Top Badges (Monochrome Contrast) */}
         <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
