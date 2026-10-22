@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { signToken, AUTH_COOKIE_NAME, OAUTH_STATE_COOKIE, getSafeBaseUrl } from "@/lib/auth";
+import { signToken, AUTH_COOKIE_NAME, OAUTH_STATE_COOKIE, getSafeBaseUrl, ensureSocialAuthColumns } from "@/lib/auth";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -27,6 +27,8 @@ export async function GET(req: Request) {
   }
 
   try {
+    await ensureSocialAuthColumns();
+
     const setting = await prisma.shopSetting.findUnique({ where: { id: "default" } });
     const clientId = setting?.googleClientId || process.env.GOOGLE_CLIENT_ID;
     const clientSecret = setting?.googleClientSecret || process.env.GOOGLE_CLIENT_SECRET;
@@ -55,7 +57,10 @@ export async function GET(req: Request) {
     const tokenData = await tokenRes.json();
     if (!tokenRes.ok || !tokenData.access_token) {
       console.error("Google Token Exchange Failed:", tokenData);
-      return NextResponse.redirect(new URL("/login?error=google_token_failed", baseUrl));
+      const detail = tokenData?.error_description || tokenData?.error || "Token exchange failed";
+      return NextResponse.redirect(
+        new URL("/login?error=" + encodeURIComponent(`Google Token Error: ${detail}`), baseUrl)
+      );
     }
 
     // 2. Fetch Google user profile
@@ -141,9 +146,13 @@ export async function GET(req: Request) {
 
     return response;
   } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : String(err);
     console.error("Google OAuth Error:", err);
     return NextResponse.redirect(
-      new URL("/login?error=" + encodeURIComponent("เกิดข้อผิดพลาดในการเชื่อมต่อ Google"), baseUrl)
+      new URL(
+        "/login?error=" + encodeURIComponent(`เกิดข้อผิดพลาดในการเชื่อมต่อ Google: ${errorMsg.slice(0, 80)}`),
+        baseUrl
+      )
     );
   }
 }

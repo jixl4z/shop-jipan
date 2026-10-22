@@ -55,14 +55,43 @@ export async function getCurrentUser(): Promise<(SessionUser & { balance: number
 }
 
 /**
- * Returns a trusted base URL to prevent Host Header Injection in OAuth redirect_uri
+ * Returns a trusted base URL dynamically from request headers, strictly using https for live domains
  */
 export function getSafeBaseUrl(req: Request): string {
-  if (process.env.NEXT_PUBLIC_BASE_URL) {
-    return process.env.NEXT_PUBLIC_BASE_URL.replace(/\/+$/, "");
-  }
-  const url = new URL(req.url);
-  return `${url.protocol}//${url.host}`;
+  const host =
+    req.headers.get("x-forwarded-host") ||
+    req.headers.get("host") ||
+    new URL(req.url).host;
+
+  const proto =
+    req.headers.get("x-forwarded-proto") ||
+    (req.url.startsWith("https") ? "https" : "http");
+
+  // For live domains, always enforce https
+  const protocol = host.includes("localhost") ? proto : "https";
+
+  return `${protocol}://${host}`;
+}
+
+/**
+ * Auto-ensures User table on Cloudflare D1 has googleId, discordId, and avatar columns
+ */
+export async function ensureSocialAuthColumns() {
+  try {
+    await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "googleId" TEXT;`);
+  } catch {}
+  try {
+    await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "discordId" TEXT;`);
+  } catch {}
+  try {
+    await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "avatar" TEXT;`);
+  } catch {}
+  try {
+    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_googleId_key" ON "User"("googleId");`);
+  } catch {}
+  try {
+    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_discordId_key" ON "User"("discordId");`);
+  } catch {}
 }
 
 export const AUTH_COOKIE_NAME = COOKIE_NAME;
