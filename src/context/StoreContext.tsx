@@ -119,9 +119,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       const res = await fetch("/api/auth/me");
       if (res.ok) {
         const data = await res.json();
-        setUser(data.user);
-      } else if (res.status === 401) {
-        setUser(null);
+        if (data && data.user) {
+          setUser(data.user);
+        }
       }
     } catch {
       // Do not wipe user session on temporary network drop or worker reload

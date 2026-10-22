@@ -190,17 +190,19 @@ export async function POST(req: Request) {
       newBalance: updatedUser?.balance ?? 0,
     };
 
-    // Optional non-blocking Discord webhook notification
-    sendDiscordNotification({
-      title: "🛒 มีรายการสั่งซื้อสินค้าใหม่!",
-      description: `ออเดอร์ **${txResult.newOrder.orderNumber}** สั่งซื้อสำเร็จ`,
-      color: 0x10b981,
-      fields: [
-        { name: "ลูกค้า", value: user.username, inline: true },
-        { name: "สินค้า", value: `${product.name} (x${quantity})`, inline: true },
-        { name: "ยอดชำระ", value: `฿${totalCost.toFixed(2)}`, inline: true },
-      ],
-    }).catch(() => {});
+    // Discord webhook notification (safely awaited to prevent Cloudflare Worker isolate crash)
+    try {
+      await sendDiscordNotification({
+        title: "🛒 มีรายการสั่งซื้อสินค้าใหม่!",
+        description: `ออเดอร์ **${txResult.newOrder.orderNumber}** สั่งซื้อสำเร็จ`,
+        color: 0x10b981,
+        fields: [
+          { name: "ลูกค้า", value: user.username, inline: true },
+          { name: "สินค้า", value: `${product.name} (x${quantity})`, inline: true },
+          { name: "ยอดชำระ", value: `฿${totalCost.toFixed(2)}`, inline: true },
+        ],
+      });
+    } catch {}
 
     return NextResponse.json({
       success: true,

@@ -6,18 +6,6 @@ interface RateLimitRecord {
 
 const rateLimitMap = new Map<string, RateLimitRecord>();
 
-// Cleanup stale records every 5 minutes
-if (typeof setInterval !== "undefined") {
-  setInterval(() => {
-    const now = Date.now();
-    for (const [key, record] of rateLimitMap.entries()) {
-      if (record.resetAt <= now) {
-        rateLimitMap.delete(key);
-      }
-    }
-  }, 5 * 60 * 1000);
-}
-
 export function checkRateLimit(
   identifier: string,
   limit: number = 10,

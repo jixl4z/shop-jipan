@@ -33,25 +33,30 @@ export function verifyToken(token: string): SessionUser | null {
 }
 
 export async function getCurrentUser(): Promise<(SessionUser & { balance: number }) | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
-  if (!token) return null;
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(COOKIE_NAME)?.value;
+    if (!token) return null;
 
-  const decoded = verifyToken(token);
-  if (!decoded || !decoded.id) return null;
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.id) return null;
 
-  const user = await prisma.user.findUnique({
-    where: { id: decoded.id },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      role: true,
-      balance: true,
-    },
-  });
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        role: true,
+        balance: true,
+      },
+    });
 
-  return user;
+    return user;
+  } catch (err) {
+    console.error("[getCurrentUser Error]:", err);
+    return null;
+  }
 }
 
 /**
