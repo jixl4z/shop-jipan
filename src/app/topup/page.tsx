@@ -43,8 +43,6 @@ export default function DedicatedTopupPage() {
   const [activeTab, setActiveTab] = useState<"promptpay" | "truemoney">("promptpay");
 
   // PromptPay states
-  const [amount, setAmount] = useState<number>(100);
-  const [customAmount, setCustomAmount] = useState<string>("100");
   const [slipBase64, setSlipBase64] = useState<string>("");
   const [slipPreview, setSlipPreview] = useState<string>("");
 
@@ -66,9 +64,7 @@ export default function DedicatedTopupPage() {
   const formattedAccountNumber = rawTarget.length === 10
     ? `${rawTarget.slice(0, 3)}-${rawTarget.slice(3, 4)}-${rawTarget.slice(4, 9)}-${rawTarget.slice(9)}`
     : rawTarget;
-  const qrUrl = isCleanPromptPay ? getPromptPayQrUrl(rawTarget, amount) : "";
-
-  const PRESETS = [50, 100, 150, 250, 300, 500, 1000];
+  const qrUrl = isCleanPromptPay ? getPromptPayQrUrl(rawTarget) : "";
 
   const loadHistory = async () => {
     if (!user) return;
@@ -87,20 +83,6 @@ export default function DedicatedTopupPage() {
   useEffect(() => {
     loadHistory();
   }, [user]);
-
-  const handleSelectAmount = (val: number) => {
-    setAmount(val);
-    setCustomAmount(val.toString());
-  };
-
-  const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setCustomAmount(val);
-    const parsed = parseFloat(val);
-    if (!isNaN(parsed) && parsed > 0) {
-      setAmount(parsed);
-    }
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -140,7 +122,6 @@ export default function DedicatedTopupPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slipImage: slipBase64,
-          amount,
         }),
       });
 
@@ -151,8 +132,9 @@ export default function DedicatedTopupPage() {
         return;
       }
 
+      const creditedAmount = data.transaction?.amount || 0;
       confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
-      addToast(`เติมเงินสำเร็จ ฿${data.transaction?.amount || amount}`, "success");
+      addToast(`เติมเงินสำเร็จ +฿${creditedAmount.toFixed(2)} ยอดเงินเข้ากระเป๋าเรียบร้อยแล้ว`, "success");
       setSlipBase64("");
       setSlipPreview("");
       await refreshUser();
@@ -312,44 +294,6 @@ export default function DedicatedTopupPage() {
             ) : activeTab === "promptpay" ? (
               // PromptPay Tab
               <div className="space-y-5">
-                {/* Amount presets */}
-                <div>
-                  <label className="block text-xs font-medium text-neutral-300 mb-2">
-                    เลือกจำนวนเงินที่ต้องการโอน:
-                  </label>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {PRESETS.map((p) => (
-                      <button
-                        key={p}
-                        type="button"
-                        onClick={() => handleSelectAmount(p)}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
-                          amount === p
-                            ? "bg-white text-black shadow-md scale-105"
-                            : "bg-neutral-950 border border-neutral-800 text-neutral-300 hover:border-neutral-600"
-                        }`}
-                      >
-                        ฿{p}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-neutral-500 font-mono">
-                      ฿
-                    </span>
-                    <input
-                      type="number"
-                      min="1"
-                      step="any"
-                      value={customAmount}
-                      onChange={handleCustomChange}
-                      placeholder="หรือระบุจำนวนเงินที่ต้องการ"
-                      className="w-full pl-8 pr-4 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white text-sm focus:outline-none focus:border-neutral-500 font-mono"
-                    />
-                  </div>
-                </div>
-
                 {/* Bank / QR Presentation Box */}
                 {isTTB ? (
                   <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-4">
@@ -400,31 +344,10 @@ export default function DedicatedTopupPage() {
                       </button>
                     </div>
 
-                    {/* Account Name & Amount Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                      <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80">
-                        <div className="text-neutral-400 text-xs">ชื่อบัญชีผู้รับ</div>
-                        <div className="font-semibold text-neutral-200 text-sm mt-0.5">{accountName}</div>
-                      </div>
-                      <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80 flex items-center justify-between">
-                        <div>
-                          <div className="text-neutral-400 text-xs">ยอดเงินที่ต้องโอน</div>
-                          <div className="font-bold text-emerald-400 font-mono text-base mt-0.5">
-                            ฿{amount.toFixed(2)} บาท
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            navigator.clipboard.writeText(amount.toFixed(2));
-                            addToast("คัดลอกยอดเงินแล้ว", "info");
-                          }}
-                          className="p-1 text-neutral-400 hover:text-white cursor-pointer"
-                          title="คัดลอกยอดเงิน"
-                        >
-                          <Copy className="w-4 h-4" />
-                        </button>
-                      </div>
+                    {/* Account Name */}
+                    <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80">
+                      <div className="text-neutral-400 text-xs">ชื่อบัญชีผู้รับ</div>
+                      <div className="font-semibold text-neutral-200 text-sm mt-0.5">{accountName}</div>
                     </div>
 
                     {/* How-to Notice */}
@@ -433,8 +356,8 @@ export default function DedicatedTopupPage() {
                         <Sparkles className="w-4 h-4 text-amber-400" />
                         <span>วิธีเติมเงิน:</span>
                       </div>
-                      <div>1. โอนเงินเข้า <strong>ธนาคารทีเอ็มบีธนชาต</strong> ด้านบนผ่านแอปธนาคารใดก็ได้</div>
-                      <div>2. แนบรูปสลิปด้านล่าง ระบบ <strong>SlipOK</strong> จะตรวจสลิปและปรับเงินเข้าทันที 24 ชม.</div>
+                      <div>1. โอนเงินเข้าบัญชี <strong>ทีเอ็มบีธนชาต</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
+                      <div>2. แนบรูปสลิปด้านล่าง ระบบ <strong>SlipOK</strong> จะตรวจยอดเงินจากสลิปและปรับเงินเข้ากระเป๋าให้อัตโนมัติ 24 ชม.</div>
                     </div>
                   </div>
                 ) : (
@@ -469,11 +392,8 @@ export default function DedicatedTopupPage() {
                           <Copy className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <div className="text-neutral-400">
-                        ยอดที่ต้องโอน:{" "}
-                        <span className="text-emerald-400 font-bold font-mono text-base">
-                          ฿{amount.toFixed(2)} บาท
-                        </span>
+                      <div className="text-xs text-neutral-400">
+                        * สามารถโอนได้ทุกยอดเงิน แล้วแนบสลิปด้านล่าง
                       </div>
                     </div>
                   </div>
