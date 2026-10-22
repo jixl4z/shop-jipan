@@ -288,36 +288,42 @@ export default function AdminSettingsPage() {
         <div className="p-5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
           <h2 className="font-bold text-sm text-white flex items-center gap-2">
             <QrCode className="w-4 h-4 text-emerald-400" />
-            <span>ตั้งค่าพร้อมเพย์ & ระบบตรวจสลิป (Payment & Slip API)</span>
+            <span>ตั้งค่าบัญชีธนาคาร / พร้อมเพย์ & ระบบตรวจสลิป (Payment & Slip API)</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-neutral-300 font-medium mb-1.5">
-                หมายเลขพร้อมเพย์ร้านค้า (เบอร์โทร หรือ เลขบัตร/Tax ID) *
+                เลขที่บัญชีธนาคาร (ทีเอ็มบีธนชาต) หรือ หมายเลขพร้อมเพย์ *
               </label>
               <input
                 type="text"
                 required
                 value={promptPayNumber}
                 onChange={(e) => setPromptPayNumber(e.target.value)}
-                placeholder="0812345678"
+                placeholder="เช่น 9247611867"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none focus:border-neutral-500 text-sm"
               />
+              <p className="text-[11px] text-neutral-500 mt-1">
+                *หากใส่เลขบัญชีทีเอ็มบีธนชาต ระบบจะแสดงเป็นการโอนธนาคาร ttb พร้อมปุ่มคัดลอกเลขบัญชีให้อัตโนมัติ
+              </p>
             </div>
 
             <div>
               <label className="block text-neutral-300 font-medium mb-1.5">
-                ชื่อบัญชีผู้รับเงิน (แสดงหน้า QR พร้อมเพย์) *
+                ชื่อบัญชีผู้รับเงิน *
               </label>
               <input
                 type="text"
                 required
                 value={promptPayName}
                 onChange={(e) => setPromptPayName(e.target.value)}
-                placeholder="เช่น นาย สมชาย ใจดี"
+                placeholder="เช่น จิรกิจ ปานศรี"
                 className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 text-sm"
               />
+              <p className="text-[11px] text-neutral-500 mt-1">
+                *ชื่อบัญชีที่ปรากฏในแอปธนาคาร เพื่อให้ลูกค้าตรวจสอบก่อนกดยืนยันโอน
+              </p>
             </div>
           </div>
 

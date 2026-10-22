@@ -14,6 +14,8 @@ import {
   Copy,
   Gift,
   ArrowRight,
+  Landmark,
+  Building2,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
@@ -22,7 +24,7 @@ export default function TopupModal() {
 
   const [activeTab, setActiveTab] = useState<"promptpay" | "truemoney">("promptpay");
 
-  // PromptPay Slip states
+  // PromptPay / Bank Slip states
   const [amount, setAmount] = useState<number>(100);
   const [customAmount, setCustomAmount] = useState<string>("100");
   const [slipBase64, setSlipBase64] = useState<string>("");
@@ -33,6 +35,7 @@ export default function TopupModal() {
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [copiedAccount, setCopiedAccount] = useState(false);
   const [successInfo, setSuccessInfo] = useState<{
     amount: number;
     balance: number;
@@ -43,9 +46,14 @@ export default function TopupModal() {
 
   if (!isTopupOpen) return null;
 
-  const promptPayNumber = setting?.promptPayNumber || "0812345678";
-  const promptPayName = setting?.promptPayName || "ร้านค้าทดสอบ";
-  const qrUrl = getPromptPayQrUrl(promptPayNumber, amount);
+  const rawTarget = (setting?.promptPayNumber || "9247611867").trim();
+  const accountName = setting?.promptPayName || "จิรกิจ ปานศรี";
+  const isCleanPromptPay = /^(0[689]\d{8}|\d{13})$/.test(rawTarget.replace(/[^0-9]/g, ""));
+  const isTTB = !isCleanPromptPay || rawTarget.startsWith("924");
+  const formattedAccountNumber = rawTarget.length === 10
+    ? `${rawTarget.slice(0, 3)}-${rawTarget.slice(3, 4)}-${rawTarget.slice(4, 9)}-${rawTarget.slice(9)}`
+    : rawTarget;
+  const qrUrl = isCleanPromptPay ? getPromptPayQrUrl(rawTarget, amount) : "";
 
   const PRESETS = [50, 100, 150, 250, 300, 500, 1000];
 
@@ -112,7 +120,7 @@ export default function TopupModal() {
       setSuccessInfo({
         amount: data.transaction?.amount || amount,
         balance: data.newBalance,
-        channel: "พร้อมเพย์ (สลิป)",
+        channel: isTTB ? "ธนาคารทีเอ็มบีธนชาต (ttb)" : "พร้อมเพย์ (สลิป)",
       });
 
       confetti({
@@ -267,8 +275,8 @@ export default function TopupModal() {
                     : "text-neutral-400 hover:text-white"
                 }`}
               >
-                <QrCode className="w-4 h-4 text-emerald-400" />
-                <span>สลิปพร้อมเพย์ (SlipOK)</span>
+                <Landmark className="w-4 h-4 text-blue-400" />
+                <span>{isTTB ? "โอนธนาคาร (ทีเอ็มบีธนชาต)" : "สลิปพร้อมเพย์"}</span>
               </button>
               <button
                 type="button"
@@ -296,7 +304,7 @@ export default function TopupModal() {
             )}
 
             {activeTab === "promptpay" ? (
-              // Tab 1: PromptPay Slip
+              // Tab 1: Bank Transfer / PromptPay Slip
               <div>
                 {/* Amount Selection */}
                 <div className="mb-4">
@@ -336,48 +344,136 @@ export default function TopupModal() {
                   </div>
                 </div>
 
-                {/* QR Code Card */}
-                <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 flex flex-col sm:flex-row items-center gap-4 mb-4">
-                  <div className="w-36 h-36 bg-white p-2 rounded-xl shrink-0 flex items-center justify-center shadow-md">
-                    <img
-                      src={qrUrl}
-                      alt="PromptPay QR Code"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
+                {/* Bank / QR Presentation Card */}
+                {isTTB ? (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-4 mb-4">
+                    {/* Bank Header */}
+                    <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shadow-inner">
+                          <Landmark className="w-5 h-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-white text-sm flex items-center gap-2">
+                            <span>ธนาคารทีเอ็มบีธนชาต (ttb)</span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
+                              บัญชีร้านค้า
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-neutral-400">
+                            โอนได้ทุกธนาคาร (กสิกร, SCB, กรุงไทย ฯลฯ)
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="space-y-1.5 text-center sm:text-left text-xs">
-                    <div className="font-bold text-white text-sm flex items-center justify-center sm:justify-start gap-1.5">
-                      <QrCode className="w-4 h-4 text-emerald-400" />
-                      <span>พร้อมเพย์ (PromptPay)</span>
-                    </div>
-                    <div className="text-neutral-400">
-                      ชื่อบัญชี: <span className="text-neutral-200 font-medium">{promptPayName}</span>
-                    </div>
-                    <div className="text-neutral-400 flex items-center justify-center sm:justify-start gap-1 font-mono">
-                      หมายเลข: <span className="text-white font-bold">{promptPayNumber}</span>
+                    {/* Account Number Box */}
+                    <div className="p-3.5 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center justify-between gap-3">
+                      <div>
+                        <div className="text-[11px] text-neutral-400 font-medium">เลขที่บัญชีธนาคาร (Account Number)</div>
+                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider">
+                          {formattedAccountNumber}
+                        </div>
+                      </div>
                       <button
+                        type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText(promptPayNumber);
-                          addToast("คัดลอกหมายเลขพร้อมเพย์แล้ว", "info");
+                          navigator.clipboard.writeText(rawTarget);
+                          setCopiedAccount(true);
+                          setTimeout(() => setCopiedAccount(false), 2000);
+                          addToast("คัดลอกเลขบัญชี " + rawTarget + " แล้ว", "success");
                         }}
-                        className="p-1 hover:text-white text-neutral-400 transition-colors cursor-pointer"
-                        title="คัดลอกเบอร์พร้อมเพย์"
+                        className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm ${
+                          copiedAccount
+                            ? "bg-emerald-500 text-black font-bold"
+                            : "bg-blue-600 hover:bg-blue-500 text-white"
+                        }`}
                       >
-                        <Copy className="w-3 h-3" />
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>{copiedAccount ? "คัดลอกแล้ว!" : "คัดลอกเลขบัญชี"}</span>
                       </button>
                     </div>
-                    <div className="text-neutral-400">
-                      ยอดที่ต้องโอน:{" "}
-                      <span className="text-emerald-400 font-bold font-mono text-sm">
-                        ฿{amount.toFixed(2)} บาท
-                      </span>
+
+                    {/* Account Name & Amount Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800/80">
+                        <div className="text-neutral-400 text-[11px]">ชื่อบัญชีผู้รับ</div>
+                        <div className="font-semibold text-neutral-200 text-sm mt-0.5">{accountName}</div>
+                      </div>
+                      <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800/80 flex items-center justify-between">
+                        <div>
+                          <div className="text-neutral-400 text-[11px]">ยอดเงินที่ต้องโอน</div>
+                          <div className="font-bold text-emerald-400 font-mono text-base mt-0.5">
+                            ฿{amount.toFixed(2)} บาท
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(amount.toFixed(2));
+                            addToast("คัดลอกยอดเงินแล้ว", "info");
+                          }}
+                          className="p-1 text-neutral-400 hover:text-white cursor-pointer"
+                          title="คัดลอกยอดเงิน"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
-                    <div className="text-[11px] text-neutral-500">
-                      *สแกนจ่ายและแนบสลิปด้านล่าง ระบบ SlipOK ตรวจสอบทันที
+
+                    {/* How-to Notice */}
+                    <div className="text-[11px] text-neutral-400 bg-neutral-950/70 p-3 rounded-xl border border-neutral-800/60 space-y-1">
+                      <div className="text-neutral-300 font-medium flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <span>วิธีเติมเงิน:</span>
+                      </div>
+                      <div>1. โอนเงินเข้า <strong>ธนาคารทีเอ็มบีธนชาต</strong> ด้านบนผ่านแอปธนาคารใดก็ได้</div>
+                      <div>2. แนบรูปสลิปด้านล่าง ระบบ <strong>SlipOK</strong> จะตรวจสลิปและปรับเงินเข้าทันที 24 ชม.</div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 flex flex-col sm:flex-row items-center gap-4 mb-4">
+                    <div className="w-36 h-36 bg-white p-2 rounded-xl shrink-0 flex items-center justify-center shadow-md">
+                      <img
+                        src={qrUrl}
+                        alt="PromptPay QR Code"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5 text-center sm:text-left text-xs">
+                      <div className="font-bold text-white text-sm flex items-center justify-center sm:justify-start gap-1.5">
+                        <QrCode className="w-4 h-4 text-emerald-400" />
+                        <span>พร้อมเพย์ (PromptPay)</span>
+                      </div>
+                      <div className="text-neutral-400">
+                        ชื่อบัญชี: <span className="text-neutral-200 font-medium">{accountName}</span>
+                      </div>
+                      <div className="text-neutral-400 flex items-center justify-center sm:justify-start gap-1 font-mono">
+                        หมายเลข: <span className="text-white font-bold">{rawTarget}</span>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(rawTarget);
+                            addToast("คัดลอกหมายเลขพร้อมเพย์แล้ว", "info");
+                          }}
+                          className="p-1 hover:text-white text-neutral-400 transition-colors cursor-pointer"
+                          title="คัดลอกเบอร์พร้อมเพย์"
+                        >
+                          <Copy className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <div className="text-neutral-400">
+                        ยอดที่ต้องโอน:{" "}
+                        <span className="text-emerald-400 font-bold font-mono text-sm">
+                          ฿{amount.toFixed(2)} บาท
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-neutral-500">
+                        *สแกนจ่ายและแนบสลิปด้านล่าง ระบบ SlipOK ตรวจสอบทันที
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Slip Upload Area */}
                 <div className="mb-4">
