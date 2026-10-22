@@ -518,14 +518,28 @@ export default function AdminSettingsPage() {
 
           {/* Discord OAuth */}
           <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <span className="font-bold text-xs text-[#5865F2] flex items-center gap-1.5">
                 <span>💬</span>
                 <span>Discord OAuth 2.0 Configuration</span>
               </span>
-              <span className="text-[10px] text-neutral-400 font-mono">
-                Redirect URI: http://localhost:4500/api/auth/discord/callback
-              </span>
+              <div className="flex items-center gap-2 bg-neutral-900 px-2.5 py-1 rounded-lg border border-neutral-800 text-[11px] font-mono text-neutral-300">
+                <span className="text-neutral-500">Redirect URI:</span>
+                <span className="text-amber-300">
+                  {typeof window !== "undefined" ? window.location.origin : "https://โดเมนของคุณ"}/api/auth/discord/callback
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const uri = `${window.location.origin}/api/auth/discord/callback`;
+                    navigator.clipboard.writeText(uri);
+                    alert("คัดลอก Redirect URI แล้ว:\n" + uri);
+                  }}
+                  className="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer"
+                >
+                  คัดลอก
+                </button>
+              </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
@@ -557,14 +571,28 @@ export default function AdminSettingsPage() {
 
           {/* Google OAuth */}
           <div className="p-4 rounded-xl bg-neutral-950 border border-neutral-800/80 space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <span className="font-bold text-xs text-[#4285F4] flex items-center gap-1.5">
                 <span>🌐</span>
                 <span>Google OAuth 2.0 Configuration</span>
               </span>
-              <span className="text-[10px] text-neutral-400 font-mono">
-                Redirect URI: http://localhost:4500/api/auth/google/callback
-              </span>
+              <div className="flex items-center gap-2 bg-neutral-900 px-2.5 py-1 rounded-lg border border-neutral-800 text-[11px] font-mono text-neutral-300">
+                <span className="text-neutral-500">Redirect URI:</span>
+                <span className="text-amber-300">
+                  {typeof window !== "undefined" ? window.location.origin : "https://โดเมนของคุณ"}/api/auth/google/callback
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const uri = `${window.location.origin}/api/auth/google/callback`;
+                    navigator.clipboard.writeText(uri);
+                    alert("คัดลอก Redirect URI แล้ว:\n" + uri);
+                  }}
+                  className="ml-1 text-[10px] px-1.5 py-0.5 rounded bg-neutral-800 hover:bg-neutral-700 text-white cursor-pointer"
+                >
+                  คัดลอก
+                </button>
+              </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
