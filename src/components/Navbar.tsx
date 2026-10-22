@@ -19,9 +19,7 @@ import {
   Sparkles,
   Search,
   UserCog,
-  ShoppingCart,
   Package,
-  Heart,
   Headphones,
   Receipt,
   BookOpen,
@@ -291,17 +289,6 @@ export default function Navbar() {
                           <span>จัดการโปรไฟล์</span>
                         </button>
 
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            addToast("ตะกร้าสินค้าพร้อมใช้งานสำหรับการสั่งซื้อด่วน", "info");
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors text-left cursor-pointer"
-                        >
-                          <ShoppingCart className="w-4 h-4 text-neutral-400" />
-                          <span>ตะกร้าสินค้า</span>
-                        </button>
-
                         <Link
                           href="/orders"
                           onClick={() => setIsUserMenuOpen(false)}
@@ -310,17 +297,6 @@ export default function Navbar() {
                           <Package className="w-4 h-4 text-neutral-400" />
                           <span>สถานะคำสั่งซื้อ (คลังของฉัน)</span>
                         </Link>
-
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            addToast("คุณสามารถกดไลก์สินค้าเพื่อบันทึกลงรายการโปรดได้", "info");
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors text-left cursor-pointer"
-                        >
-                          <Heart className="w-4 h-4 text-neutral-400" />
-                          <span>รายการโปรด</span>
-                        </button>
 
                         <button
                           onClick={() => {
