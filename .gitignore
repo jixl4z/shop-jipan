@@ -38,5 +38,7 @@ next-env.d.ts
 # OpenNext Cloudflare
 .open-next/
 .wrangler/
+ตัวอย่าง/
+
 
 

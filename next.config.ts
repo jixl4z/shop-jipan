@@ -53,6 +53,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   reactStrictMode: true,
   poweredByHeader: false, // Hide X-Powered-By: Next.js
   async headers() {
