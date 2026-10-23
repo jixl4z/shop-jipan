@@ -35,7 +35,11 @@ export default function CategoryDetailPage() {
         if (catData.categories) {
           const matched = catData.categories.find(
             (c: { slug: string; name: string; bannerImage?: string; description?: string }) =>
-              c.slug === slug || c.slug === rawSlug || c.name === slug
+              c.slug === slug ||
+              c.slug === rawSlug ||
+              c.name === slug ||
+              c.slug?.toLowerCase() === slug.toLowerCase() ||
+              c.name?.toLowerCase() === slug.toLowerCase()
           );
           if (matched) {
             setCategoryName(matched.name);
