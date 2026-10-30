@@ -26,7 +26,12 @@ import { useStore } from "@/context/StoreContext";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const slug = params?.slug as string;
+  const rawSlug = (params?.slug as string) || "";
+  let decodedSlug = rawSlug;
+  try {
+    decodedSlug = decodeURIComponent(rawSlug);
+  } catch {}
+
   const { openBuyModal, openTopup, currentTheme } = useStore();
 
   const [product, setProduct] = useState<Product | null>(null);
@@ -34,14 +39,32 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!slug) return;
+    if (!rawSlug) return;
     setLoading(true);
 
     fetch("/api/products")
       .then((r) => r.json())
       .then((data) => {
         if (data.products) {
-          const found = data.products.find((p: Product) => p.slug === slug);
+          const found = data.products.find((p: Product) => {
+            const pSlugDecoded = (() => {
+              try {
+                return decodeURIComponent(p.slug);
+              } catch {
+                return p.slug;
+              }
+            })();
+            return (
+              p.slug === rawSlug ||
+              p.slug === decodedSlug ||
+              pSlugDecoded === decodedSlug ||
+              pSlugDecoded === rawSlug ||
+              p.id === rawSlug ||
+              p.id === decodedSlug ||
+              p.slug?.toLowerCase() === decodedSlug.toLowerCase() ||
+              p.slug?.toLowerCase() === rawSlug.toLowerCase()
+            );
+          });
           setProduct(found || null);
           if (found) {
             const related = data.products.filter(
@@ -53,7 +76,7 @@ export default function ProductDetailPage() {
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [rawSlug, decodedSlug]);
 
   if (loading) {
     return (

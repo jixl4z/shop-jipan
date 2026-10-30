@@ -5,12 +5,26 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const categorySlug = searchParams.get("category");
+    const productSlug = searchParams.get("slug");
     const search = searchParams.get("search");
     const recommendedOnly = searchParams.get("recommended") === "true";
 
     const where: Record<string, unknown> = {
       isActive: true,
     };
+
+    if (productSlug && productSlug.trim() !== "") {
+      let decodedSlug = productSlug;
+      try {
+        decodedSlug = decodeURIComponent(productSlug);
+      } catch {}
+
+      where.OR = [
+        { slug: productSlug },
+        { slug: decodedSlug },
+        { id: productSlug },
+      ];
+    }
 
     if (categorySlug && categorySlug !== "all") {
       const allCategories = await prisma.category.findMany();
