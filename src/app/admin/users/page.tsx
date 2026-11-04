@@ -290,8 +290,11 @@ export default function AdminUsersPage() {
                   <td className="p-3.5 font-mono text-neutral-300">
                     {u._count?.orders || 0} รายการ
                   </td>
-                  <td className="p-3.5 text-neutral-400 font-mono text-[11px]">
-                    {new Date(u.createdAt).toLocaleDateString("th-TH")}
+                  <td className="p-3.5 text-neutral-400 font-mono text-[11px] whitespace-nowrap">
+                    <div>{new Date(u.createdAt).toLocaleDateString("th-TH")}</div>
+                    <div className="text-[10px] text-neutral-500">
+                      {new Date(u.createdAt).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })} น.
+                    </div>
                   </td>
                   <td className="p-3.5 text-right">
                     <div className="flex items-center justify-end gap-1.5">

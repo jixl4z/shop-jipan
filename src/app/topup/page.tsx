@@ -38,7 +38,7 @@ interface TopupHistoryItem {
 }
 
 export default function DedicatedTopupPage() {
-  const { user, setting, refreshUser, openAuth, addToast, currentTheme } = useStore();
+  const { user, setting, refreshUser, updateBalance, openAuth, addToast, currentTheme } = useStore();
 
   const [activeTab, setActiveTab] = useState<"promptpay" | "truemoney">("promptpay");
 
@@ -133,6 +133,9 @@ export default function DedicatedTopupPage() {
       }
 
       const creditedAmount = data.transaction?.amount || 0;
+      if (typeof data.newBalance === "number") {
+        updateBalance(data.newBalance);
+      }
       confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 } });
       addToast(`เติมเงินสำเร็จ +฿${creditedAmount.toFixed(2)} ยอดเงินเข้ากระเป๋าเรียบร้อยแล้ว`, "success");
       setSlipBase64("");
@@ -173,6 +176,9 @@ export default function DedicatedTopupPage() {
         return;
       }
 
+      if (typeof data.newBalance === "number") {
+        updateBalance(data.newBalance);
+      }
       confetti({ particleCount: 100, spread: 80, origin: { y: 0.6 } });
       addToast(`รับเงินจากซอง TrueMoney สำเร็จ ฿${data.amount}`, "success");
       setVoucherLink("");

@@ -20,7 +20,7 @@ import {
 import confetti from "canvas-confetti";
 
 export default function TopupModal() {
-  const { isTopupOpen, closeTopup, setting, refreshUser, addToast, currentTheme } = useStore();
+  const { isTopupOpen, closeTopup, setting, refreshUser, updateBalance, addToast, currentTheme } = useStore();
 
   const [activeTab, setActiveTab] = useState<"promptpay" | "truemoney">("promptpay");
 
@@ -99,6 +99,9 @@ export default function TopupModal() {
       }
 
       const creditedAmount = data.transaction?.amount || 0;
+      if (typeof data.newBalance === "number") {
+        updateBalance(data.newBalance);
+      }
       setSuccessInfo({
         amount: creditedAmount,
         balance: data.newBalance,
@@ -144,6 +147,9 @@ export default function TopupModal() {
         return;
       }
 
+      if (typeof data.newBalance === "number") {
+        updateBalance(data.newBalance);
+      }
       setSuccessInfo({
         amount: data.amount,
         balance: data.newBalance,

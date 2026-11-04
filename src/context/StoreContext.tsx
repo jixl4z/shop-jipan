@@ -39,6 +39,7 @@ interface StoreContextType {
   user: UserSession | null;
   loadingUser: boolean;
   refreshUser: (initialUser?: UserSession | null) => Promise<void>;
+  updateBalance: (newBalance: number) => void;
   setting: PublicSetting | null;
   refreshSetting: () => Promise<void>;
   themeColor: ThemeColor;
@@ -109,6 +110,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
+  const updateBalance = (newBalance: number) => {
+    setUser((prev) => (prev ? { ...prev, balance: newBalance } : prev));
+  };
+
   const refreshUser = async (initialUser?: UserSession | null) => {
     if (initialUser !== undefined) {
       setUser(initialUser);
@@ -116,9 +121,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     try {
-      const res = await fetch("/api/auth/me");
+      const res = await fetch(`/api/auth/me?_t=${Date.now()}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+        },
+      });
       if (res.ok) {
-        const data = await res.json();
+        const data = (await res.json()) as any;
         if (data && data.user) {
           setUser(data.user);
         }
@@ -172,6 +183,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     refreshUser();
     refreshSetting();
+
+    const handleSync = () => {
+      if (typeof document !== "undefined" && document.visibilityState === "visible") {
+        refreshUser();
+      }
+    };
+
+    window.addEventListener("visibilitychange", handleSync);
+    window.addEventListener("focus", handleSync);
+
+    // Auto sync balance every 15s when tab is active
+    const interval = setInterval(handleSync, 15000);
+
+    return () => {
+      window.removeEventListener("visibilitychange", handleSync);
+      window.removeEventListener("focus", handleSync);
+      clearInterval(interval);
+    };
   }, []);
 
   const openAuth = (tab: "login" | "register" = "login") => {
@@ -213,6 +242,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         user,
         loadingUser,
         refreshUser,
+        updateBalance,
         setting,
         refreshSetting,
         themeColor,

@@ -4,13 +4,22 @@ import { prisma } from "@/lib/prisma";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import bcrypt from "bcryptjs";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   const user = await getCurrentUser();
+  const noCacheHeaders = {
+    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0",
+    Pragma: "no-cache",
+    Expires: "0",
+  };
+
   if (!user) {
-    return NextResponse.json({ user: null });
+    return NextResponse.json({ user: null }, { headers: noCacheHeaders });
   }
 
-  return NextResponse.json({ user });
+  return NextResponse.json({ user }, { headers: noCacheHeaders });
 }
 
 export async function PUT(req: Request) {

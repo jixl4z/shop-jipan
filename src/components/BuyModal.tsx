@@ -23,6 +23,7 @@ export default function BuyModal() {
     openAuth,
     openTopup,
     refreshUser,
+    updateBalance,
     addToast,
     openMyOrders,
     currentTheme,
@@ -95,6 +96,9 @@ export default function BuyModal() {
         origin: { y: 0.6 },
       });
 
+      if (typeof data.newBalance === "number") {
+        updateBalance(data.newBalance);
+      }
       addToast("สั่งซื้อสำเร็จ! ได้รับข้อมูลสินค้าเรียบร้อยแล้ว", "success");
       await refreshUser();
     } catch {
