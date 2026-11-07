@@ -32,6 +32,8 @@ import {
   Zap,
   Check,
   Plus,
+  Sun,
+  Moon,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -42,14 +44,12 @@ export default function Navbar() {
     openAuth,
     openTopup,
     logout,
-    themeColor,
-    setThemeColor,
-    currentTheme,
+    themeMode,
+    toggleThemeMode,
     addToast,
   } = useStore();
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isExtraMenuOpen, setIsExtraMenuOpen] = useState(false);
 
@@ -59,20 +59,6 @@ export default function Navbar() {
   const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
-
-  const THEME_OPTIONS: {
-    id: ThemeColor;
-    label: string;
-    desc: string;
-    bg: string;
-  }[] = [
-    { id: "monochrome", label: "ขาว-ดำ มินิมอล", desc: "Monochrome Clean", bg: "bg-white" },
-    { id: "crimson", label: "คริมสัน เรด (GenzX)", desc: "Crimson Red Gaming", bg: "bg-rose-500" },
-    { id: "purple", label: "ไซเบอร์ ไวโอเล็ต", desc: "Cyber Violet Glow", bg: "bg-violet-500" },
-    { id: "emerald", label: "เอเมอรัลด์ กรีน", desc: "Emerald Neon Green", bg: "bg-emerald-400" },
-    { id: "blue", label: "อิเล็กทริก บลู", desc: "Electric Cyan Blue", bg: "bg-cyan-400" },
-    { id: "amber", label: "โกลด์ แอมเบอร์", desc: "Golden Amber Luxury", bg: "bg-amber-400" },
-  ];
 
   // Global Ctrl+K / Cmd+K shortcut for search
   useEffect(() => {
@@ -274,79 +260,19 @@ export default function Navbar() {
               </kbd>
             </button>
 
-            {/* Theme Palette Switcher (GenzX Style) */}
-            <div className="relative">
-              <button
-                onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 text-neutral-300 hover:text-white transition-all cursor-pointer text-xs"
-                title="ปรับแต่งชุดสีธีมเว็บไซต์"
-                aria-label="เปลี่ยนสีธีม"
-              >
-                <Palette className="w-3.5 h-3.5" />
-                <span
-                  className={`w-2 h-2 rounded-full shadow-sm ${
-                    themeColor === "crimson"
-                      ? "bg-rose-500 shadow-rose-500/50"
-                      : themeColor === "purple"
-                      ? "bg-violet-500 shadow-violet-500/50"
-                      : themeColor === "emerald"
-                      ? "bg-emerald-400 shadow-emerald-400/50"
-                      : themeColor === "blue"
-                      ? "bg-cyan-400 shadow-cyan-400/50"
-                      : themeColor === "amber"
-                      ? "bg-amber-400 shadow-amber-400/50"
-                      : "bg-white shadow-white/50"
-                  }`}
-                />
-              </button>
-
-              {isThemeMenuOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setIsThemeMenuOpen(false)}
-                  />
-                  <div className="absolute right-0 mt-2.5 w-72 rounded-2xl bg-[#0e1017]/95 backdrop-blur-2xl border border-white/10 p-3.5 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-white/[0.08]">
-                      <div className="flex items-center gap-2">
-                        <Palette className="w-4 h-4 text-white" />
-                        <span className="text-xs font-bold text-white">ปรับแต่งสีธีมร้านค้า</span>
-                      </div>
-                      <span className="text-[10px] text-neutral-400 font-mono">6 โทนสี</span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      {THEME_OPTIONS.map((t) => {
-                        const isSelected = themeColor === t.id;
-                        return (
-                          <button
-                            key={t.id}
-                            onClick={() => {
-                              setThemeColor(t.id);
-                              addToast(`เปลี่ยนธีมเป็น "${t.label}" สำเร็จ`, "success");
-                              setIsThemeMenuOpen(false);
-                            }}
-                            className={`flex items-center gap-2 p-2 rounded-xl border text-left transition-all cursor-pointer ${
-                              isSelected
-                                ? "border-white bg-white/10 text-white shadow-md"
-                                : "border-white/[0.06] bg-white/[0.02] text-neutral-400 hover:text-white hover:bg-white/[0.06]"
-                            }`}
-                          >
-                            <span
-                              className={`w-3 h-3 rounded-full shrink-0 border border-black/40 ${t.bg}`}
-                            />
-                            <div className="min-w-0 flex-1">
-                              <div className="text-xs font-medium truncate">{t.label}</div>
-                            </div>
-                            {isSelected && <Check className="w-3 h-3 text-white shrink-0" />}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </>
+            {/* Theme Mode Toggle (Dark / Light with Circular Wipe Animation) */}
+            <button
+              onClick={(e) => toggleThemeMode(e)}
+              className="w-8 h-8 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 flex items-center justify-center text-neutral-300 hover:text-white transition-all cursor-pointer text-xs group shrink-0"
+              title={themeMode === "dark" ? "เปลี่ยนเป็นโหมดสว่าง (Light Mode)" : "เปลี่ยนเป็นโหมดมืด (Dark Mode)"}
+              aria-label="เปลี่ยนโหมดสี"
+            >
+              {themeMode === "dark" ? (
+                <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+              ) : (
+                <Moon className="w-4 h-4 text-indigo-400 group-hover:-rotate-12 transition-transform duration-300" />
               )}
-            </div>
+            </button>
 
             {/* Quick Contact Shortcut Button */}
             <button
@@ -679,6 +605,25 @@ export default function Navbar() {
               </Link>
             </div>
 
+            {/* Theme Toggle row in Mobile Drawer */}
+            <div className="pt-2 border-t border-white/[0.08]">
+              <button
+                onClick={(e) => toggleThemeMode(e)}
+                className="w-full flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs font-medium text-neutral-200 cursor-pointer hover:bg-white/[0.06] transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  {themeMode === "dark" ? (
+                    <Sun className="w-4 h-4 text-amber-400" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-indigo-400" />
+                  )}
+                  <span>โทนสีเว็บไซต์ ({themeMode === "dark" ? "โหมดมืด" : "โหมดสว่าง"})</span>
+                </div>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/[0.08] border border-white/10 text-neutral-300">
+                  {themeMode === "dark" ? "สลับเป็นโหมดสว่าง ☀️" : "สลับเป็นโหมดมืด 🌙"}
+                </span>
+              </button>
+            </div>
 
             {/* Logout button in mobile drawer if logged in */}
             {user && (

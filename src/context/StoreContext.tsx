@@ -46,6 +46,9 @@ interface StoreContextType {
   themeColor: ThemeColor;
   setThemeColor: (color: ThemeColor) => void;
   currentTheme: ThemeConfig;
+  themeMode: "dark" | "light";
+  toggleThemeMode: (e?: React.MouseEvent) => void;
+  setThemeMode: (mode: "dark" | "light") => void;
   
   // Modals
   isAuthOpen: boolean;
@@ -88,6 +91,24 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     return null;
   });
   const [themeColor, setThemeColorState] = useState<ThemeColor>("monochrome");
+  const [themeMode, setThemeModeState] = useState<"dark" | "light">("dark");
+
+  // Sync theme mode on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedMode = (localStorage.getItem("jipan_theme_mode") as "dark" | "light") || "dark";
+        setThemeModeState(savedMode);
+        if (savedMode === "light") {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+        } else {
+          document.documentElement.classList.remove("light");
+          document.documentElement.classList.add("dark");
+        }
+      } catch {}
+    }
+  }, []);
 
   // Modals
   const [isAuthOpen, setIsAuthOpen] = useState(false);
@@ -171,6 +192,81 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("jipan_theme", color);
   };
 
+  const setThemeMode = (mode: "dark" | "light") => {
+    setThemeModeState(mode);
+    try {
+      localStorage.setItem("jipan_theme_mode", mode);
+    } catch {}
+    if (typeof document !== "undefined") {
+      if (mode === "light") {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
+      } else {
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.add("dark");
+      }
+    }
+  };
+
+  const toggleThemeMode = (e?: React.MouseEvent) => {
+    const nextMode = themeMode === "dark" ? "light" : "dark";
+
+    const applyDOM = () => {
+      setThemeModeState(nextMode);
+      try {
+        localStorage.setItem("jipan_theme_mode", nextMode);
+      } catch {}
+      if (typeof document !== "undefined") {
+        if (nextMode === "light") {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+        } else {
+          document.documentElement.classList.remove("light");
+          document.documentElement.classList.add("dark");
+        }
+      }
+    };
+
+    // Check if View Transition API is supported and motion is not reduced
+    if (
+      typeof document === "undefined" ||
+      !("startViewTransition" in document) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      applyDOM();
+      return;
+    }
+
+    const x = e?.clientX ?? (typeof window !== "undefined" ? window.innerWidth - 60 : 0);
+    const y = e?.clientY ?? 30;
+    const endRadius = Math.hypot(
+      Math.max(x, typeof window !== "undefined" ? window.innerWidth - x : 1000),
+      Math.max(y, typeof window !== "undefined" ? window.innerHeight - y : 1000)
+    );
+
+    const transition = (document as any).startViewTransition(() => {
+      applyDOM();
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath: clipPath,
+        },
+        {
+          duration: 500,
+          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        }
+      );
+    });
+  };
+
   const logout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
@@ -249,6 +345,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         themeColor,
         setThemeColor,
         currentTheme,
+        themeMode,
+        toggleThemeMode,
+        setThemeMode,
         isAuthOpen,
         authTab,
         openAuth,
