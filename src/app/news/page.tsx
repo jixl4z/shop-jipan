@@ -27,7 +27,7 @@ export default function NewsPage() {
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
       <Navbar />
 
-      <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 py-10 w-full space-y-8">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
         {/* Breadcrumb & Header */}
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-xs text-neutral-400">

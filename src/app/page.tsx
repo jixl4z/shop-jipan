@@ -83,8 +83,10 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/[0.08]">
             <div className="space-y-1">
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <ShoppingBag className="w-5 h-5 text-neutral-400" />
+                <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0">
+                  <ShoppingBag className="w-4 h-4 text-white" />
+                </div>
+                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
                   <span>
                     {(() => {
                       const active = categories.find((c) => c.slug === selectedCategory);

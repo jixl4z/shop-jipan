@@ -44,24 +44,30 @@ export default function CategoryFilter({
   return (
     <div className="w-full space-y-4">
       {/* Category Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
-            <Layers className="w-5 h-5 text-neutral-400" />
-            <span>หมวดหมู่สินค้า (Categories)</span>
-          </h2>
-          <p className="text-xs text-neutral-400 mt-0.5">
-            เลือกดูสินค้าตามประเภทที่คุณสนใจ (คลิกการ์ดเพื่อกรองสินค้าทันที)
-          </p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0">
+            <Layers className="w-4 h-4 text-white" />
+          </div>
+          <div>
+            <h2 className="text-base sm:text-lg font-bold text-white tracking-tight leading-none">
+              หมวดหมู่สินค้า
+            </h2>
+            <p className="text-[11px] text-neutral-400 mt-1">
+              คลิกการ์ดเพื่อกรองสินค้าทันที
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 self-start sm:self-auto">
+        <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-white/20 via-white/5 to-transparent mx-3" />
+
+        <div className="flex items-center gap-2 shrink-0">
           {selectedSlug !== "all" && (
             <button
               onClick={() => onSelectCategory("all")}
               className="text-xs text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/15 transition-all flex items-center gap-1.5 cursor-pointer font-medium"
             >
-              <span>✕ แสดงสินค้าทั้งหมด</span>
+              <span>✕ ทั้งหมด</span>
             </button>
           )}
           <Link

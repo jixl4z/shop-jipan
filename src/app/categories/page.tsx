@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import HeroBanner from "@/components/HeroBanner";
 import AuthModal from "@/components/AuthModal";
 import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
@@ -48,9 +47,6 @@ export default function CategoriesPage() {
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
       <Navbar />
-
-      {/* Main Top Banner Carousel */}
-      <HeroBanner />
 
       <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
         {/* Breadcrumb & Header */}

@@ -64,10 +64,10 @@ export default function ProductsPage() {
   }, [products, selectedCat, search, onlyInStock, sortBy]);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col selection:bg-white selection:text-black">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-neutral-400">
           <Link href="/" className="hover:text-white transition-colors">
