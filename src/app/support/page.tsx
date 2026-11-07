@@ -69,54 +69,21 @@ export default function SupportPage() {
           </p>
         </div>
 
-        {/* Contact Channels Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Discord Card */}
-          <div className="p-6 rounded-3xl bg-neutral-900/70 border border-neutral-800 space-y-4 hover:border-violet-500/40 transition-all flex flex-col justify-between">
+        {/* Contact Channel (LINE Official) */}
+        <div className="max-w-2xl mx-auto w-full">
+          <div className="p-6 sm:p-7 rounded-3xl bg-neutral-900/70 border border-white/[0.08] hover:border-white/20 space-y-4 transition-all flex flex-col justify-between shadow-xl">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-violet-600/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-bold text-xl">
-                💬
-              </div>
-              <div>
-                <h3 className="font-bold text-lg text-white">Discord Community & Ticket</h3>
-                <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
-                  เปิดห้อง Ticket ส่วนตัวเพื่อแจ้งปัญหากับทีมงานโดยตรง ระบบเก็บประวัติชัดเจน รวดเร็วและปลอดภัย
-                </p>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-neutral-400">
-                <Clock className="w-3.5 h-3.5 text-violet-400" />
-                <span>เฉลี่ยตอบกลับ: ภายใน 2-10 นาที</span>
-              </div>
-            </div>
-            {setting?.contactDiscord ? (
-              <a
-                href={setting.contactDiscord}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-bold text-xs transition-colors shadow-lg shadow-violet-600/20"
-              >
-                <span>เปิด Discord Ticket เคลมสินค้า</span>
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            ) : (
-              <div className="text-xs text-neutral-500 italic">ยังไม่ได้ตั้งค่าลิงก์ Discord</div>
-            )}
-          </div>
-
-          {/* LINE Card */}
-          <div className="p-6 rounded-3xl bg-neutral-900/70 border border-neutral-800 space-y-4 hover:border-emerald-500/40 transition-all flex flex-col justify-between">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xl">
-                📱
+              <div className="w-12 h-12 rounded-2xl bg-white/10 text-white border border-white/15 flex items-center justify-center font-bold text-xl">
+                <MessageSquare className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h3 className="font-bold text-lg text-white">LINE Official Account</h3>
                 <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
-                  ทักแชทแอดมินทาง LINE ได้โดยตรง สะดวกสำหรับผู้ใช้งานบนมือถือ ส่งหลักฐานรูปภาพและวิดีโอได้ทันที
+                  ทักแชทแอดมินทาง LINE ได้โดยตรง สะดวก รวดเร็ว ส่งหลักฐานรูปภาพและวิดีโอเพื่อเคลมสินค้าได้ทันที 24 ชม.
                 </p>
               </div>
               <div className="flex items-center gap-2 text-xs text-neutral-400">
-                <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                <Clock className="w-3.5 h-3.5 text-neutral-400" />
                 <span>เฉลี่ยตอบกลับ: ภายใน 5-15 นาที</span>
               </div>
             </div>
@@ -125,10 +92,10 @@ export default function SupportPage() {
                 href={setting.contactLine}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors shadow-lg shadow-emerald-600/20"
+                className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-2xl bg-white hover:bg-neutral-200 text-black font-extrabold text-xs transition-all shadow-lg cursor-pointer"
               >
-                <span>ทักแชท LINE Official</span>
-                <ExternalLink className="w-4 h-4" />
+                <span>ทักแชทแอดมินทาง LINE Official</span>
+                <ExternalLink className="w-4 h-4 text-black" />
               </a>
             ) : (
               <div className="text-xs text-neutral-500 italic">ยังไม่ได้ตั้งค่าลิงก์ LINE</div>

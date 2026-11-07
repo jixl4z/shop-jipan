@@ -3,10 +3,19 @@
 import React from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { MessageSquare, ShieldCheck, Heart } from "lucide-react";
+import {
+  Zap,
+  Star,
+  Megaphone,
+  BookOpen,
+  LifeBuoy,
+  ShieldCheck,
+  Heart,
+  MessageCircle,
+} from "lucide-react";
 
 export default function Footer() {
-  const { setting, openTopup } = useStore();
+  const { setting } = useStore();
 
   return (
     <footer className="w-full bg-neutral-950 border-t border-neutral-800/80 pt-12 pb-8 text-neutral-400">
@@ -15,8 +24,8 @@ export default function Footer() {
           {/* Col 1: Brand Info */}
           <div className="space-y-3 md:col-span-2">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-neutral-800 border border-neutral-700 flex items-center justify-center font-bold text-white text-base">
-                ⚡
+              <div className="w-8 h-8 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-white">
+                <Zap className="w-4 h-4 text-white" />
               </div>
               <span className="font-bold text-white text-base">
                 {setting?.shopName || "JIPAN STORE"}
@@ -73,29 +82,45 @@ export default function Footer() {
             </div>
             <ul className="space-y-2">
               <li>
-                <Link href="/reviews" className="hover:text-white transition-colors text-amber-400">
-                  ★ รีวิวจากลูกค้า (5 ดาว)
+                <Link
+                  href="/reviews"
+                  className="hover:text-white transition-colors flex items-center gap-2 group"
+                >
+                  <Star className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
+                  <span>รีวิวจากลูกค้า (5 ดาว)</span>
                 </Link>
               </li>
               <li>
-                <Link href="/news" className="hover:text-white transition-colors text-cyan-400">
-                  📢 โปรโมชั่นและข่าวสาร
+                <Link
+                  href="/news"
+                  className="hover:text-white transition-colors flex items-center gap-2 group"
+                >
+                  <Megaphone className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
+                  <span>โปรโมชั่นและข่าวสาร</span>
                 </Link>
               </li>
               <li>
-                <Link href="/docs" className="hover:text-white transition-colors">
-                  📖 คู่มือการใช้งาน (Guide)
+                <Link
+                  href="/docs"
+                  className="hover:text-white transition-colors flex items-center gap-2 group"
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
+                  <span>คู่มือการใช้งาน (Guide)</span>
                 </Link>
               </li>
               <li>
-                <Link href="/support" className="hover:text-white transition-colors text-emerald-400">
-                  🛡️ ศูนย์ช่วยเหลือ & เคลม
+                <Link
+                  href="/support"
+                  className="hover:text-white transition-colors flex items-center gap-2 group"
+                >
+                  <LifeBuoy className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
+                  <span>ศูนย์ช่วยเหลือ & เคลม</span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Contact & Community */}
+          {/* Col 4: Contact (LINE only, Discord & Facebook removed as requested) */}
           <div className="space-y-2.5 text-xs">
             <div className="font-bold text-white uppercase tracking-wider text-[11px]">
               ติดต่อสอบถาม
@@ -106,32 +131,15 @@ export default function Footer() {
                   href={setting.contactLine}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-emerald-500/40 text-neutral-300 hover:text-white transition-all text-xs"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-white/30 text-neutral-300 hover:text-white transition-all text-xs group"
                 >
-                  <span className="text-emerald-400 font-bold">LINE</span>
-                  <span>ติดต่อฝ่ายบริการลูกค้า</span>
-                </a>
-              )}
-              {setting?.contactDiscord && (
-                <a
-                  href={setting.contactDiscord}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-indigo-500/40 text-neutral-300 hover:text-white transition-all text-xs"
-                >
-                  <span className="text-indigo-400 font-bold">Discord</span>
-                  <span>เข้าร่วมคอมมูนิตี้</span>
-                </a>
-              )}
-              {setting?.contactFacebook && (
-                <a
-                  href={setting.contactFacebook}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 hover:border-blue-500/40 text-neutral-300 hover:text-white transition-all text-xs"
-                >
-                  <span className="text-blue-400 font-bold">Facebook</span>
-                  <span>เพจทางการ</span>
+                  <MessageCircle className="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors shrink-0" />
+                  <div className="min-w-0">
+                    <span className="font-semibold text-white block">LINE Official</span>
+                    <span className="text-[10px] text-neutral-400 block truncate">
+                      ติดต่อฝ่ายบริการลูกค้า
+                    </span>
+                  </div>
                 </a>
               )}
             </div>
@@ -143,9 +151,9 @@ export default function Footer() {
           <div>
             © {new Date().getFullYear()} {setting?.shopName || "JIPAN STORE"}. All rights reserved.
           </div>
-          <div className="flex items-center gap-1 text-[11px]">
+          <div className="flex items-center gap-1.5 text-[11px]">
             <span>สร้างด้วยความใส่ใจและปลอดภัย</span>
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <Heart className="w-3.5 h-3.5 text-neutral-400 fill-neutral-400" />
           </div>
         </div>
       </div>

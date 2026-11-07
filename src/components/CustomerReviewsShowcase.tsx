@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Star, CheckCircle2, MessageSquare, Sparkles, ArrowRight } from "lucide-react";
+import { Star, CheckCircle2, MessageSquare, Sparkles, ArrowRight, Package } from "lucide-react";
 
 interface ReviewItem {
   id: string;
@@ -98,8 +98,9 @@ export default function CustomerReviewsShowcase() {
 
               {/* Product Name */}
               {rev.product && (
-                <div className="text-[11px] text-neutral-300 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/[0.08] font-medium truncate">
-                  📦 {rev.product}
+                <div className="text-[11px] text-neutral-300 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/[0.08] font-medium truncate flex items-center gap-1.5">
+                  <Package className="w-3 h-3 text-neutral-400 shrink-0" />
+                  <span className="truncate">{rev.product}</span>
                 </div>
               )}
 

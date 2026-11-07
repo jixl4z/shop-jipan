@@ -9,7 +9,7 @@ import AuthModal from "@/components/AuthModal";
 import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
-import { Search, ShoppingBag, Filter, Loader2, ArrowUpDown } from "lucide-react";
+import { Search, ShoppingBag, Filter, Loader2, ArrowUpDown, Package } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 
 interface CategoryItem {
@@ -189,8 +189,8 @@ export default function ProductsPage() {
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="py-20 text-center rounded-3xl bg-neutral-900/40 border border-neutral-800/80 p-8 space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-neutral-850 flex items-center justify-center mx-auto text-neutral-500 text-xl">
-              📦
+            <div className="w-12 h-12 rounded-2xl bg-neutral-850 flex items-center justify-center mx-auto text-neutral-400">
+              <Package className="w-6 h-6 text-neutral-400" />
             </div>
             <h3 className="font-bold text-base text-neutral-200">
               ไม่พบสินค้าตามเงื่อนไขที่ค้นหา

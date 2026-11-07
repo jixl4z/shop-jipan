@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { Search, X, ShoppingBag, ArrowRight, Loader2, Sparkles } from "lucide-react";
+import { Search, X, ShoppingBag, ArrowRight, Loader2, Sparkles, Tag, CreditCard, Star, ShieldCheck } from "lucide-react";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -115,7 +115,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 onClick={onClose}
                 className="p-2 rounded-xl bg-neutral-800/60 hover:bg-neutral-800 text-neutral-300 hover:text-white transition-colors flex items-center gap-1.5"
               >
-                <span>🏷️</span>
+                <Tag className="w-3.5 h-3.5 text-neutral-400" />
                 <span className="truncate">หมวดหมู่</span>
               </Link>
               <Link
@@ -123,7 +123,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 onClick={onClose}
                 className="p-2 rounded-xl bg-neutral-800/60 hover:bg-neutral-800 text-neutral-300 hover:text-white transition-colors flex items-center gap-1.5"
               >
-                <span>💳</span>
+                <CreditCard className="w-3.5 h-3.5 text-neutral-400" />
                 <span className="truncate">เติมเงิน</span>
               </Link>
               <Link
@@ -131,7 +131,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 onClick={onClose}
                 className="p-2 rounded-xl bg-neutral-800/60 hover:bg-neutral-800 text-neutral-300 hover:text-white transition-colors flex items-center gap-1.5"
               >
-                <span>⭐</span>
+                <Star className="w-3.5 h-3.5 text-neutral-400" />
                 <span className="truncate">รีวิวลูกค้า</span>
               </Link>
               <Link
@@ -139,7 +139,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 onClick={onClose}
                 className="p-2 rounded-xl bg-neutral-800/60 hover:bg-neutral-800 text-neutral-300 hover:text-white transition-colors flex items-center gap-1.5"
               >
-                <span>🛡️</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-neutral-400" />
                 <span className="truncate">ศูนย์เคลม</span>
               </Link>
             </div>

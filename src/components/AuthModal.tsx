@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useStore } from "@/context/StoreContext";
-import { X, Lock, User, Mail, ArrowRight, Loader2 } from "lucide-react";
+import { X, Lock, User, Mail, ArrowRight, Loader2, Zap } from "lucide-react";
 import CloudflareTurnstile from "./CloudflareTurnstile";
 import SocialAuthButtons from "./SocialAuthButtons";
 
@@ -88,8 +88,8 @@ export default function AuthModal() {
 
         {/* Header & Tabs */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-neutral-800 to-neutral-700 border border-neutral-700 flex items-center justify-center text-xl font-bold text-white mx-auto mb-3 shadow-lg">
-            ⚡
+          <div className="w-12 h-12 rounded-2xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-white mx-auto mb-3 shadow-lg">
+            <Zap className="w-6 h-6 text-white" />
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
             {authTab === "login" ? "เข้าสู่ระบบ" : "สร้างบัญชีใหม่"}

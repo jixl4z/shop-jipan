@@ -16,8 +16,9 @@ import {
   ShoppingBag,
   Sparkles,
   CreditCard,
-  PackageCheck,
   BookOpen,
+  Crown,
+  MessageCircle,
 } from "lucide-react";
 
 // 1. Profile Modal (จัดการโปรไฟล์)
@@ -102,8 +103,18 @@ export function ProfileModal({
             <div>
               <div className="font-bold text-white text-sm">{user.username}</div>
               <div className="text-xs text-neutral-400">{user.email || "ไม่ได้ระบุอีเมล"}</div>
-              <span className="inline-block mt-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
-                {user.role === "ADMIN" ? "👑 ผู้ดูแลระบบ (Admin)" : "👤 สมาชิกทั่วไป (Member)"}
+              <span className="inline-flex items-center gap-1 mt-1 text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                {user.role === "ADMIN" ? (
+                  <>
+                    <Crown className="w-3 h-3 text-amber-400 shrink-0" />
+                    <span>ผู้ดูแลระบบ (Admin)</span>
+                  </>
+                ) : (
+                  <>
+                    <User className="w-3 h-3 text-neutral-400 shrink-0" />
+                    <span>สมาชิกทั่วไป (Member)</span>
+                  </>
+                )}
               </span>
             </div>
           </div>
@@ -220,27 +231,17 @@ export function SupportModal({
             <p className="text-neutral-400 text-[11px]">
               ติดต่อแอดมินโดยตรงเพื่อส่งหลักฐานและรับการแก้ไขปัญหาอย่างรวดเร็วตลอด 24 ชั่วโมง
             </p>
-            <div className="grid grid-cols-2 gap-2 pt-1">
-              {setting?.contactDiscord && (
-                <a
-                  href={setting.contactDiscord}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-violet-600/20 text-violet-300 border border-violet-500/30 hover:bg-violet-600/30 font-semibold"
-                >
-                  <span>Discord Ticket</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              )}
+            <div className="pt-1">
               {setting?.contactLine && (
                 <a
                   href={setting.contactLine}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-emerald-600/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-600/30 font-semibold"
+                  className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition-colors shadow-md"
                 >
-                  <span>LINE Official</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <MessageCircle className="w-4 h-4 text-black" />
+                  <span>ทักแชท LINE Official เพื่อเคลมสินค้า</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-black" />
                 </a>
               )}
             </div>
@@ -370,69 +371,25 @@ export function ContactModal({
         </div>
 
         <div className="space-y-2.5 text-xs">
-          {setting?.contactDiscord && (
-            <a
-              href={setting.contactDiscord}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-violet-500/50 hover:bg-violet-950/20 transition-all group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-violet-600/20 text-violet-400 flex items-center justify-center font-bold">
-                  💬
-                </div>
-                <div>
-                  <div className="font-bold text-white text-xs group-hover:text-violet-300">
-                    Discord Community
-                  </div>
-                  <div className="text-[11px] text-neutral-400">พูดคุยและเปิด Ticket ซัพพอร์ต</div>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-neutral-500 group-hover:text-white" />
-            </a>
-          )}
-
           {setting?.contactLine && (
             <a
               href={setting.contactLine}
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-emerald-500/50 hover:bg-emerald-950/20 transition-all group"
+              className="flex items-center justify-between p-4 rounded-2xl bg-neutral-950 border border-white/[0.08] hover:border-white/20 transition-all group shadow-md"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center font-bold">
-                  📱
+                <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center font-bold">
+                  <MessageCircle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <div className="font-bold text-white text-xs group-hover:text-emerald-300">
+                  <div className="font-bold text-white text-xs group-hover:text-neutral-200">
                     LINE Official Account
                   </div>
-                  <div className="text-[11px] text-neutral-400">ติดต่อแอดมินทาง LINE โดยตรง</div>
+                  <div className="text-[11px] text-neutral-400">ติดต่อแอดมินทาง LINE โดยตรง (บริการ 24 ชม.)</div>
                 </div>
               </div>
-              <ExternalLink className="w-4 h-4 text-neutral-500 group-hover:text-white" />
-            </a>
-          )}
-
-          {setting?.contactFacebook && (
-            <a
-              href={setting.contactFacebook}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-between p-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-blue-500/50 hover:bg-blue-950/20 transition-all group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center font-bold">
-                  📘
-                </div>
-                <div>
-                  <div className="font-bold text-white text-xs group-hover:text-blue-300">
-                    Facebook Fanpage
-                  </div>
-                  <div className="text-[11px] text-neutral-400">ติดตามข่าวสารและโปรโมชั่น</div>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-neutral-500 group-hover:text-white" />
+              <ExternalLink className="w-4 h-4 text-neutral-400 group-hover:text-white" />
             </a>
           )}
         </div>

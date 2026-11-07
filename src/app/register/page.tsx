@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CloudflareTurnstile from "@/components/CloudflareTurnstile";
 import SocialAuthButtons from "@/components/SocialAuthButtons";
-import { Lock, User, Mail, ArrowRight, Loader2, AlertCircle } from "lucide-react";
+import { Lock, User, Mail, ArrowRight, Loader2, AlertCircle, Zap } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 
 export default function RegisterPage() {
@@ -64,8 +64,8 @@ export default function RegisterPage() {
       <main className="flex-1 flex items-center justify-center p-4">
         <div className="w-full max-w-md rounded-3xl bg-neutral-900 border border-neutral-800 p-8 shadow-2xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-14 h-14 rounded-2xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-2xl mx-auto shadow-lg">
-              ⚡
+            <div className="w-14 h-14 rounded-2xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-white mx-auto shadow-lg">
+              <Zap className="w-7 h-7 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-white tracking-tight">สร้างบัญชีใหม่</h1>
             <p className="text-xs text-neutral-400">

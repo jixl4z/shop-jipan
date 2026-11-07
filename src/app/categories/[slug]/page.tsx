@@ -10,7 +10,7 @@ import AuthModal from "@/components/AuthModal";
 import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
-import { ArrowLeft, Loader2, Layers, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Loader2, Layers, ShoppingBag, Package } from "lucide-react";
 
 export default function CategoryDetailPage() {
   const params = useParams();
@@ -119,8 +119,8 @@ export default function CategoryDetailPage() {
           </div>
         ) : products.length === 0 ? (
           <div className="py-20 text-center rounded-3xl bg-neutral-900/40 border border-neutral-800/80 p-8 space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-neutral-850 flex items-center justify-center mx-auto text-neutral-500 text-xl">
-              📦
+            <div className="w-12 h-12 rounded-2xl bg-neutral-850 flex items-center justify-center mx-auto text-neutral-400">
+              <Package className="w-6 h-6 text-neutral-400" />
             </div>
             <h3 className="font-bold text-base text-neutral-200">
               ยังไม่มีสินค้าในหมวดหมู่นี้

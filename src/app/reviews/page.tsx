@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Star, CheckCircle2, MessageSquare, Sparkles, Plus, Trash2, Loader2 } from "lucide-react";
+import { Star, CheckCircle2, MessageSquare, Sparkles, Plus, Trash2, Loader2, AlertCircle } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 
 interface ReviewItem {
@@ -401,8 +401,9 @@ export default function ReviewsPage() {
                     className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500"
                   />
                   {comment.trim().length > 0 && comment.trim().length < 10 && (
-                    <p className="text-[11px] text-amber-400/90 mt-1 flex items-center gap-1 font-light">
-                      ⚠️ กรุณาพิมพ์อีก {10 - comment.trim().length} ตัวอักษร (ไม่รับรีวิวส่งๆ หรือตัวอักษรซ้ำๆ)
+                    <p className="text-[11px] text-amber-400/90 mt-1 flex items-center gap-1.5 font-light">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>กรุณาพิมพ์อีก {10 - comment.trim().length} ตัวอักษร (ไม่รับรีวิวส่งๆ หรือตัวอักษรซ้ำๆ)</span>
                     </p>
                   )}
                 </div>

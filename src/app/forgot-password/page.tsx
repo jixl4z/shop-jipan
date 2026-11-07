@@ -81,31 +81,20 @@ export default function ForgotPasswordPage() {
               <div className="space-y-1">
                 <h4 className="font-bold text-white text-sm">รับคำร้องกู้คืนบัญชีเรียบร้อย</h4>
                 <p className="text-[11px] text-neutral-400 leading-relaxed">
-                  เนื่องจากเพื่อความปลอดภัยสูงสุดของข้อมูลและยอดเครดิตของคุณ กรุณาทักแชทแอดมินทาง Discord หรือ LINE เพื่อยืนยันตัวตนและรับรหัสผ่านใหม่
+                  เนื่องจากเพื่อความปลอดภัยสูงสุดของข้อมูลและยอดเครดิตของคุณ กรุณาทักแชทแอดมินทาง LINE เพื่อยืนยันตัวตนและรับรหัสผ่านใหม่
                 </p>
               </div>
 
               <div className="pt-2 flex flex-col gap-2">
-                {setting?.contactDiscord && (
-                  <a
-                    href={setting.contactDiscord}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-colors"
-                  >
-                    <span>แจ้งแอดมินทาง Discord</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
                 {setting?.contactLine && (
                   <a
                     href={setting.contactLine}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-colors"
+                    className="flex items-center justify-center gap-2 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-colors"
                   >
                     <span>แจ้งแอดมินทาง LINE</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
+                    <ExternalLink className="w-3.5 h-3.5 text-black" />
                   </a>
                 )}
               </div>

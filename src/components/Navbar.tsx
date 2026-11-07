@@ -28,6 +28,8 @@ import {
   X,
   Star,
   Newspaper,
+  Zap,
+  Check,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -80,7 +82,7 @@ export default function Navbar() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                "⚡"
+                <Zap className="w-4 h-4 text-white" />
               )}
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
@@ -204,7 +206,7 @@ export default function Navbar() {
                             />
                             <span>{t.label}</span>
                           </div>
-                          {isSelected && <span>✓</span>}
+                          {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
                         </button>
                       );
                     })}

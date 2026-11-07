@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { ThemeColor, THEMES, ThemeConfig } from "@/lib/theme";
+import { CheckCircle2, AlertCircle, Info } from "lucide-react";
 
 export interface UserSession {
   id: string;
@@ -283,7 +284,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
                 : "bg-neutral-900/90 border-neutral-700 text-neutral-100"
             }`}
           >
-            <span>{t.type === "success" ? "✅" : t.type === "error" ? "❌" : "ℹ️"}</span>
+            <div className="shrink-0">
+              {t.type === "success" ? (
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              ) : t.type === "error" ? (
+                <AlertCircle className="w-4 h-4 text-rose-400" />
+              ) : (
+                <Info className="w-4 h-4 text-neutral-300" />
+              )}
+            </div>
             <span className="flex-1 font-medium">{t.message}</span>
           </div>
         ))}

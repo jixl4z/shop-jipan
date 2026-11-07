@@ -307,17 +307,17 @@ export default function TopupModal() {
               <div>
                 {/* Bank / QR Presentation Card */}
                 {isTTB ? (
-                  <div className="p-3.5 sm:p-5 rounded-2xl bg-gradient-to-br from-neutral-900 to-neutral-950 border border-blue-500/30 shadow-xl space-y-3 sm:space-y-4 mb-4">
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-neutral-950 border border-white/[0.08] shadow-xl space-y-3 sm:space-y-4 mb-4">
                     {/* Bank Header */}
-                    <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
+                    <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
                       <div className="flex items-center gap-2.5 sm:gap-3">
-                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shadow-inner shrink-0">
-                          <Landmark className="w-5 h-5 text-blue-400" />
+                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white shadow-inner shrink-0">
+                          <Landmark className="w-5 h-5 text-white" />
                         </div>
                         <div>
                           <div className="font-bold text-white text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
                             <span>ธนาคารทีเอ็มบีธนชาต (ttb)</span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 font-medium">
+                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15 font-mono">
                               บัญชีร้านค้า
                             </span>
                           </div>
@@ -375,7 +375,7 @@ export default function TopupModal() {
                     {/* How-to Notice */}
                     <div className="text-[11px] text-neutral-400 bg-neutral-950/70 p-3 rounded-xl border border-neutral-800/60 space-y-1">
                       <div className="text-neutral-300 font-medium flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                        <Sparkles className="w-3.5 h-3.5 text-white" />
                         <span>วิธีเติมเงิน:</span>
                       </div>
                       <div>1. โอนเงินเข้าบัญชี <strong>ทีเอ็มบีธนชาต</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>

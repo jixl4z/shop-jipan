@@ -7,6 +7,9 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
+  Zap,
+  MessageCircle,
+  ShieldCheck,
 } from "lucide-react";
 
 export default function HeroBanner() {
@@ -59,11 +62,20 @@ export default function HeroBanner() {
           </div>
           <div className="flex-1 overflow-hidden relative">
             <div className="whitespace-nowrap animate-marquee flex items-center gap-8 text-xs text-neutral-300 font-light">
-              <span>⚡ {setting?.shopNotice || "พร้อมให้บริการแล้วนะ ระบบสแกนสลิปพร้อมเพย์ & ซองของขวัญทรูมันนี่ เงินเข้าทันทีตลอด 24 ชม."}</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-white shrink-0" />
+                <span>{setting?.shopNotice || "พร้อมให้บริการแล้วนะ ระบบสแกนสลิปพร้อมเพย์ & ซองของขวัญทรูมันนี่ เงินเข้าทันทีตลอด 24 ชม."}</span>
+              </span>
               <span className="text-neutral-600">•</span>
-              <span>💬 ไลน์แอดมิน: <strong className="text-white font-medium">{setting?.contactLine || "@jipanstore"}</strong></span>
+              <span className="inline-flex items-center gap-1.5">
+                <MessageCircle className="w-3.5 h-3.5 text-white shrink-0" />
+                <span>ไลน์แอดมิน: <strong className="text-white font-medium">{setting?.contactLine || "@jipanstore"}</strong></span>
+              </span>
               <span className="text-neutral-600">•</span>
-              <span>🛡️ ปลอดภัย มั่นใจ ได้ของจริง 100% จัดส่งอัตโนมัติในคลังของฉัน</span>
+              <span className="inline-flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-white shrink-0" />
+                <span>ปลอดภัย มั่นใจ ได้ของจริง 100% จัดส่งอัตโนมัติในคลังของฉัน</span>
+              </span>
             </div>
           </div>
         </div>
