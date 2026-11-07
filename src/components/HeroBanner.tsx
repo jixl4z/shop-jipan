@@ -1,16 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
+import StatsCounter from "@/components/StatsCounter";
 import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
-  CreditCard,
-  ShoppingBag,
-  Layers,
-  KeyRound,
 } from "lucide-react";
 
 export default function HeroBanner() {
@@ -150,77 +146,8 @@ export default function HeroBanner() {
           )}
         </div>
 
-        {/* 4 Monochrome Quick Action Shortcut Cards (Harmonious Black & White Dock) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
-          <div
-            onClick={openTopup}
-            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
-          >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
-                เติมเงิน
-              </div>
-              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
-                สแกนสลิป & วอเล็ท
-              </div>
-            </div>
-          </div>
-
-          <Link
-            href="/products"
-            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
-          >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
-                สินค้าทั้งหมด
-              </div>
-              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
-                ไอดี & รหัสบริการ
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            href="/categories"
-            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
-          >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <Layers className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
-                หมวดหมู่
-              </div>
-              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
-                เลือกตามประเภท
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            href="/orders"
-            className="p-3 sm:p-4 rounded-xl sm:rounded-2xl glass-panel interactive-card cursor-pointer group flex items-center gap-2.5 sm:gap-3.5"
-          >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-white group-hover:text-black transition-all">
-              <KeyRound className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-bold text-xs sm:text-sm text-white group-hover:text-white transition-colors truncate">
-                คลังของฉัน
-              </div>
-              <div className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5 truncate">
-                รับรหัสที่สั่งซื้อ
-              </div>
-            </div>
-          </Link>
-        </div>
-
+        {/* Store Live Stats Counter (Positioned directly under hero banner like reference design) */}
+        <StatsCounter />
       </div>
     </section>
   );

@@ -7,7 +7,6 @@ import RecentOrdersTicker from "@/components/RecentOrdersTicker";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CategoryFilter, { Category } from "@/components/CategoryFilter";
 import ProductCard, { Product } from "@/components/ProductCard";
-import StatsCounter from "@/components/StatsCounter";
 import CustomerReviewsShowcase from "@/components/CustomerReviewsShowcase";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
@@ -160,9 +159,6 @@ export default function HomePage() {
 
         {/* Live Orders Ticker */}
         <RecentOrdersTicker />
-
-        {/* Realtime Store Stats Counter */}
-        <StatsCounter />
 
         {/* Customer Reviews Showcase */}
         <CustomerReviewsShowcase />

@@ -1,14 +1,23 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, ShoppingBag, Box, CheckCircle2 } from "lucide-react";
+import { User, Coins, PackageCheck, ShoppingBag } from "lucide-react";
+
+interface StatsData {
+  totalUsers: number;
+  totalProducts: number;
+  inStock: number;
+  totalOrders: number;
+  totalTopup: number;
+}
 
 export default function StatsCounter() {
-  const [stats, setStats] = useState({
-    users: 1471,
-    products: 44,
-    inStock: 61,
-    orders: 21616,
+  const [stats, setStats] = useState<StatsData>({
+    totalUsers: 0,
+    totalProducts: 0,
+    inStock: 0,
+    totalOrders: 0,
+    totalTopup: 0,
   });
 
   useEffect(() => {
@@ -16,69 +25,71 @@ export default function StatsCounter() {
       .then((res) => res.json())
       .then((data) => {
         if (data.stats) {
-          setStats({
-            users: data.stats.totalUsers > 0 ? data.stats.totalUsers : 1471,
-            products: data.stats.totalProducts > 0 ? data.stats.totalProducts : 44,
-            inStock: data.stats.inStock > 0 ? data.stats.inStock : 61,
-            orders: data.stats.totalOrders > 0 ? data.stats.totalOrders : 21616,
-          });
+          setStats(data.stats);
         }
       })
-      .catch(() => {});
+      .catch((err) => console.error("[Stats Error]:", err));
   }, []);
 
   const statItems = [
     {
-      label: "ผู้ใช้ทั้งหมด",
-      value: stats.users,
+      id: "users",
+      label: "ผู้ใช้งาน",
+      value: stats.totalUsers,
       unit: "คน",
-      icon: Users,
+      icon: User,
     },
     {
-      label: "สินค้าทั้งหมด",
-      value: stats.products,
-      unit: "รายการ",
-      icon: ShoppingBag,
+      id: "topup",
+      label: "ยอดเติม",
+      value: stats.totalTopup,
+      unit: "บาท",
+      icon: Coins,
     },
     {
-      label: "สต็อกพร้อมส่ง",
+      id: "stock",
+      label: "สต็อก",
       value: stats.inStock,
       unit: "ชิ้น",
-      icon: Box,
+      icon: PackageCheck,
     },
     {
-      label: "ทำรายการสำเร็จ",
-      value: stats.orders,
-      unit: "รายการ",
-      icon: CheckCircle2,
+      id: "orders",
+      label: "ยอดขาย",
+      value: stats.totalOrders,
+      unit: "ครั้ง",
+      icon: ShoppingBag,
     },
   ];
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 my-6 sm:my-8">
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5 rounded-2xl glass-panel shadow-xl border border-white/[0.08]">
-        {statItems.map((item, idx) => {
+    <div className="w-full">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        {statItems.map((item) => {
           const Icon = item.icon;
           return (
             <div
-              key={idx}
-              className="flex items-center gap-3.5 p-3 sm:p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:border-white/20 transition-all group"
+              key={item.id}
+              className="relative overflow-hidden rounded-2xl sm:rounded-3xl glass-panel p-4 sm:p-5 border border-white/[0.08] hover:border-white/20 transition-all duration-300 group shadow-lg flex flex-col justify-between min-h-[95px] sm:min-h-[110px]"
             >
-              <div
-                className="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:bg-white group-hover:text-black transition-all"
-              >
-                <Icon className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[11px] text-neutral-400 font-medium truncate">
+              {/* Content (Text & Number) */}
+              <div className="relative z-10 space-y-1">
+                <span className="text-[11px] sm:text-xs font-medium text-neutral-400 block tracking-wide">
                   {item.label}
-                </div>
-                <div className="font-extrabold text-sm sm:text-base text-white font-mono tracking-tight mt-0.5">
-                  {item.value.toLocaleString()}{" "}
-                  <span className="text-[10px] font-normal text-neutral-400 font-sans">
+                </span>
+                <div className="flex items-baseline gap-1.5 pt-0.5">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight group-hover:text-neutral-100 transition-colors">
+                    {item.value.toLocaleString()}
+                  </span>
+                  <span className="text-[11px] sm:text-xs text-neutral-400 font-normal">
                     {item.unit}
                   </span>
                 </div>
+              </div>
+
+              {/* Giant Translucent Stroke Icon in Background (Overflowing Right & Bottom) */}
+              <div className="absolute -right-3 -bottom-3 sm:-right-4 sm:-bottom-4 w-20 h-20 sm:w-28 sm:h-28 text-white/[0.07] group-hover:text-white/[0.14] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
+                <Icon className="w-full h-full stroke-[1.2]" />
               </div>
             </div>
           );
