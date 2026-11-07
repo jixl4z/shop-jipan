@@ -110,9 +110,23 @@ export default function HomePage() {
 
           {/* Product Grid */}
           {loading ? (
-            <div className="py-20 flex flex-col items-center justify-center gap-3 text-neutral-400 text-xs">
-              <Loader2 className="w-8 h-8 animate-spin text-white" />
-              <span>กำลังโหลดรายการสินค้าพร้อมจำหน่าย...</span>
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 animate-pulse">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
+                <div
+                  key={n}
+                  className="rounded-2xl glass-panel border border-white/[0.08] overflow-hidden p-4 space-y-3.5"
+                >
+                  <div className="w-full aspect-[16/10] bg-white/[0.04] rounded-xl" />
+                  <div className="space-y-2">
+                    <div className="w-20 h-3 bg-white/[0.04] rounded" />
+                    <div className="w-3/4 h-5 bg-white/[0.04] rounded" />
+                  </div>
+                  <div className="pt-2 flex items-center justify-between">
+                    <div className="w-16 h-6 bg-white/[0.04] rounded" />
+                    <div className="w-20 h-8 bg-white/[0.04] rounded-xl" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="py-16 text-center rounded-2xl glass-panel p-8 space-y-3">

@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useStore } from "@/context/StoreContext";
-import { X, Package, Copy, Check, Calendar, Loader2 } from "lucide-react";
+import { X, Package, Calendar } from "lucide-react";
+import DeliveredDataViewer from "./DeliveredDataViewer";
 
 interface OrderRecord {
   id: string;
@@ -24,7 +25,6 @@ export default function MyOrdersModal() {
   const { isMyOrdersOpen, closeMyOrders, addToast } = useStore();
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (isMyOrdersOpen) {
@@ -41,13 +41,6 @@ export default function MyOrdersModal() {
 
   if (!isMyOrdersOpen) return null;
 
-  const handleCopy = (id: string, text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    addToast("คัดลอกข้อมูลสินค้าแล้ว!", "info");
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
       {/* Backdrop */}
@@ -57,15 +50,17 @@ export default function MyOrdersModal() {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 p-4 sm:p-7 shadow-2xl z-10 max-h-[92vh] flex flex-col">
+      <div className="relative w-full max-w-2xl rounded-3xl bg-[#0b0c10] border border-white/[0.12] p-4 sm:p-7 shadow-2xl z-10 max-h-[92vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-neutral-800 shrink-0">
+        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/[0.08] shrink-0">
           <div className="flex items-center gap-2.5 min-w-0 pr-2">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center text-white shrink-0">
-              <Package className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400" />
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white shrink-0">
+              <Package className="w-5 h-5 text-white" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-sm sm:text-lg font-bold text-white truncate">คลังสินค้าของฉัน (My Inventory)</h2>
+              <h2 className="text-sm sm:text-lg font-bold text-white truncate">
+                คลังสินค้าของฉัน (My Inventory)
+              </h2>
               <p className="text-[11px] sm:text-xs text-neutral-400 truncate">
                 รายการสินค้าและรหัสสินค้าดิจิทัลทั้งหมดที่คุณเคยสั่งซื้อ
               </p>
@@ -80,11 +75,19 @@ export default function MyOrdersModal() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto py-4 space-y-3">
+        <div className="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
           {loading ? (
-            <div className="py-12 flex flex-col items-center justify-center gap-2 text-neutral-400 text-xs">
-              <Loader2 className="w-6 h-6 animate-spin text-emerald-400" />
-              <span>กำลังโหลดประวัติการสั่งซื้อ...</span>
+            <div className="space-y-3 animate-pulse">
+              {[1, 2].map((n) => (
+                <div
+                  key={n}
+                  className="p-4 rounded-2xl bg-neutral-900/60 border border-white/[0.05] space-y-3"
+                >
+                  <div className="w-32 h-4 bg-neutral-800 rounded" />
+                  <div className="w-48 h-5 bg-neutral-800 rounded" />
+                  <div className="w-full h-16 bg-neutral-950 rounded-xl" />
+                </div>
+              ))}
             </div>
           ) : orders.length === 0 ? (
             <div className="py-12 text-center text-neutral-400 space-y-2">
@@ -98,7 +101,6 @@ export default function MyOrdersModal() {
             </div>
           ) : (
             orders.map((o) => {
-              const isCopied = copiedId === o.id;
               const formattedDate = new Date(o.createdAt).toLocaleString("th-TH", {
                 dateStyle: "medium",
                 timeStyle: "short",
@@ -107,46 +109,31 @@ export default function MyOrdersModal() {
               return (
                 <div
                   key={o.id}
-                  className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-3"
+                  className="p-4 sm:p-5 rounded-2xl bg-neutral-900/80 border border-white/[0.08] hover:border-white/20 transition-all space-y-3 shadow-lg"
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-white/[0.06]">
                     <div>
-                      <div className="text-xs font-mono text-neutral-500">
+                      <div className="text-xs font-mono text-neutral-400">
                         {o.orderNumber}
                       </div>
-                      <div className="font-bold text-sm text-white">{o.productName}</div>
+                      <div className="font-bold text-sm sm:text-base text-white">{o.productName}</div>
                       <div className="text-[11px] text-neutral-400 flex items-center gap-1.5 mt-0.5">
-                        <Calendar className="w-3 h-3 text-neutral-500" />
+                        <Calendar className="w-3 h-3 text-neutral-400" />
                         <span>{formattedDate}</span>
                         <span>•</span>
-                        <span className="font-mono font-semibold text-emerald-400">
+                        <span className="font-mono font-semibold text-white">
                           ฿{o.totalAmount.toFixed(2)} ({o.quantity} ชิ้น)
                         </span>
                       </div>
                     </div>
-
-                    <button
-                      onClick={() => handleCopy(o.id, o.deliveredData)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 border border-neutral-700 text-neutral-200 text-xs font-medium transition-colors shrink-0 cursor-pointer"
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          <span className="text-emerald-400">คัดลอกแล้ว</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5" />
-                          <span>คัดลอกรหัส</span>
-                        </>
-                      )}
-                    </button>
                   </div>
 
-                  {/* Delivered Secret Box */}
-                  <pre className="p-3 rounded-xl bg-neutral-900 border border-neutral-800/80 text-emerald-400 font-mono text-xs whitespace-pre-wrap break-all select-all">
-                    {o.deliveredData}
-                  </pre>
+                  {/* Smart Delivered Data Viewer */}
+                  <DeliveredDataViewer
+                    deliveredData={o.deliveredData}
+                    quantity={o.quantity}
+                    onCopiedToast={(msg) => addToast(msg, "info")}
+                  />
                 </div>
               );
             })

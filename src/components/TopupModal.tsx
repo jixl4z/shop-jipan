@@ -8,6 +8,7 @@ import {
   QrCode,
   Upload,
   CheckCircle2,
+  Check,
   AlertCircle,
   Loader2,
   Sparkles,
@@ -18,6 +19,7 @@ import {
   Building2,
 } from "lucide-react";
 import confetti from "canvas-confetti";
+import { copyToClipboard } from "@/lib/clipboard";
 
 export default function TopupModal() {
   const { isTopupOpen, closeTopup, setting, refreshUser, updateBalance, addToast, currentTheme } = useStore();
@@ -52,6 +54,15 @@ export default function TopupModal() {
     ? `${rawTarget.slice(0, 3)}-${rawTarget.slice(3, 4)}-${rawTarget.slice(4, 9)}-${rawTarget.slice(9)}`
     : rawTarget;
   const qrUrl = isCleanPromptPay ? getPromptPayQrUrl(rawTarget) : "";
+
+  const handleCopyAccount = async (text: string, label: string) => {
+    const ok = await copyToClipboard(text);
+    if (ok) {
+      setCopiedAccount(true);
+      addToast(`คัดลอก ${label} ${text} เรียบร้อยแล้ว`, "success");
+      setTimeout(() => setCopiedAccount(false), 2000);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -317,37 +328,48 @@ export default function TopupModal() {
                       </div>
                     </div>
 
-                    {/* Account Number Box */}
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-neutral-950 border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                    {/* Account Number Box (Tap to copy) */}
+                    <div
+                      onClick={() => handleCopyAccount(rawTarget, "เลขบัญชี")}
+                      className="p-3 sm:p-3.5 rounded-xl bg-neutral-900 border border-white/[0.08] hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 cursor-pointer group"
+                      title="คลิกเพื่อคัดลอกเลขบัญชี"
+                    >
                       <div>
-                        <div className="text-[11px] text-neutral-400 font-medium">เลขที่บัญชีธนาคาร (Account Number)</div>
-                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider mt-0.5 select-all">
+                        <div className="text-[11px] text-neutral-400 font-medium">เลขที่บัญชีธนาคาร (แตะเพื่อคัดลอก)</div>
+                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider mt-0.5 select-text">
                           {formattedAccountNumber}
                         </div>
                       </div>
                       <button
                         type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(rawTarget);
-                          setCopiedAccount(true);
-                          setTimeout(() => setCopiedAccount(false), 2000);
-                          addToast("คัดลอกเลขบัญชี " + rawTarget + " แล้ว", "success");
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCopyAccount(rawTarget, "เลขบัญชี");
                         }}
-                        className={`w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm ${
+                        className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95 ${
                           copiedAccount
-                            ? "bg-emerald-500 text-black font-bold"
-                            : "bg-blue-600 hover:bg-blue-500 text-white"
+                            ? "bg-white text-black"
+                            : "bg-white/10 hover:bg-white text-white hover:text-black border border-white/20"
                         }`}
                       >
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>{copiedAccount ? "คัดลอกแล้ว!" : "คัดลอกเลขบัญชี"}</span>
+                        {copiedAccount ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>คัดลอกแล้ว!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>คัดลอกเลขบัญชี</span>
+                          </>
+                        )}
                       </button>
                     </div>
 
                     {/* Account Name */}
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-neutral-950 border border-neutral-800/80">
+                    <div className="p-3 sm:p-3.5 rounded-xl bg-neutral-900/60 border border-white/[0.05]">
                       <div className="text-neutral-400 text-[11px]">ชื่อบัญชีผู้รับ</div>
-                      <div className="font-semibold text-neutral-200 text-xs sm:text-sm mt-0.5">{accountName}</div>
+                      <div className="font-semibold text-white text-xs sm:text-sm mt-0.5">{accountName}</div>
                     </div>
 
                     {/* How-to Notice */}
@@ -361,7 +383,7 @@ export default function TopupModal() {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 flex flex-col sm:flex-row items-center gap-4 mb-4">
+                  <div className="p-4 rounded-2xl bg-neutral-950 border border-white/[0.08] flex flex-col sm:flex-row items-center gap-4 mb-4">
                     <div className="w-36 h-36 bg-white p-2 rounded-xl shrink-0 flex items-center justify-center shadow-md">
                       <img
                         src={qrUrl}
@@ -370,29 +392,27 @@ export default function TopupModal() {
                       />
                     </div>
 
-                    <div className="space-y-1.5 text-center sm:text-left text-xs">
+                    <div className="space-y-2 text-center sm:text-left text-xs flex-1">
                       <div className="font-bold text-white text-sm flex items-center justify-center sm:justify-start gap-1.5">
-                        <QrCode className="w-4 h-4 text-emerald-400" />
+                        <QrCode className="w-4 h-4 text-white" />
                         <span>พร้อมเพย์ (PromptPay)</span>
                       </div>
                       <div className="text-neutral-400">
-                        ชื่อบัญชี: <span className="text-neutral-200 font-medium">{accountName}</span>
+                        ชื่อบัญชี: <span className="text-white font-medium">{accountName}</span>
                       </div>
-                      <div className="text-neutral-400 flex items-center justify-center sm:justify-start gap-1 font-mono">
-                        หมายเลข: <span className="text-white font-bold">{rawTarget}</span>
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(rawTarget);
-                            addToast("คัดลอกหมายเลขพร้อมเพย์แล้ว", "info");
-                          }}
-                          className="p-1 hover:text-white text-neutral-400 transition-colors cursor-pointer"
-                          title="คัดลอกเบอร์พร้อมเพย์"
-                        >
-                          <Copy className="w-3 h-3" />
-                        </button>
+                      <div
+                        onClick={() => handleCopyAccount(rawTarget, "หมายเลขพร้อมเพย์")}
+                        className="text-neutral-400 flex items-center justify-between font-mono p-2 rounded-xl bg-neutral-900 border border-white/[0.08] hover:border-white/20 cursor-pointer transition-all group"
+                        title="คลิกเพื่อคัดลอกเบอร์พร้อมเพย์"
+                      >
+                        <span className="text-[11px]">หมายเลข:</span>
+                        <span className="text-white font-bold select-text">{rawTarget}</span>
+                        <span className="px-2 py-0.5 rounded-md bg-white/10 group-hover:bg-white group-hover:text-black text-white text-[10px] font-medium transition-all">
+                          คัดลอก
+                        </span>
                       </div>
                       <div className="text-[11px] text-neutral-500">
-                        *โอนยอดเท่าไหร่ก็ได้ และแนบสลิปด้านล่าง ระบบ SlipOK ตรวจสอบทันที
+                        * โอนยอดเท่าไหร่ก็ได้ และแนบสลิปด้านล่าง ระบบตรวจสอบทันที
                       </div>
                     </div>
                   </div>
@@ -413,15 +433,15 @@ export default function TopupModal() {
                   />
 
                   {slipPreview ? (
-                    <div className="relative rounded-2xl bg-neutral-950 border border-neutral-800 p-3 flex items-center gap-3">
+                    <div className="relative rounded-2xl bg-neutral-950 border border-white/[0.08] p-3 flex items-center gap-3">
                       <img
                         src={slipPreview}
                         alt="Slip Preview"
-                        className="w-14 h-18 object-cover rounded-lg border border-neutral-700 shrink-0"
+                        className="w-14 h-18 object-cover rounded-lg border border-white/[0.1] shrink-0"
                       />
                       <div className="flex-1 min-w-0 text-xs">
                         <div className="font-medium text-white truncate">สลิปพร้อมตรวจสอบ</div>
-                        <div className="text-neutral-500 text-[11px] mt-0.5">
+                        <div className="text-neutral-400 text-[11px] mt-0.5">
                           คลิกปุ่มด้านล่างเพื่อยืนยัน
                         </div>
                       </div>
@@ -439,7 +459,7 @@ export default function TopupModal() {
                   ) : (
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-neutral-800 hover:border-neutral-600 rounded-2xl p-5 text-center cursor-pointer transition-colors bg-neutral-950/50 hover:bg-neutral-950"
+                      className="border-2 border-dashed border-white/[0.1] hover:border-white/25 rounded-2xl p-5 text-center cursor-pointer transition-colors bg-neutral-950/50 hover:bg-neutral-950"
                     >
                       <Upload className="w-6 h-6 text-neutral-400 mx-auto mb-1.5" />
                       <div className="text-xs font-semibold text-neutral-200">
@@ -455,9 +475,9 @@ export default function TopupModal() {
                 <button
                   onClick={handleSubmitSlip}
                   disabled={loading || !slipBase64}
-                  className={`w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer ${
+                  className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-xl transition-all cursor-pointer ${
                     !loading && slipBase64
-                      ? currentTheme.accent
+                      ? "bg-white text-black hover:bg-neutral-200 btn-shine active:scale-95"
                       : "bg-neutral-800 text-neutral-500 cursor-not-allowed"
                   }`}
                 >

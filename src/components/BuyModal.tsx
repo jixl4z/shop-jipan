@@ -7,13 +7,12 @@ import {
   ShoppingCart,
   CheckCircle2,
   AlertTriangle,
-  Copy,
-  Check,
   Loader2,
   Wallet,
   Sparkles,
 } from "lucide-react";
 import confetti from "canvas-confetti";
+import DeliveredDataViewer from "./DeliveredDataViewer";
 
 export default function BuyModal() {
   const {
@@ -32,13 +31,13 @@ export default function BuyModal() {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [copied, setCopied] = useState(false);
 
   // Success state with delivered digital keys
   const [orderResult, setOrderResult] = useState<{
     orderNumber: string;
     productName: string;
     deliveredData: string;
+    quantity: number;
   } | null>(null);
 
   if (!buyingProduct) return null;
@@ -87,6 +86,7 @@ export default function BuyModal() {
         orderNumber: data.orderNumber,
         productName: data.productName,
         deliveredData: data.deliveredData,
+        quantity,
       });
 
       // Burst confetti
@@ -108,15 +108,6 @@ export default function BuyModal() {
     }
   };
 
-  const handleCopyDelivered = () => {
-    if (orderResult?.deliveredData) {
-      navigator.clipboard.writeText(orderResult.deliveredData);
-      setCopied(true);
-      addToast("คัดลอกข้อมูลสินค้าแล้ว!", "info");
-      setTimeout(() => setCopied(false), 2500);
-    }
-  };
-
   const handleClose = () => {
     setOrderResult(null);
     setQuantity(1);
@@ -133,7 +124,7 @@ export default function BuyModal() {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-lg rounded-2xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 p-4 sm:p-7 shadow-2xl z-10 max-h-[94vh] overflow-y-auto">
+      <div className="relative w-full max-w-lg rounded-2xl sm:rounded-3xl bg-[#0b0c10] border border-white/[0.12] p-4 sm:p-7 shadow-2xl z-10 max-h-[94vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -146,49 +137,28 @@ export default function BuyModal() {
           // Success State: Reveal Digital Goods!
           <div className="py-2 space-y-4">
             <div className="text-center">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto mb-2 text-2xl shadow-xl">
+              <div className="w-14 h-14 rounded-full bg-white/10 text-white border border-white/20 flex items-center justify-center mx-auto mb-2 text-2xl shadow-xl">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-bold text-white">สั่งซื้อสำเร็จแล้ว!</h3>
               <p className="text-xs text-neutral-400 mt-0.5">
                 เลขที่คำสั่งซื้อ:{" "}
-                <span className="text-neutral-200 font-mono font-medium">
+                <span className="text-white font-mono font-medium">
                   {orderResult.orderNumber}
                 </span>
               </p>
             </div>
 
-            {/* Delivered Box */}
-            <div className="p-3.5 sm:p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-2">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-xs font-semibold text-neutral-300 truncate">
-                  ข้อมูลสินค้าที่คุณได้รับ ({orderResult.productName}):
-                </span>
-                <button
-                  onClick={handleCopyDelivered}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-200 text-xs font-medium transition-colors cursor-pointer shrink-0"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-400">คัดลอกแล้ว</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>คัดลอกทั้งหมด</span>
-                    </>
-                  )}
-                </button>
-              </div>
+            {/* Smart Delivered Data Viewer (Multi-item separation, no select-all bug, hybrid copy) */}
+            <div className="p-3.5 sm:p-4 rounded-2xl bg-neutral-950 border border-white/[0.08]">
+              <DeliveredDataViewer
+                deliveredData={orderResult.deliveredData}
+                quantity={orderResult.quantity}
+                onCopiedToast={(msg) => addToast(msg, "info")}
+              />
 
-              {/* Code display box */}
-              <pre className="p-3.5 rounded-xl bg-neutral-900 border border-neutral-800 text-emerald-400 font-mono text-xs sm:text-sm whitespace-pre-wrap break-all select-all max-h-48 overflow-y-auto">
-                {orderResult.deliveredData}
-              </pre>
-
-              <p className="text-[11px] text-neutral-500">
-                *ข้อมูลนี้จะถูกเก็บไว้ในบัญชีของคุณตลอดเวลา สามารถเข้าดูย้อนหลังได้ที่เมนู &quot;คลังของฉัน&quot;
+              <p className="text-[11px] text-neutral-500 mt-3 pt-2 border-t border-white/[0.06]">
+                * ข้อมูลนี้จะถูกเก็บไว้ในบัญชีของคุณตลอดเวลา สามารถเข้าดูย้อนหลังได้ที่เมนู &quot;คลังของฉัน&quot;
               </p>
             </div>
 
@@ -200,11 +170,11 @@ export default function BuyModal() {
                 }}
                 className="flex-1 py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white font-semibold text-xs transition-colors cursor-pointer"
               >
-                ดูประวัติและคลังสินค้า
+                ดูคลังสินค้าของฉัน
               </button>
               <button
                 onClick={handleClose}
-                className={`flex-1 py-3 rounded-xl font-bold text-xs transition-all cursor-pointer ${currentTheme.accent}`}
+                className="flex-1 py-3 rounded-xl bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all cursor-pointer shadow-md active:scale-95"
               >
                 เสร็จสิ้น
               </button>
@@ -281,9 +251,9 @@ export default function BuyModal() {
 
             {/* Wallet Balance Check */}
             {user ? (
-              <div className="p-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 mb-5 flex items-center justify-between text-xs">
+              <div className="p-3.5 rounded-2xl bg-neutral-950 border border-white/[0.08] mb-5 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <Wallet className="w-4 h-4 text-emerald-400" />
+                  <Wallet className="w-4 h-4 text-white" />
                   <span className="text-neutral-400">ยอดเงินในกระเป๋าของคุณ:</span>
                 </div>
                 <div className="font-mono font-bold text-white">
@@ -291,7 +261,7 @@ export default function BuyModal() {
                 </div>
               </div>
             ) : (
-              <div className="mb-5 p-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 text-center text-xs text-neutral-400">
+              <div className="mb-5 p-3.5 rounded-2xl bg-neutral-950 border border-white/[0.08] text-center text-xs text-neutral-400">
                 คุณยังไม่ได้เข้าสู่ระบบ กรุณาเข้าสู่ระบบก่อนทำการสั่งซื้อ
               </div>
             )}
@@ -303,7 +273,7 @@ export default function BuyModal() {
                   closeBuyModal();
                   openAuth("login");
                 }}
-                className={`w-full py-3 rounded-xl font-bold text-sm transition-all cursor-pointer ${currentTheme.accent}`}
+                className="w-full py-3.5 rounded-xl font-bold text-sm bg-white text-black hover:bg-neutral-200 transition-all cursor-pointer shadow-lg active:scale-95"
               >
                 เข้าสู่ระบบเพื่อสั่งซื้อ
               </button>
@@ -311,31 +281,31 @@ export default function BuyModal() {
               <button
                 onClick={handleConfirmPurchase}
                 disabled={loading}
-                className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer ${currentTheme.accent}`}
+                className="w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer bg-white text-black hover:bg-neutral-200 active:scale-95 btn-shine"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin text-black" />
                     <span>กำลังประมวลผลคำสั่งซื้อ...</span>
                   </>
                 ) : (
                   <>
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-4 h-4 text-black" />
                     <span>ยืนยันการสั่งซื้อ (ตัดยอด ฿{totalCost.toFixed(2)})</span>
                   </>
                 )}
               </button>
             ) : (
-              <div className="space-y-2">
-                <div className="text-center text-xs text-rose-400">
-                  ยอดเงินไม่เพียงพอ (ขาดอีก ฿{missingAmount.toFixed(2)} บาท)
+              <div className="space-y-2.5">
+                <div className="text-center text-xs text-neutral-400">
+                  ยอดเงินไม่เพียงพอ (ขาดอีก <span className="font-mono font-bold text-white">฿{missingAmount.toFixed(2)}</span> บาท)
                 </div>
                 <button
                   onClick={() => {
                     closeBuyModal();
                     openTopup();
                   }}
-                  className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer"
+                  className="w-full py-3.5 rounded-xl bg-white text-black hover:bg-neutral-200 font-bold text-sm flex items-center justify-center gap-2 shadow-xl transition-all cursor-pointer active:scale-95 btn-shine"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>เติมเงินทันที (ขาดอีก ฿{missingAmount.toFixed(2)})</span>
