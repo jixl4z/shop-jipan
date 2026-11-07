@@ -52,7 +52,7 @@ export default function CategoriesPage() {
       {/* Main Top Banner Carousel */}
       <HeroBanner />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full space-y-8">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
         {/* Breadcrumb & Header */}
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-xs text-neutral-400">
@@ -76,14 +76,14 @@ export default function CategoriesPage() {
           </div>
         </div>
 
-        {/* Categories Grid - Styled as Rich Banner Cards */}
+        {/* Categories Grid - Balanced Symmetrical Layout */}
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center gap-3 text-neutral-400 text-xs">
             <Loader2 className="w-8 h-8 animate-spin text-white" />
             <span>กำลังโหลดหมวดหมู่สินค้า...</span>
           </div>
         ) : categories.length === 0 ? (
-          <div className="py-20 text-center rounded-3xl bg-neutral-900/40 border border-neutral-800 p-8 space-y-3">
+          <div className="py-20 text-center rounded-2xl glass-panel p-8 space-y-3">
             <Package className="w-12 h-12 text-neutral-500 mx-auto" />
             <h3 className="font-bold text-base text-neutral-200">ยังไม่มีหมวดหมู่สินค้า</h3>
             <p className="text-xs text-neutral-400 max-w-sm mx-auto">
@@ -91,7 +91,7 @@ export default function CategoriesPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
             {categories.map((cat) => {
               const Icon = (cat.icon && ICON_MAP[cat.icon]) || Package;
               const hasBanner = !!cat.bannerImage;
@@ -100,63 +100,55 @@ export default function CategoriesPage() {
                 <Link
                   key={cat.id}
                   href={`/categories/${cat.slug}`}
-                  className="group relative rounded-3xl overflow-hidden border border-neutral-800 hover:border-neutral-700 bg-neutral-900 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 min-h-[220px] flex flex-col justify-between"
+                  className="group relative rounded-2xl overflow-hidden border border-white/[0.08] hover:border-white/20 bg-gradient-to-br from-[#0e0f15]/90 to-[#07080a]/90 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1 min-h-[180px] p-5 sm:p-6 flex flex-col justify-between"
                 >
-                  {/* Banner Image Background */}
+                  {/* Banner Image Background (If present) */}
                   {hasBanner ? (
-                    <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 z-0 pointer-events-none">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={cat.bannerImage!}
                         alt={cat.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-45 group-hover:opacity-60"
+                        className="w-full h-full object-cover opacity-20 group-hover:opacity-30 group-hover:scale-105 transition-all duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/80 to-neutral-950/30" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/80 to-transparent" />
                     </div>
-                  ) : (
-                    <div className="absolute inset-0 z-0 bg-gradient-to-br from-neutral-850 via-neutral-900 to-neutral-950">
-                      <div className="absolute top-0 right-0 w-48 h-48 bg-white/[0.03] rounded-full blur-3xl group-hover:bg-white/[0.08] transition-all" />
-                      <div className="absolute bottom-0 left-0 w-32 h-32 bg-neutral-800/40 rounded-full blur-2xl" />
-                    </div>
-                  )}
+                  ) : null}
+
+                  {/* Giant Translucent Stroke Watermark in Background */}
+                  <div className="absolute -right-4 -bottom-4 w-36 h-36 text-white/[0.03] group-hover:text-white/[0.08] transition-all duration-300 pointer-events-none flex items-center justify-center">
+                    <Icon className="w-full h-full stroke-[1]" />
+                  </div>
 
                   {/* Top Row: Icon Badge & Count */}
-                  <div className="relative z-10 p-6 flex items-start justify-between">
-                    <div className="w-13 h-13 rounded-2xl bg-neutral-900/90 border border-neutral-700/80 flex items-center justify-center group-hover:scale-110 transition-transform backdrop-blur-md shadow-lg">
-                      <Icon className="w-6 h-6 text-white" />
+                  <div className="relative z-10 flex items-start justify-between">
+                    <div className="w-11 h-11 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center group-hover:scale-105 group-hover:border-white/20 transition-all shadow-md">
+                      <Icon className="w-5 h-5 text-white" />
                     </div>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-[11px] font-mono text-neutral-300 backdrop-blur-md">
-                      <Sparkles className="w-3 h-3 text-amber-400" />
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-xs font-mono text-neutral-300">
                       <span>{cat.productCount} รายการ</span>
                     </span>
                   </div>
 
-                  {/* Bottom Row: Name, Description & Explore Button */}
-                  <div className="relative z-10 p-6 pt-0 space-y-3">
-                    <div>
-                      <h2 className="text-xl font-black text-white tracking-tight group-hover:text-emerald-400 transition-colors drop-shadow-md">
-                        {cat.name}
-                      </h2>
-                      {cat.description ? (
-                        <p className="text-xs text-neutral-300 font-light line-clamp-2 mt-1 leading-relaxed drop-shadow">
-                          {cat.description}
-                        </p>
-                      ) : (
-                        <p className="text-xs text-neutral-400 font-light mt-1">
-                          รวมสินค้าในหมวดหมู่ {cat.name}
-                        </p>
-                      )}
-                    </div>
+                  {/* Middle Row: Name & Description */}
+                  <div className="relative z-10 mt-4 space-y-1.5">
+                    <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:text-neutral-100 transition-colors">
+                      {cat.name}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-neutral-400 font-light line-clamp-2 leading-relaxed">
+                      {cat.description || `รวมสินค้าดิจิทัลและไอดีในหมวดหมู่ ${cat.name}`}
+                    </p>
+                  </div>
 
-                    <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-semibold">
-                      <span className="text-neutral-400 group-hover:text-neutral-200 transition-colors">
-                        เข้าชมหมวดหมู่นี้
-                      </span>
-                      <span className="flex items-center gap-1 text-white group-hover:translate-x-1.5 transition-transform bg-white/10 px-3 py-1.5 rounded-xl border border-white/15">
-                        <span>ดูสินค้าทั้งหมด</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
+                  {/* Bottom Row: Clean Single Action Indicator */}
+                  <div className="relative z-10 pt-4 mt-4 border-t border-white/[0.06] flex items-center justify-between text-xs font-medium">
+                    <span className="text-neutral-400 group-hover:text-white transition-colors">
+                      ดูสินค้าทั้งหมดในหมวดหมู่นี้
+                    </span>
+                    <span className="flex items-center gap-1.5 text-white bg-white/[0.05] group-hover:bg-white group-hover:text-black px-3 py-1.5 rounded-xl border border-white/10 transition-all font-medium">
+                      <span>เปิดดูสินค้า</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </div>
                 </Link>
               );

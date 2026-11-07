@@ -80,18 +80,39 @@ export default function HomePage() {
           </section>
 
           {/* Search & Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-3 border-t border-white/[0.06]">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
-                <ShoppingBag className="w-5 h-5 text-neutral-400" />
-                <span>สินค้าพร้อมส่ง (Products)</span>
-                <span className="text-xs font-mono font-medium text-neutral-400 px-2.5 py-0.5 rounded-lg bg-white/[0.05] border border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/[0.08]">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-neutral-400" />
+                  <span>
+                    {(() => {
+                      const active = categories.find((c) => c.slug === selectedCategory);
+                      return active
+                        ? `สินค้าในหมวดหมู่: ${active.name}`
+                        : "สินค้าพร้อมส่งทั้งหมด (All Products)";
+                    })()}
+                  </span>
+                </h2>
+                <span className="text-xs font-mono font-medium text-neutral-300 px-2.5 py-0.5 rounded-lg bg-white/[0.06] border border-white/10">
                   {filteredProducts.length} รายการ
                 </span>
-              </h2>
-              <p className="text-xs text-neutral-400 mt-0.5">
-                เลือกซื้อสินค้าและรับรหัสเข้าคลังสินค้าทันที 24 ชั่วโมง
-              </p>
+              </div>
+              <div className="flex items-center gap-2.5 flex-wrap text-xs text-neutral-400">
+                <p>
+                  {selectedCategory !== "all"
+                    ? `กำลังแสดงสินค้าเฉพาะหมวดหมู่ ${categories.find((c) => c.slug === selectedCategory)?.name || selectedCategory}`
+                    : "เลือกซื้อสินค้าและรับรหัสเข้าคลังสินค้าทันทีตลอด 24 ชั่วโมง"}
+                </p>
+                {selectedCategory !== "all" && (
+                  <button
+                    onClick={() => setSelectedCategory("all")}
+                    className="text-xs text-white hover:text-neutral-200 bg-white/10 hover:bg-white/15 px-2.5 py-0.5 rounded-lg border border-white/15 transition-all flex items-center gap-1 cursor-pointer font-medium"
+                  >
+                    <span>✕ ล้างตัวกรอง (แสดงทั้งหมด {products.length})</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Minimalist Search Bar */}

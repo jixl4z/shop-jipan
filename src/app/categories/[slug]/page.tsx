@@ -59,7 +59,7 @@ export default function CategoryDetailPage() {
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8">
+      <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-neutral-400">
           <Link href="/" className="hover:text-white transition-colors">
@@ -74,7 +74,7 @@ export default function CategoryDetailPage() {
         </div>
 
         {/* Header / Category Banner */}
-        <div className="relative rounded-3xl overflow-hidden border border-neutral-800 bg-neutral-900 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
+        <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0d12]/90 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
           {categoryBanner && (
             <div className="absolute inset-0 z-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
