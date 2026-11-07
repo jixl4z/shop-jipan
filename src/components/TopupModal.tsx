@@ -17,6 +17,8 @@ import {
   ArrowRight,
   Landmark,
   Building2,
+  Zap,
+  ClipboardPaste,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { copyToClipboard } from "@/lib/clipboard";
@@ -540,56 +542,149 @@ export default function TopupModal() {
                 </button>
               </div>
             ) : (
-              // Tab 2: TrueMoney Wallet Angpao Voucher
+              // Tab 2: TrueMoney Wallet Angpao Voucher (Premium Red & Tangerine Design)
               <div className="space-y-4 text-xs">
-                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-neutral-300 space-y-2">
-                  <div className="font-bold text-white text-sm flex items-center gap-1.5">
-                    <Gift className="w-4 h-4 text-amber-400" />
-                    <span>วิธีส่งซองของขวัญ TrueMoney Wallet</span>
+                {/* Virtual TrueMoney Angpao Digital Card */}
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-br from-[#1c0c08] via-[#120704] to-[#0a0504] p-4 sm:p-5 shadow-2xl space-y-3.5 group">
+                  {/* TrueMoney Orange Ambient Radial Glow */}
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[#FF5500]/15 via-[#E52020]/10 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+                  {/* Giant Translucent Gift Watermark */}
+                  <div className="absolute -right-3 -bottom-3 w-28 h-28 text-[#FF5500]/[0.05] group-hover:text-[#FF5500]/[0.09] transition-all duration-300 pointer-events-none flex items-center justify-center">
+                    <Gift className="w-full h-full stroke-[1]" />
                   </div>
-                  <ol className="list-decimal list-inside space-y-1 text-xs text-neutral-300 pl-1 leading-relaxed">
-                    <li>เปิดแอป <b>TrueMoney</b> ในมือถือของคุณ</li>
-                    <li>ไปที่เมนู <b>โอนเงิน</b> &rarr; เลือก <b>ส่งซองของขวัญ (Gift Voucher)</b></li>
-                    <li>ระบุจำนวนเงินที่ต้องการเติม</li>
-                    <li>เลือกประเภทการสุ่ม: <b>แบ่งจำนวนเงินเท่ากัน</b> และระบุจำนวนคนที่รับ: <b>1 คน</b></li>
-                    <li>กดสร้างซอง &rarr; คัดลอกลิงก์ซองของขวัญมาวางในช่องด้านล่าง</li>
-                  </ol>
+
+                  {/* Top Row: TrueMoney Badge & Live Automation Status */}
+                  <div className="relative z-10 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#FF5500] to-[#E52020] border border-white/20 flex items-center justify-center text-white shadow-md shadow-orange-500/20 shrink-0">
+                        <Gift className="w-4 h-4 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-extrabold text-xs sm:text-sm bg-gradient-to-r from-[#FF8833] via-[#FF6600] to-[#FF3333] bg-clip-text text-transparent tracking-tight">
+                          ทรูมันนี่ วอลเล็ท (TrueMoney Angpao)
+                        </h3>
+                        <p className="text-[10px] text-neutral-400 mt-0.5">
+                          รับซองของขวัญอัตโนมัติ เงินเข้าทันทีตลอด 24 ชม.
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[10px] font-mono font-semibold shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                      <span>AUTO 1 วิ</span>
+                    </span>
+                  </div>
+
+                  {/* 3 Step Visual Guide Badges */}
+                  <div className="relative z-10 grid grid-cols-3 gap-2 pt-0.5">
+                    <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-start gap-1.5 sm:gap-2">
+                      <span className="w-4 h-4 rounded-md bg-gradient-to-br from-[#FF5500] to-[#E52020] text-white font-mono font-bold text-[10px] flex items-center justify-center shrink-0">
+                        1
+                      </span>
+                      <div className="text-[10px] min-w-0">
+                        <div className="font-semibold text-white truncate">สร้างซอง</div>
+                        <div className="text-neutral-400 text-[9px] truncate">ในแอป TrueMoney</div>
+                      </div>
+                    </div>
+
+                    <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-start gap-1.5 sm:gap-2">
+                      <span className="w-4 h-4 rounded-md bg-gradient-to-br from-[#FF5500] to-[#E52020] text-white font-mono font-bold text-[10px] flex items-center justify-center shrink-0">
+                        2
+                      </span>
+                      <div className="text-[10px] min-w-0">
+                        <div className="font-semibold text-white truncate">สุ่ม 1 คน</div>
+                        <div className="text-neutral-400 text-[9px] truncate">แบ่งยอดเท่ากัน</div>
+                      </div>
+                    </div>
+
+                    <div className="p-2 sm:p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-start gap-1.5 sm:gap-2">
+                      <span className="w-4 h-4 rounded-md bg-gradient-to-br from-[#FF5500] to-[#E52020] text-white font-mono font-bold text-[10px] flex items-center justify-center shrink-0">
+                        3
+                      </span>
+                      <div className="text-[10px] min-w-0">
+                        <div className="font-semibold text-white truncate">วางลิงก์</div>
+                        <div className="text-neutral-400 text-[9px] truncate">รับเงินทันที</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-neutral-300 font-medium mb-1.5">
-                    วางลิงก์ซองของขวัญ TrueMoney:
-                  </label>
-                  <input
-                    type="text"
-                    value={voucherLink}
-                    onChange={(e) => setVoucherLink(e.target.value)}
-                    placeholder="https://gift.truemoney.com/campaign/?v=..."
-                    className="w-full px-4 py-3 rounded-xl bg-neutral-950 border border-neutral-800 text-white placeholder-neutral-500 font-mono focus:outline-none focus:border-amber-500 text-xs sm:text-sm"
-                  />
+                {/* Input Area with 1-Click Paste & Real-time Validation */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <label className="font-medium text-neutral-300">
+                      วางลิงก์ซองของขวัญ TrueMoney:
+                    </label>
+                    {voucherLink.includes("gift.truemoney.com") && (
+                      <span className="text-[11px] text-emerald-400 flex items-center gap-1 font-mono font-medium">
+                        <Check className="w-3 h-3" />
+                        <span>ลิงก์ถูกต้อง</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      value={voucherLink}
+                      onChange={(e) => setVoucherLink(e.target.value)}
+                      placeholder="https://gift.truemoney.com/campaign/?v=..."
+                      className="w-full pl-3.5 pr-22 py-3 rounded-xl bg-neutral-950/90 border border-white/10 hover:border-white/20 focus:border-orange-500 text-white placeholder-neutral-500 font-mono text-xs focus:outline-none transition-all shadow-inner"
+                    />
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          const text = await navigator.clipboard.readText();
+                          if (text) setVoucherLink(text.trim());
+                        } catch {
+                          // Ignore clipboard error
+                        }
+                      }}
+                      className="absolute right-1.5 px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer border border-white/10"
+                      title="กดเพื่อวางลิงก์จากคลิปบอร์ด"
+                    >
+                      <ClipboardPaste className="w-3 h-3" />
+                      <span>วางลิงก์</span>
+                    </button>
+                  </div>
                 </div>
 
+                {/* CTA Action Button */}
                 <button
                   onClick={handleSubmitTrueMoney}
                   disabled={loading || !voucherLink.trim()}
-                  className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer ${
+                  className={`w-full py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-xl transition-all cursor-pointer btn-shine active:scale-95 ${
                     !loading && voucherLink.trim()
-                      ? "bg-amber-400 text-black hover:bg-amber-300"
+                      ? "bg-gradient-to-r from-[#FF5500] to-[#E52020] hover:from-[#FF6600] hover:to-[#F02828] text-white shadow-orange-500/25"
                       : "bg-neutral-800 text-neutral-500 cursor-not-allowed"
                   }`}
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
                       <span>กำลังดึงเงินจากซอง TrueMoney เข้ากระเป๋า...</span>
                     </>
                   ) : (
                     <>
-                      <ArrowRight className="w-4 h-4" />
-                      <span>ยืนยันรับเงินจากซอง TrueMoney</span>
+                      <Zap className="w-4 h-4 text-white" />
+                      <span>แลกรับเงินจากซอง TrueMoney ทันที</span>
                     </>
                   )}
                 </button>
+
+                {/* Guarantee Trust Indicators */}
+                <div className="pt-0.5 flex items-center justify-center gap-4 text-[10px] text-neutral-400">
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                    <span>ฟรีค่าธรรมเนียม</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                    <span>เงินเข้าทันที 1 วิ</span>
+                  </span>
+                </div>
               </div>
             )}
           </div>
