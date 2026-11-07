@@ -167,18 +167,18 @@ export default function ProductDetailPage() {
 
             {/* Features Mini Bar */}
             <div className="grid grid-cols-3 gap-3 text-center text-xs">
-              <div className="p-3.5 rounded-2xl bg-neutral-900/60 border border-neutral-800/80 space-y-1">
-                <Zap className="w-4 h-4 text-emerald-400 mx-auto" />
+              <div className="p-3.5 rounded-2xl bg-neutral-900/60 border border-white/[0.08] space-y-1">
+                <Zap className="w-4 h-4 text-white mx-auto" />
                 <div className="font-semibold text-white">จัดส่งทันที</div>
                 <div className="text-[10px] text-neutral-400">รับรหัสใน 1 วินาที</div>
               </div>
-              <div className="p-3.5 rounded-2xl bg-neutral-900/60 border border-neutral-800/80 space-y-1">
-                <ShieldCheck className="w-4 h-4 text-blue-400 mx-auto" />
+              <div className="p-3.5 rounded-2xl bg-neutral-900/60 border border-white/[0.08] space-y-1">
+                <ShieldCheck className="w-4 h-4 text-white mx-auto" />
                 <div className="font-semibold text-white">รับประกันแท้ 100%</div>
                 <div className="text-[10px] text-neutral-400">ตรวจสอบได้ทุกชิ้น</div>
               </div>
-              <div className="p-3.5 rounded-2xl bg-neutral-900/60 border border-neutral-800/80 space-y-1">
-                <Clock className="w-4 h-4 text-amber-400 mx-auto" />
+              <div className="p-3.5 rounded-2xl bg-neutral-900/60 border border-white/[0.08] space-y-1">
+                <Clock className="w-4 h-4 text-white mx-auto" />
                 <div className="font-semibold text-white">บริการ 24 ชม.</div>
                 <div className="text-[10px] text-neutral-400">สั่งได้ตลอดเวลา</div>
               </div>
@@ -204,13 +204,13 @@ export default function ProductDetailPage() {
               {/* Stock Status Pill */}
               <div className="flex items-center gap-2 pt-1">
                 {inStock ? (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-medium">
+                    <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
                     <span>พร้อมจำหน่าย ({product.stockCount} ชิ้น)</span>
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950/80 border border-rose-500/30 text-rose-400 text-xs font-semibold">
-                    <span className="w-2 h-2 rounded-full bg-rose-400" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-400 text-xs font-medium">
+                    <span className="w-2 h-2 rounded-full bg-neutral-500" />
                     <span>สินค้าหมดชั่วคราว</span>
                   </span>
                 )}
@@ -218,7 +218,7 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Price Box */}
-            <div className="p-5 rounded-3xl bg-neutral-900/90 border border-neutral-800 space-y-4">
+            <div className="p-5 rounded-3xl bg-neutral-900/90 border border-white/[0.08] space-y-4">
               <div className="flex items-baseline justify-between">
                 <div>
                   <div className="text-xs text-neutral-400">ราคาพิเศษ</div>
@@ -235,7 +235,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {product.originalPrice && product.originalPrice > product.price && (
-                  <span className="px-3 py-1 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20 text-xs font-bold font-mono">
+                  <span className="px-3 py-1 rounded-full bg-white/10 text-white border border-white/20 text-xs font-bold font-mono">
                     ประหยัด ฿{(product.originalPrice - product.price).toFixed(2)}
                   </span>
                 )}
@@ -248,7 +248,7 @@ export default function ProductDetailPage() {
                   disabled={!inStock}
                   className={`py-3.5 px-5 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xl ${
                     inStock
-                      ? currentTheme.accent
+                      ? "bg-white text-black hover:bg-neutral-200 btn-shine active:scale-95"
                       : "bg-neutral-800 text-neutral-500 cursor-not-allowed border border-neutral-700/40"
                   }`}
                 >
@@ -258,16 +258,16 @@ export default function ProductDetailPage() {
 
                 <button
                   onClick={openTopup}
-                  className="py-3.5 px-5 rounded-2xl font-semibold text-xs sm:text-sm bg-neutral-950 hover:bg-neutral-850 border border-neutral-800 text-neutral-200 hover:text-white flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  className="py-3.5 px-5 rounded-2xl font-semibold text-xs sm:text-sm bg-neutral-900 hover:bg-neutral-800 border border-white/[0.08] text-neutral-200 hover:text-white flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <Sparkles className="w-4 h-4 text-white" />
                   <span>เติมเงินเข้ากระเป๋า</span>
                 </button>
               </div>
             </div>
 
             {/* Description & Terms */}
-            <div className="p-6 rounded-3xl bg-neutral-900/50 border border-neutral-800/80 space-y-4">
+            <div className="p-6 rounded-3xl bg-neutral-900/50 border border-white/[0.08] space-y-4">
               <h2 className="font-bold text-sm text-white flex items-center gap-2">
                 <span>รายละเอียดและคุณสมบัติสินค้า</span>
               </h2>
@@ -276,9 +276,9 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Warranty Guarantee Terms Box */}
-              <div className="pt-4 border-t border-neutral-800/80 space-y-2 text-xs">
+              <div className="pt-4 border-t border-white/[0.08] space-y-2 text-xs">
                 <div className="font-semibold text-white flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <ShieldCheck className="w-4 h-4 text-white" />
                   <span>เงื่อนไขการรับประกันและข้อกำหนด:</span>
                 </div>
                 <ul className="list-disc list-inside space-y-1 text-neutral-400 text-[11px] font-light">
