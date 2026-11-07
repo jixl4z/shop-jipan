@@ -72,10 +72,10 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 flex flex-col md:flex-row">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-neutral-900/90 border-b md:border-b-0 md:border-r border-neutral-800/80 p-4 flex flex-col justify-between shrink-0">
+      <aside className="w-full md:w-64 bg-neutral-900/90 border-b md:border-b-0 md:border-r border-neutral-800/80 p-4 flex flex-col shrink-0">
         <div>
           {/* Admin Header */}
-          <div className="flex items-center gap-3 px-2 py-3 mb-6 border-b border-neutral-800">
+          <div className="flex items-center gap-3 px-2 py-3 mb-3 border-b border-neutral-800">
             <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-base">
               <ShieldCheck className="w-5 h-5" />
             </div>
@@ -90,6 +90,17 @@ export default function AdminLayout({
                 {user.username}
               </div>
             </div>
+          </div>
+
+          {/* Quick Return to Storefront (Under header, before menu) */}
+          <div className="mb-4">
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-medium bg-white/[0.04] border border-white/[0.08] hover:border-white/20 text-neutral-300 hover:text-white hover:bg-white/[0.08] transition-all group shadow-sm"
+            >
+              <ArrowLeft className="w-4 h-4 text-neutral-400 group-hover:text-white group-hover:-translate-x-0.5 transition-all" />
+              <span className="font-semibold">กลับสู่หน้าร้านค้า (Storefront)</span>
+            </Link>
           </div>
 
           {/* Navigation Links */}
@@ -113,17 +124,6 @@ export default function AdminLayout({
               );
             })}
           </nav>
-        </div>
-
-        {/* Return to storefront */}
-        <div className="pt-6 border-t border-neutral-800 mt-6">
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>กลับสู่หน้าร้านค้า (Storefront)</span>
-          </Link>
         </div>
       </aside>
 
