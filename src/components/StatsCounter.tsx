@@ -70,7 +70,7 @@ export default function StatsCounter() {
           return (
             <div
               key={item.id}
-              className="relative overflow-hidden rounded-2xl sm:rounded-3xl glass-panel p-4 sm:p-5 border border-white/[0.08] hover:border-white/20 transition-all duration-300 group shadow-lg flex flex-col justify-between min-h-[95px] sm:min-h-[110px]"
+              className="relative overflow-hidden rounded-2xl glass-panel p-4 sm:p-5 border border-white/[0.08] hover:border-white/20 transition-all duration-300 group shadow-lg flex flex-col justify-between min-h-[95px] sm:min-h-[110px]"
             >
               {/* Content (Text & Number) */}
               <div className="relative z-10 space-y-1">

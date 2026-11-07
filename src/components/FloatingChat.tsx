@@ -13,7 +13,7 @@ export default function FloatingChat() {
       href={lineUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4.5 py-3 rounded-full bg-white hover:bg-neutral-200 text-black font-extrabold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all group backdrop-blur-md border border-white/30"
+      className="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white hover:bg-neutral-200 text-black font-extrabold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 transition-all group backdrop-blur-md border border-white/30"
     >
       <div className="relative">
         <MessageCircle className="w-5 h-5 fill-black text-transparent" />

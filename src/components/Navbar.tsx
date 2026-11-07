@@ -71,10 +71,10 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 px-3 pt-3">
-        <div className="max-w-5xl mx-auto rounded-full border border-neutral-800/80 bg-neutral-900/85 backdrop-blur-xl px-3.5 sm:px-5 h-14 flex items-center justify-between shadow-2xl shadow-black/40">
+        <div className="max-w-5xl mx-auto rounded-2xl border border-neutral-800/80 bg-neutral-900/85 backdrop-blur-xl px-3.5 sm:px-5 h-14 flex items-center justify-between shadow-2xl shadow-black/40">
           {/* Brand Logo & Name */}
           <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-neutral-800 to-neutral-700 border border-neutral-700 flex items-center justify-center font-black text-white text-sm sm:text-base shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-neutral-800 to-neutral-700 border border-neutral-700 flex items-center justify-center font-black text-white text-sm sm:text-base shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0">
               {setting?.logoUrl && setting.logoUrl !== "/logo.png" ? (
                 <img
                   src={setting.logoUrl}
@@ -89,7 +89,7 @@ export default function Navbar() {
               <span className="font-bold text-xs sm:text-base tracking-wide text-white truncate max-w-[120px] sm:max-w-none">
                 {setting?.shopName || "JIPAN STORE"}
               </span>
-              <span className={`hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full font-mono uppercase tracking-wider border ${currentTheme.badgeBg}`}>
+              <span className={`hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-lg font-mono uppercase tracking-wider border ${currentTheme.badgeBg}`}>
                 Auto 24h
               </span>
             </div>
@@ -99,42 +99,42 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-1 text-xs font-medium">
             <Link
               href="/"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
               <Home className="w-3.5 h-3.5" />
               <span>หน้าแรก</span>
             </Link>
             <Link
               href="/categories"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
               <Layers className="w-3.5 h-3.5" />
               <span>หมวดหมู่</span>
             </Link>
             <Link
               href="/products"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>สินค้า</span>
             </Link>
             <Link
               href="/reviews"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
               <Star className="w-3.5 h-3.5 text-white/80" />
               <span>รีวิว</span>
             </Link>
             <Link
               href="/news"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
               <Newspaper className="w-3.5 h-3.5 text-white/80" />
               <span>ข่าวสาร</span>
             </Link>
             <Link
               href="/topup"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800/60 transition-colors"
             >
               <Sparkles className="w-3.5 h-3.5 text-white/80" />
               <span>เติมเงิน</span>
@@ -146,7 +146,7 @@ export default function Navbar() {
             {/* Quick Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
               title="ค้นหาสินค้า (Ctrl + K)"
             >
               <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -156,7 +156,7 @@ export default function Navbar() {
             <div className="relative hidden sm:block">
               <button
                 onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                className="w-9 h-9 rounded-full border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                className="w-9 h-9 rounded-xl border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                 title="เปลี่ยนสีธีมร้านค้า"
               >
                 <Palette className="w-4 h-4" />
@@ -220,9 +220,9 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-1.5 sm:gap-2 pl-1 sm:pl-1.5 pr-2 sm:pr-3 py-1 rounded-full border border-neutral-800 bg-neutral-900/90 hover:bg-neutral-800 transition-all text-neutral-200 cursor-pointer group"
+                  className="flex items-center gap-1.5 sm:gap-2 pl-1.5 sm:pl-2 pr-2.5 sm:pr-3 py-1 rounded-xl border border-neutral-800 bg-neutral-900/90 hover:bg-neutral-800 transition-all text-neutral-200 cursor-pointer group"
                 >
-                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-tr from-neutral-700 to-neutral-600 border border-neutral-600 flex items-center justify-center overflow-hidden shrink-0">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-gradient-to-tr from-neutral-700 to-neutral-600 border border-neutral-600 flex items-center justify-center overflow-hidden shrink-0">
                     <span className="font-bold text-[10px] sm:text-xs text-white">
                       {user.username.slice(0, 1).toUpperCase()}
                     </span>
@@ -236,18 +236,18 @@ export default function Navbar() {
                   <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
                 </button>
 
-                {/* Dropdown Menu Card (Matching User Screenshot!) */}
+                {/* Dropdown Menu Card */}
                 {isUserMenuOpen && (
                   <>
                     <div
                       className="fixed inset-0 z-40"
                       onClick={() => setIsUserMenuOpen(false)}
                     />
-                    <div className="absolute right-0 mt-3 w-72 rounded-3xl bg-neutral-900/95 backdrop-blur-2xl border border-neutral-800 p-4 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="absolute right-0 mt-3 w-72 rounded-2xl bg-neutral-900/95 backdrop-blur-2xl border border-neutral-800 p-4 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
                       {/* Profile Card Header */}
                       <div className="flex items-center justify-between pb-3.5 border-b border-neutral-800/90">
                         <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-neutral-800 to-neutral-700 border-2 border-neutral-700 flex items-center justify-center font-bold text-white text-sm shrink-0">
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-neutral-800 to-neutral-700 border-2 border-neutral-700 flex items-center justify-center font-bold text-white text-sm shrink-0">
                             {user.username.slice(0, 1).toUpperCase()}
                           </div>
                           <div className="min-w-0">
@@ -375,13 +375,13 @@ export default function Navbar() {
               <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => openAuth("login")}
-                  className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+                  className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-medium text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
                 >
                   เข้าสู่ระบบ
                 </button>
                 <button
                   onClick={() => openAuth("register")}
-                  className={`hidden sm:inline-block px-3.5 py-1.5 rounded-full text-xs font-semibold cursor-pointer shadow-md transition-all ${currentTheme.accent}`}
+                  className={`hidden sm:inline-block px-3.5 py-1.5 rounded-xl text-xs font-semibold cursor-pointer shadow-md transition-all ${currentTheme.accent}`}
                 >
                   สมัครสมาชิก
                 </button>
@@ -391,7 +391,7 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-neutral-800 bg-neutral-900 flex items-center justify-center text-neutral-300 hover:text-white cursor-pointer shrink-0"
+              className="md:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-neutral-800 bg-neutral-900 flex items-center justify-center text-neutral-300 hover:text-white cursor-pointer shrink-0"
               aria-label="เมนูหลัก"
             >
               {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -401,7 +401,7 @@ export default function Navbar() {
 
         {/* Mobile Nav Dropdown */}
         {isMobileMenuOpen && (
-          <div className="md:hidden max-w-5xl mx-auto mt-2 rounded-3xl border border-neutral-800 bg-neutral-900/95 backdrop-blur-xl p-3 shadow-2xl flex flex-col gap-2 text-xs animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="md:hidden max-w-5xl mx-auto mt-2 rounded-2xl border border-neutral-800 bg-neutral-900/95 backdrop-blur-xl p-3 shadow-2xl flex flex-col gap-2 text-xs animate-in fade-in slide-in-from-top-2 duration-150">
             {/* User Profile / Auth Area in Mobile Drawer */}
             {user ? (
               <div className="p-3 rounded-2xl bg-neutral-950 border border-neutral-800 flex items-center justify-between">

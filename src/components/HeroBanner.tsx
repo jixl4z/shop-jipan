@@ -81,7 +81,7 @@ export default function HeroBanner() {
         </div>
 
         {/* Banner Carousel Slider */}
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/[0.08] bg-[#07080a] shadow-2xl group">
+        <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#07080a] shadow-2xl group">
           <div className="relative aspect-[16/9] sm:aspect-[21/9] md:aspect-[24/9] w-full overflow-hidden">
             {banners.map((b, idx) => (
               <div
