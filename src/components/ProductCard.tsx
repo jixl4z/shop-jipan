@@ -65,12 +65,12 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Stock Status Pill (Monochrome Glass) */}
         <div className="absolute bottom-2.5 right-2.5 z-10">
           {inStock ? (
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/75 border border-white/30 text-white text-[11px] font-medium backdrop-blur-md shadow-md">
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-black/75 border border-white/30 text-white text-[11px] font-medium backdrop-blur-md shadow-md">
               <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
               <span>พร้อมขาย</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/75 border border-neutral-750 text-neutral-400 text-[11px] font-medium backdrop-blur-md shadow-md">
+            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-black/75 border border-neutral-750 text-neutral-400 text-[11px] font-medium backdrop-blur-md shadow-md">
               <span className="w-2 h-2 rounded-full bg-neutral-500" />
               <span>สินค้าหมด</span>
             </div>

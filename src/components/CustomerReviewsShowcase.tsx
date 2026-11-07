@@ -40,7 +40,7 @@ export default function CustomerReviewsShowcase() {
       {/* Section Header (Monochrome) */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-2 border-b border-white/[0.08]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>ความประทับใจจากลูกค้าจริง</span>
           </div>

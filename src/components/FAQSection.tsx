@@ -21,7 +21,7 @@ export default function FAQSection() {
     },
     {
       q: "หากพบปัญหา สินค้าใช้งานไม่ได้ หรือมีข้อสงสัย ต้องทำอย่างไร?",
-      a: "คุณสามารถติดต่อทีมงานแอดมินได้โดยตรงผ่าน LINE Official หรือ Discord ของทางร้าน โดยแจ้งเลขออเดอร์หรือชื่อผู้ใช้ ทีมงานพร้อมช่วยเหลือตลอดเวลาครับ",
+      a: "คุณสามารถติดต่อทีมงานแอดมินได้โดยตรงผ่าน LINE Official ของทางร้าน โดยแจ้งเลขออเดอร์หรือชื่อผู้ใช้ ทีมงานพร้อมช่วยเหลือตลอดเวลาครับ",
     },
   ];
 
@@ -29,7 +29,7 @@ export default function FAQSection() {
     <section id="faq" className="py-12 bg-neutral-950 border-t border-neutral-850/80">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 text-xs font-medium mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 text-xs font-medium mb-2">
             <HelpCircle className="w-3.5 h-3.5 text-neutral-400" />
             <span>คำถามที่พบบ่อย</span>
           </div>

@@ -85,7 +85,7 @@ export default function HomePage() {
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-neutral-400" />
                 <span>สินค้าพร้อมส่ง (Products)</span>
-                <span className="text-xs font-mono font-medium text-neutral-400 px-2.5 py-0.5 rounded-full bg-white/[0.05] border border-white/10">
+                <span className="text-xs font-mono font-medium text-neutral-400 px-2.5 py-0.5 rounded-lg bg-white/[0.05] border border-white/10">
                   {filteredProducts.length} รายการ
                 </span>
               </h2>
