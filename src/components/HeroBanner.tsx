@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 export default function HeroBanner() {
-  const { setting, openTopup } = useStore();
+  const { setting, openTopup, currentTheme } = useStore();
 
   const userBanners =
     setting?.bannerUrls && Array.isArray(setting.bannerUrls) && setting.bannerUrls.length > 0
@@ -165,6 +165,52 @@ export default function HeroBanner() {
               </div>
             </>
           )}
+        </div>
+
+        {/* Welcome Spotlight Banner (GenzX Shop inspired) */}
+        <div className="rounded-2xl glass-panel p-5 sm:p-7 border border-white/[0.08] relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-5 shadow-xl">
+          <div className="space-y-2 max-w-xl">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/[0.06] border border-white/10 text-xs font-medium text-neutral-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>{setting?.shopName || "JIPAN STORE"} • ระบบพร้อมให้บริการ 24 ชม.</span>
+            </div>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
+              ยินดีต้อนรับสู่ <span className="text-white underline decoration-white/30">{setting?.shopName || "JIPAN STORE"}</span>
+            </h1>
+            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-light">
+              {setting?.shopSlogan || "ร้านบริการจำหน่ายสินค้าดิจิทัล บัญชีพรีเมียม และคีย์แท้ ตอบโจทย์ทุกการใช้งาน จัดส่งรวดเร็วทันใจ"}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-1 text-[11px] text-neutral-400">
+              <span className="flex items-center gap-1.5 text-neutral-300">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                สินค้าคุณภาพแท้ 100%
+              </span>
+              <span className="flex items-center gap-1.5 text-neutral-300">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                ความปลอดภัยสูง ตรวจสอบได้
+              </span>
+              <span className="flex items-center gap-1.5 text-neutral-300">
+                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                ระบบจัดส่งอัตโนมัติในคลัง
+              </span>
+            </div>
+          </div>
+
+          <div className="flex sm:flex-row md:flex-col lg:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto shrink-0">
+            <a
+              href="#products"
+              className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer ${currentTheme.accent}`}
+            >
+              <span>เลือกดูสินค้า</span>
+              <span>→</span>
+            </a>
+            <button
+              onClick={openTopup}
+              className="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 text-white flex items-center justify-center gap-2 transition-all cursor-pointer"
+            >
+              <span>เติมเงินเข้ากระเป๋า</span>
+            </button>
+          </div>
         </div>
 
         {/* Store Live Stats Counter (Positioned directly under hero banner like reference design) */}

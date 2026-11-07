@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { StoreProvider } from "@/context/StoreContext";
-import FloatingChat from "@/components/FloatingChat";
 
 export const viewport: Viewport = {
   themeColor: "#060608",
@@ -53,6 +52,10 @@ export const metadata: Metadata = {
 
 import { Prompt } from "next/font/google";
 
+import FloatingChat from "@/components/FloatingChat";
+import RecentSalesToast from "@/components/RecentSalesToast";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
+
 const promptFont = Prompt({
   weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin", "thai"],
@@ -79,6 +82,8 @@ export default function RootLayout({
         <StoreProvider>
           {children}
           <FloatingChat />
+          <RecentSalesToast />
+          <CookieConsentBanner />
         </StoreProvider>
       </body>
     </html>

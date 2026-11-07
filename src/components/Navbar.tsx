@@ -51,6 +51,7 @@ export default function Navbar() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isExtraMenuOpen, setIsExtraMenuOpen] = useState(false);
 
   // Modals state
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -58,6 +59,20 @@ export default function Navbar() {
   const [isSupportOpen, setIsSupportOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
+
+  const THEME_OPTIONS: {
+    id: ThemeColor;
+    label: string;
+    desc: string;
+    bg: string;
+  }[] = [
+    { id: "monochrome", label: "ขาว-ดำ มินิมอล", desc: "Monochrome Clean", bg: "bg-white" },
+    { id: "crimson", label: "คริมสัน เรด (GenzX)", desc: "Crimson Red Gaming", bg: "bg-rose-500" },
+    { id: "purple", label: "ไซเบอร์ ไวโอเล็ต", desc: "Cyber Violet Glow", bg: "bg-violet-500" },
+    { id: "emerald", label: "เอเมอรัลด์ กรีน", desc: "Emerald Neon Green", bg: "bg-emerald-400" },
+    { id: "blue", label: "อิเล็กทริก บลู", desc: "Electric Cyan Blue", bg: "bg-cyan-400" },
+    { id: "amber", label: "โกลด์ แอมเบอร์", desc: "Golden Amber Luxury", bg: "bg-amber-400" },
+  ];
 
   // Global Ctrl+K / Cmd+K shortcut for search
   useEffect(() => {
@@ -70,14 +85,6 @@ export default function Navbar() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  const navLinks = [
-    { href: "/", label: "หน้าแรก" },
-    { href: "/products", label: "สินค้าทั้งหมด" },
-    { href: "/categories", label: "หมวดหมู่" },
-    { href: "/reviews", label: "รีวิวลูกค้า" },
-    { href: "/news", label: "ข่าวสาร" },
-  ];
 
   return (
     <>
@@ -108,25 +115,148 @@ export default function Navbar() {
 
           {/* Center Nav links (Desktop) */}
           <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname?.startsWith(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`px-3.5 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
-                    isActive
-                      ? "bg-white/[0.08] text-white font-semibold"
-                      : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+            <Link
+              href="/"
+              className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                pathname === "/"
+                  ? "bg-white/[0.08] text-white font-semibold"
+                  : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+              }`}
+            >
+              หน้าแรก
+            </Link>
+            <Link
+              href="/products"
+              className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                pathname?.startsWith("/products")
+                  ? "bg-white/[0.08] text-white font-semibold"
+                  : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+              }`}
+            >
+              สินค้าทั้งหมด
+            </Link>
+            <Link
+              href="/categories"
+              className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+                pathname?.startsWith("/categories")
+                  ? "bg-white/[0.08] text-white font-semibold"
+                  : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+              }`}
+            >
+              หมวดหมู่
+            </Link>
+
+            {/* Extra Features Dropdown (GenzX Inspired) */}
+            <div className="relative">
+              <button
+                onClick={() => setIsExtraMenuOpen(!isExtraMenuOpen)}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer ${
+                  isExtraMenuOpen ||
+                  ["/reviews", "/news", "/orders", "/topup", "/docs"].some((p) =>
+                    pathname?.startsWith(p)
+                  )
+                    ? "bg-white/[0.08] text-white font-semibold"
+                    : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+                }`}
+              >
+                <span>ฟังก์ชั่นเสริม</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-neutral-400 transition-transform duration-200 ${
+                    isExtraMenuOpen ? "rotate-180" : ""
                   }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+                />
+              </button>
+
+              {isExtraMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsExtraMenuOpen(false)}
+                  />
+                  <div className="absolute left-0 mt-2.5 w-64 rounded-2xl bg-[#0e1017]/95 backdrop-blur-2xl border border-white/10 p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
+                    <button
+                      onClick={() => {
+                        setIsExtraMenuOpen(false);
+                        openTopup();
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
+                    >
+                      <Wallet className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <div>
+                        <div className="font-semibold text-white">เติมเงินอัตโนมัติ</div>
+                        <div className="text-[10px] text-neutral-500">
+                          พร้อมเพย์ & ทรูวอเล็ท 24 ชม.
+                        </div>
+                      </div>
+                    </button>
+
+                    <Link
+                      href="/orders"
+                      onClick={() => setIsExtraMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                    >
+                      <Package className="w-4 h-4 text-cyan-400 shrink-0" />
+                      <div>
+                        <div className="font-semibold text-white">คลังสินค้าของฉัน</div>
+                        <div className="text-[10px] text-neutral-500">
+                          เช็คโค้ด & รหัสคำสั่งซื้อ
+                        </div>
+                      </div>
+                    </Link>
+
+                    <Link
+                      href="/reviews"
+                      onClick={() => setIsExtraMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                    >
+                      <Star className="w-4 h-4 text-amber-400 shrink-0" />
+                      <div>
+                        <div className="font-semibold text-white">รีวิวจากลูกค้า</div>
+                        <div className="text-[10px] text-neutral-500">
+                          คะแนนความพึงพอใจ 5 ดาว
+                        </div>
+                      </div>
+                    </Link>
+
+                    <Link
+                      href="/news"
+                      onClick={() => setIsExtraMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                    >
+                      <Newspaper className="w-4 h-4 text-rose-400 shrink-0" />
+                      <div>
+                        <div className="font-semibold text-white">ข่าวสาร & โปรโมชั่น</div>
+                        <div className="text-[10px] text-neutral-500">อัปเดตกิจกรรมล่าสุด</div>
+                      </div>
+                    </Link>
+
+                    <div className="border-t border-white/[0.08] my-1" />
+
+                    <button
+                      onClick={() => {
+                        setIsExtraMenuOpen(false);
+                        setIsGuideOpen(true);
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
+                    >
+                      <BookOpen className="w-4 h-4 text-neutral-400 shrink-0" />
+                      <span>คู่มือการใช้งาน</span>
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setIsExtraMenuOpen(false);
+                        setIsContactOpen(true);
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
+                    >
+                      <PhoneCall className="w-4 h-4 text-neutral-400 shrink-0" />
+                      <span>ติดต่อสอบถามทีมงาน</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </nav>
 
           {/* Right Action Utilities */}
@@ -138,10 +268,93 @@ export default function Navbar() {
               title="ค้นหาสินค้า (Ctrl + K)"
             >
               <Search className="w-3.5 h-3.5 text-neutral-400" />
-              <span className="hidden xl:inline text-neutral-400">ค้นหาสินค้า...</span>
+              <span className="hidden xl:inline text-neutral-400">ค้นหา...</span>
               <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono text-neutral-400 bg-white/[0.06] px-1.5 py-0.5 rounded border border-white/10">
                 ⌘K
               </kbd>
+            </button>
+
+            {/* Theme Palette Switcher (GenzX Style) */}
+            <div className="relative">
+              <button
+                onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 text-neutral-300 hover:text-white transition-all cursor-pointer text-xs"
+                title="ปรับแต่งชุดสีธีมเว็บไซต์"
+                aria-label="เปลี่ยนสีธีม"
+              >
+                <Palette className="w-3.5 h-3.5" />
+                <span
+                  className={`w-2 h-2 rounded-full shadow-sm ${
+                    themeColor === "crimson"
+                      ? "bg-rose-500 shadow-rose-500/50"
+                      : themeColor === "purple"
+                      ? "bg-violet-500 shadow-violet-500/50"
+                      : themeColor === "emerald"
+                      ? "bg-emerald-400 shadow-emerald-400/50"
+                      : themeColor === "blue"
+                      ? "bg-cyan-400 shadow-cyan-400/50"
+                      : themeColor === "amber"
+                      ? "bg-amber-400 shadow-amber-400/50"
+                      : "bg-white shadow-white/50"
+                  }`}
+                />
+              </button>
+
+              {isThemeMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsThemeMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2.5 w-72 rounded-2xl bg-[#0e1017]/95 backdrop-blur-2xl border border-white/10 p-3.5 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-white/[0.08]">
+                      <div className="flex items-center gap-2">
+                        <Palette className="w-4 h-4 text-white" />
+                        <span className="text-xs font-bold text-white">ปรับแต่งสีธีมร้านค้า</span>
+                      </div>
+                      <span className="text-[10px] text-neutral-400 font-mono">6 โทนสี</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      {THEME_OPTIONS.map((t) => {
+                        const isSelected = themeColor === t.id;
+                        return (
+                          <button
+                            key={t.id}
+                            onClick={() => {
+                              setThemeColor(t.id);
+                              addToast(`เปลี่ยนธีมเป็น "${t.label}" สำเร็จ`, "success");
+                              setIsThemeMenuOpen(false);
+                            }}
+                            className={`flex items-center gap-2 p-2 rounded-xl border text-left transition-all cursor-pointer ${
+                              isSelected
+                                ? "border-white bg-white/10 text-white shadow-md"
+                                : "border-white/[0.06] bg-white/[0.02] text-neutral-400 hover:text-white hover:bg-white/[0.06]"
+                            }`}
+                          >
+                            <span
+                              className={`w-3 h-3 rounded-full shrink-0 border border-black/40 ${t.bg}`}
+                            />
+                            <div className="min-w-0 flex-1">
+                              <div className="text-xs font-medium truncate">{t.label}</div>
+                            </div>
+                            {isSelected && <Check className="w-3 h-3 text-white shrink-0" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Quick Contact Shortcut Button */}
+            <button
+              onClick={() => setIsContactOpen(true)}
+              className="hidden min-[480px]:flex items-center justify-center w-8 h-8 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 text-neutral-400 hover:text-white transition-all cursor-pointer"
+              title="ติดต่อทีมงาน / แจ้งปัญหา"
+            >
+              <Headphones className="w-3.5 h-3.5" />
             </button>
 
             {/* User Profile & Top-up CTA */}

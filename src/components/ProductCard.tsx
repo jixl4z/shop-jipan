@@ -23,7 +23,7 @@ export interface Product {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { openBuyModal } = useStore();
+  const { openBuyModal, currentTheme } = useStore();
   const inStock = product.stockCount > 0;
 
   return (
@@ -124,13 +124,13 @@ export default function ProductCard({ product }: { product: Product }) {
             </div>
           </div>
 
-          {/* Order Button (High-Contrast Monochrome) */}
+          {/* Order Button (Reactive to Theme) */}
           <button
             onClick={() => openBuyModal(product)}
             disabled={!inStock}
             className={`w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all duration-200 shadow-md cursor-pointer ${
               inStock
-                ? "bg-white text-black hover:bg-neutral-200 active:scale-[0.98] btn-shine"
+                ? `${currentTheme.accent} active:scale-[0.98] btn-shine`
                 : "bg-neutral-900 text-neutral-500 cursor-not-allowed border border-neutral-800"
             }`}
           >
