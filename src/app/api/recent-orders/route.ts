@@ -1,10 +1,40 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+function formatTimeAgo(dateInput: Date | string): string {
+  const diffMs = Date.now() - new Date(dateInput).getTime();
+  const diffSecs = Math.max(0, Math.floor(diffMs / 1000));
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 1) return "เมื่อสักครู่";
+  if (diffMins < 60) return `${diffMins} นาทีที่แล้ว`;
+  if (diffHours < 24) return `${diffHours} ชั่วโมงที่แล้ว`;
+  if (diffDays < 7) return `${diffDays} วันที่แล้ว`;
+
+  return new Date(dateInput).toLocaleDateString("th-TH", {
+    day: "numeric",
+    month: "short",
+  });
+}
+
+function maskUsername(username?: string | null): string {
+  if (!username) return "ลูกค้า***";
+  const clean = username.trim();
+  if (clean.length <= 2) return `${clean.charAt(0)}***`;
+  if (clean.length <= 4) return `${clean.slice(0, 2)}***`;
+  return `${clean.slice(0, 3)}***`;
+}
+
 export async function GET() {
   try {
+    // 100% Real customer orders only - No fake or simulated records
     const realOrders = await prisma.order.findMany({
-      take: 10,
+      where: {
+        status: "COMPLETED",
+      },
+      take: 20,
       orderBy: { createdAt: "desc" },
       include: {
         user: {
@@ -13,70 +43,17 @@ export async function GET() {
       },
     });
 
-    const simulated = [
-      {
-        id: "sim-1",
-        productName: "Premium ดูหนัง 30 วัน",
-        price: 89,
-        username: "moo***",
-        timeAgo: "14 นาทีที่แล้ว",
-      },
-      {
-        id: "sim-2",
-        productName: "กล่องสุ่ม Diamond ดิจิทัล",
-        price: 49,
-        username: "bea***",
-        timeAgo: "22 นาทีที่แล้ว",
-      },
-      {
-        id: "sim-3",
-        productName: "บัตรเติมเงิน 500 Points",
-        price: 450,
-        username: "kan***",
-        timeAgo: "35 นาทีที่แล้ว",
-      },
-      {
-        id: "sim-4",
-        productName: "Season Pass พาสเกมยอดฮิต",
-        price: 259,
-        username: "ton***",
-        timeAgo: "1 ชั่วโมงที่แล้ว",
-      },
-      {
-        id: "sim-5",
-        productName: "Premium ฟังเพลง Lossless 3 เดือน",
-        price: 149,
-        username: "pim***",
-        timeAgo: "2 ชั่วโมงที่แล้ว",
-      },
-      {
-        id: "sim-6",
-        productName: "ไอดีเกมเริ่มต้น 5 ดาว",
-        price: 99,
-        username: "jam***",
-        timeAgo: "3 ชั่วโมงที่แล้ว",
-      },
-    ];
+    const formattedOrders = realOrders.map((o) => ({
+      id: o.id,
+      productName: o.productName,
+      price: o.totalAmount,
+      username: maskUsername(o.user?.username),
+      timeAgo: formatTimeAgo(o.createdAt),
+    }));
 
-    if (realOrders.length > 0) {
-      const formattedReal = realOrders.map((o) => {
-        const u = o.user.username;
-        const masked =
-          u.length > 3 ? `${u.slice(0, 3)}***` : `${u.slice(0, 1)}***`;
-        return {
-          id: o.id,
-          productName: o.productName,
-          price: o.totalAmount,
-          username: masked,
-          timeAgo: "เมื่อสักครู่",
-        };
-      });
-      return NextResponse.json({
-        orders: [...formattedReal, ...simulated].slice(0, 12),
-      });
-    }
-
-    return NextResponse.json({ orders: simulated });
+    return NextResponse.json({
+      orders: formattedOrders,
+    });
   } catch (err: unknown) {
     const error = err as Error;
     return NextResponse.json({ error: error.message }, { status: 500 });
