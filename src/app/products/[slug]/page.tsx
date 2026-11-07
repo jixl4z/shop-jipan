@@ -284,7 +284,7 @@ export default function ProductDetailPage() {
                 <ul className="list-disc list-inside space-y-1 text-neutral-400 text-[11px] font-light">
                   <li>ระบบจะส่งมอบ Serial Key / บัญชี ให้บนหน้าจอทันทีหลังจากตัดยอดสำเร็จ</li>
                   <li>ข้อมูลสินค้าจะถูกบันทึกไว้ในเมนู &quot;คลังของฉัน&quot; สามารถกลับมาดูซ้ำได้ตลอดเวลา</li>
-                  <li>หากพบปัญหาการใช้งาน ติดต่อแอดมินผ่าน LINE Official หรือ Discord ของทางร้าน</li>
+                  <li>หากพบปัญหาการใช้งาน ติดต่อทีมงานซัพพอร์ตผ่าน LINE Official ของทางร้านได้ตลอด 24 ชม.</li>
                 </ul>
               </div>
             </div>

@@ -69,7 +69,16 @@ export default function HeroBanner() {
               <span className="text-neutral-600">•</span>
               <span className="inline-flex items-center gap-1.5">
                 <MessageCircle className="w-3.5 h-3.5 text-white shrink-0" />
-                <span>ไลน์แอดมิน: <strong className="text-white font-medium">{setting?.contactLine || "@jipanstore"}</strong></span>
+                <span>
+                  LINE Official:{" "}
+                  <strong className="text-white font-medium">
+                    {(() => {
+                      const raw = setting?.contactLine || "@jipanstore";
+                      const cleaned = raw.replace(/^https?:\/\/(line\.me\/R\/ti\/p\/|lin\.ee\/)/i, "").trim();
+                      return cleaned.startsWith("@") ? cleaned : `@${cleaned}`;
+                    })()}
+                  </strong>
+                </span>
               </span>
               <span className="text-neutral-600">•</span>
               <span className="inline-flex items-center gap-1.5">

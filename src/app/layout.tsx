@@ -51,22 +51,31 @@ export const metadata: Metadata = {
   },
 };
 
+import { Prompt } from "next/font/google";
+
+const promptFont = Prompt({
+  weight: ["300", "400", "500", "600", "700", "800"],
+  subsets: ["latin", "thai"],
+  variable: "--font-prompt",
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="th" className="dark">
+    <html lang="th" className={`dark ${promptFont.variable}`}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="bg-[#060608] text-neutral-100 min-h-screen antialiased selection:bg-white selection:text-black">
+      <body className="font-sans bg-[#060608] text-neutral-100 min-h-screen antialiased selection:bg-white selection:text-black">
         <StoreProvider>
           {children}
           <FloatingChat />
