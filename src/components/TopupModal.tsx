@@ -307,79 +307,124 @@ export default function TopupModal() {
               <div>
                 {/* Bank / QR Presentation Card */}
                 {isTTB ? (
-                  <div className="p-3.5 sm:p-5 rounded-2xl bg-neutral-950 border border-white/[0.08] shadow-xl space-y-3 sm:space-y-4 mb-4">
-                    {/* Bank Header */}
-                    <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-                      <div className="flex items-center gap-2.5 sm:gap-3">
-                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center text-white shadow-inner shrink-0">
-                          <Landmark className="w-5 h-5 text-white" />
-                        </div>
-                        <div>
-                          <div className="font-bold text-white text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2">
-                            <span>ธนาคารทีเอ็มบีธนชาต (ttb)</span>
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/10 text-white border border-white/15 font-mono">
-                              บัญชีร้านค้า
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-neutral-400">
-                            โอนได้ทุกธนาคาร (กสิกร, SCB, กรุงไทย ฯลฯ)
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Account Number Box (Tap to copy) */}
+                  <div className="space-y-3 mb-4">
+                    {/* Unified Virtual Bank Card */}
                     <div
                       onClick={() => handleCopyAccount(rawTarget, "เลขบัญชี")}
-                      className="p-3 sm:p-3.5 rounded-xl bg-neutral-900 border border-white/[0.08] hover:border-white/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 cursor-pointer group"
-                      title="คลิกเพื่อคัดลอกเลขบัญชี"
+                      className="relative overflow-hidden rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#0a0c10] via-[#0d0f15] to-[#121118] border border-white/[0.08] hover:border-white/20 transition-all duration-300 shadow-xl group cursor-pointer"
                     >
-                      <div>
-                        <div className="text-[11px] text-neutral-400 font-medium">เลขที่บัญชีธนาคาร (แตะเพื่อคัดลอก)</div>
-                        <div className="text-xl sm:text-2xl font-bold font-mono text-white tracking-wider mt-0.5 select-text">
-                          {formattedAccountNumber}
+                      {/* Ambient Bank Gradient Glows (ttb Blue & Orange signature glow) */}
+                      <div className="absolute -top-14 -left-14 w-48 h-48 bg-[#0057D9]/15 rounded-full blur-3xl pointer-events-none" />
+                      <div className="absolute -bottom-14 -right-14 w-48 h-48 bg-[#F37021]/15 rounded-full blur-3xl pointer-events-none" />
+
+                      {/* Watermark bank icon background */}
+                      <div className="absolute -right-3 -bottom-3 w-32 h-32 text-white/[0.03] group-hover:text-white/[0.05] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
+                        <Landmark className="w-full h-full stroke-[1]" />
+                      </div>
+
+                      <div className="relative z-10 space-y-3.5 sm:space-y-4">
+                        {/* Card Top: Bank Brand Header */}
+                        <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+                          <div className="flex items-center gap-2.5 sm:gap-3">
+                            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#0047BA] via-[#0057D9] to-[#F37021] p-0.5 shadow-md shadow-[#0047BA]/25 shrink-0">
+                              <div className="w-full h-full bg-[#08090c] rounded-[14px] flex items-center justify-center">
+                                <span className="font-black text-xs sm:text-sm tracking-tighter bg-gradient-to-r from-[#38BDF8] via-[#60A5FA] to-[#FB923C] bg-clip-text text-transparent">
+                                  ttb
+                                </span>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-1.5 sm:gap-2">
+                                <h3 className="font-extrabold text-xs sm:text-sm bg-gradient-to-r from-[#38BDF8] via-[#60A5FA] to-[#FB923C] bg-clip-text text-transparent tracking-tight">
+                                  ธนาคารทีเอ็มบีธนชาต (ttb)
+                                </h3>
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-neutral-300 font-mono">
+                                  บัญชีร้านค้า
+                                </span>
+                              </div>
+                              <p className="text-[10px] sm:text-[11px] text-neutral-400 mt-0.5">
+                                โอนได้ทุกธนาคาร (กสิกร, SCB, กรุงไทย ฯลฯ)
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Contactless symbol */}
+                          <div className="hidden sm:flex items-center opacity-60">
+                            <svg className="w-5 h-5 text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                              <path d="M4 10a12 12 0 0 1 16 0" />
+                              <path d="M7 13a8 8 0 0 1 10 0" />
+                              <path d="M10 16a4 4 0 0 1 4 0" />
+                            </svg>
+                          </div>
+                        </div>
+
+                        {/* Card Center: Big Monospace Account Number */}
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-medium text-neutral-400 tracking-wider uppercase">
+                              เลขที่บัญชีธนาคาร (แตะเพื่อคัดลอก)
+                            </span>
+                            <span className="text-[10px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                              คลิกเพื่อคัดลอก
+                            </span>
+                          </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-0.5">
+                            <span className="text-xl sm:text-2xl font-extrabold font-mono text-white tracking-widest select-text">
+                              {formattedAccountNumber}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleCopyAccount(rawTarget, "เลขบัญชี");
+                              }}
+                              className={`w-full sm:w-auto px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95 ${
+                                copiedAccount
+                                  ? "bg-white text-black"
+                                  : "bg-white/10 hover:bg-white text-white hover:text-black border border-white/20"
+                              }`}
+                            >
+                              {copiedAccount ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5" />
+                                  <span>คัดลอกแล้ว!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5" />
+                                  <span>คัดลอกเลขบัญชี</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Card Bottom: Account Holder */}
+                        <div className="pt-2.5 border-t border-white/[0.06] flex items-center justify-between">
+                          <div>
+                            <span className="text-[10px] text-neutral-400 uppercase tracking-wider block">
+                              ชื่อบัญชีผู้รับเงิน
+                            </span>
+                            <span className="font-bold text-xs sm:text-sm text-white tracking-wide">
+                              {accountName}
+                            </span>
+                          </div>
+                          <span className="text-[10px] sm:text-[11px] text-emerald-400 font-medium flex items-center gap-1">
+                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                            <span>ตรวจสลิปอัตโนมัติ 24 ชม.</span>
+                          </span>
                         </div>
                       </div>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleCopyAccount(rawTarget, "เลขบัญชี");
-                        }}
-                        className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95 ${
-                          copiedAccount
-                            ? "bg-white text-black"
-                            : "bg-white/10 hover:bg-white text-white hover:text-black border border-white/20"
-                        }`}
-                      >
-                        {copiedAccount ? (
-                          <>
-                            <Check className="w-3.5 h-3.5" />
-                            <span>คัดลอกแล้ว!</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-3.5 h-3.5" />
-                            <span>คัดลอกเลขบัญชี</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Account Name */}
-                    <div className="p-3 sm:p-3.5 rounded-xl bg-neutral-900/60 border border-white/[0.05]">
-                      <div className="text-neutral-400 text-[11px]">ชื่อบัญชีผู้รับ</div>
-                      <div className="font-semibold text-white text-xs sm:text-sm mt-0.5">{accountName}</div>
                     </div>
 
                     {/* How-to Notice */}
-                    <div className="text-[11px] text-neutral-400 bg-neutral-950/70 p-3 rounded-xl border border-neutral-800/60 space-y-1">
-                      <div className="text-neutral-300 font-medium flex items-center gap-1.5">
+                    <div className="text-[11px] text-neutral-400 bg-white/[0.02] p-3 rounded-xl border border-white/[0.06] space-y-1">
+                      <div className="text-neutral-200 font-semibold flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-white" />
                         <span>วิธีเติมเงิน:</span>
                       </div>
-                      <div>1. โอนเงินเข้าบัญชี <strong>ทีเอ็มบีธนชาต</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
-                      <div>2. แนบรูปสลิปด้านล่าง ระบบ <strong>SlipOK</strong> จะตรวจยอดเงินจากสลิปและปรับเงินเข้ากระเป๋าให้อัตโนมัติ 24 ชม.</div>
+                      <div>1. โอนเงินเข้าบัญชี <strong className="text-white font-medium">ทีเอ็มบีธนชาต</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
+                      <div>2. แนบรูปสลิปด้านล่าง ระบบจะตรวจยอดเงินจากสลิปและปรับเงินเข้ากระเป๋าให้อัตโนมัติ 24 ชม.</div>
                     </div>
                   </div>
                 ) : (
