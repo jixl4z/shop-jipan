@@ -51,6 +51,7 @@ export const metadata: Metadata = {
 };
 
 import { Prompt } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 
 import FloatingChat from "@/components/FloatingChat";
 import RecentSalesToast from "@/components/RecentSalesToast";
@@ -97,6 +98,18 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans bg-[#060608] text-neutral-100 min-h-screen antialiased selection:bg-white selection:text-black">
+        <NextTopLoader
+          color="#ffffff"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 14px rgba(255,255,255,0.8),0 0 6px rgba(255,255,255,0.6)"
+          zIndex={999999}
+        />
         <StoreProvider>
           {children}
           <FloatingChat />
