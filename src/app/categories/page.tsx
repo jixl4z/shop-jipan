@@ -108,10 +108,10 @@ export default function CategoriesPage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
                     ) : (
-                      <div className="w-full h-full relative flex items-center justify-between px-5 sm:px-6 bg-gradient-to-r from-red-950/80 via-neutral-900 to-black overflow-hidden">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_50%,rgba(244,63,94,0.22),transparent_65%)]" />
+                      <div className="w-full h-full relative flex items-center justify-between px-5 sm:px-6 bg-gradient-to-r from-neutral-900 via-[#111218] to-black overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_50%,rgba(255,255,255,0.08),transparent_65%)]" />
                         <div className="relative z-10 space-y-0.5">
-                          <span className="text-[10px] font-mono tracking-widest text-rose-400 uppercase font-bold">
+                          <span className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase font-bold">
                             PRODUCT
                           </span>
                           <div className="text-lg sm:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">
@@ -122,7 +122,7 @@ export default function CategoriesPage() {
                           </span>
                         </div>
                         <div className="relative z-10 opacity-25 group-hover:opacity-50 transition-opacity">
-                          <Icon className="w-14 h-14 sm:w-16 sm:h-16 text-rose-500 stroke-[1.2]" />
+                          <Icon className="w-14 h-14 sm:w-16 sm:h-16 text-neutral-400 stroke-[1.2]" />
                         </div>
                       </div>
                     )}
@@ -132,7 +132,7 @@ export default function CategoriesPage() {
                   {/* Bottom Row: Category Name & Count (Left) + Arrow Icon (Right) */}
                   <div className="flex items-center justify-between px-1">
                     <div className="min-w-0 space-y-0.5">
-                      <h3 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white tracking-tight group-hover:text-rose-500 transition-colors truncate">
+                      <h3 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white tracking-tight group-hover:text-white transition-colors truncate">
                         {cat.name}
                       </h3>
                       <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light">
@@ -140,7 +140,7 @@ export default function CategoriesPage() {
                       </p>
                     </div>
 
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-rose-500 group-hover:text-white dark:bg-white/[0.05] dark:text-neutral-400 dark:group-hover:bg-rose-500 dark:group-hover:text-white border border-slate-200 dark:border-white/10 transition-all shrink-0">
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-white group-hover:text-black dark:bg-white/[0.05] dark:text-neutral-400 dark:group-hover:bg-white dark:group-hover:text-black border border-slate-200 dark:border-white/10 transition-all shrink-0">
                       <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </div>
                   </div>
