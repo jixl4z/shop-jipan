@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 
 export default function HeroBanner() {
-  const { setting, openTopup, currentTheme } = useStore();
+  const { setting, openTopup, currentTheme, themeMode } = useStore();
+  const isLight = themeMode === "light";
 
   const userBanners =
     setting?.bannerUrls && Array.isArray(setting.bannerUrls) && setting.bannerUrls.length > 0
@@ -135,24 +136,44 @@ export default function HeroBanner() {
         </div>
 
         {/* Welcome Spotlight Banner (GenzX Shop reference layout) */}
-        <div className="rounded-2xl glass-panel p-5 sm:p-7 border border-white/[0.08] relative overflow-hidden shadow-xl">
+        <div
+          className={`rounded-2xl p-5 sm:p-7 border relative overflow-hidden shadow-xl transition-colors backdrop-blur-xl ${
+            isLight
+              ? "bg-white border-slate-200/80 shadow-slate-200/50"
+              : "bg-[#0e0f15]/90 border-white/[0.08]"
+          }`}
+        >
           {/* Top Row: Info (Left) & Stacked Buttons (Right) */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
               {/* Compact Pill Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 dark:bg-white/[0.05] border border-black/10 dark:border-white/10 text-xs font-mono text-neutral-600 dark:text-neutral-300">
+              <div
+                className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-xs font-mono ${
+                  isLight
+                    ? "bg-slate-100 border-slate-200 text-slate-700"
+                    : "bg-white/[0.05] border-white/10 text-neutral-300"
+                }`}
+              >
                 <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
                 <span className="text-[11px] font-medium">{setting?.shopName?.toLowerCase().replace(/\s+/g, '') || "jipanstore"}</span>
               </div>
 
               {/* Title with accent color on store name */}
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-neutral-900 dark:text-white tracking-tight flex items-baseline gap-2 flex-wrap">
+              <h1
+                className={`text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight flex items-baseline gap-2 flex-wrap ${
+                  isLight ? "text-slate-900" : "text-white"
+                }`}
+              >
                 <span>ยินดีต้อนรับสู่</span>
-                <span className="text-rose-500 font-black">{setting?.shopName || "JIPAN STORE"}</span>
+                <span className="text-[#ff334b] font-black">{setting?.shopName || "JIPAN STORE"}</span>
               </h1>
 
               {/* Slogan */}
-              <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-light">
+              <p
+                className={`text-xs sm:text-sm leading-relaxed font-light ${
+                  isLight ? "text-slate-600" : "text-neutral-400"
+                }`}
+              >
                 {setting?.shopSlogan || "ร้านบริการจำหน่ายสินค้าดิจิทัล บัญชีโซเชียล แอปพรีเมียม และเกมอื่นๆ ตอบโจทย์ทุกการใช้งาน"}
               </p>
             </div>
@@ -163,35 +184,39 @@ export default function HeroBanner() {
                 href="#products"
                 className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#ff334b] hover:bg-[#ff203a] text-white flex items-center justify-center gap-2 shadow-lg shadow-rose-500/25 active:scale-95 transition-all cursor-pointer btn-shine"
               >
-                <ShoppingBag className="w-4 h-4" />
-                <span>เลือกดูสินค้า</span>
-                <ArrowRight className="w-4 h-4" />
+                <ShoppingBag className="w-4 h-4 text-white" />
+                <span className="text-white">เลือกดูสินค้า</span>
+                <ArrowRight className="w-4 h-4 text-white" />
               </a>
               <button
                 onClick={openTopup}
-                className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800 dark:bg-white/[0.04] dark:hover:bg-white/[0.08] dark:border-white/10 dark:text-white flex items-center justify-center gap-2 transition-all cursor-pointer border shadow-sm active:scale-95"
+                className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer border shadow-sm active:scale-95 ${
+                  isLight
+                    ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800"
+                    : "bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-white"
+                }`}
               >
-                <Wallet className="w-4 h-4 text-neutral-500 dark:text-neutral-400" />
+                <Wallet className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-neutral-400"}`} />
                 <span>เติมเงินเข้ากระเป๋า</span>
               </button>
             </div>
           </div>
 
           {/* Full-width Divider Line */}
-          <div className="w-full h-[1px] bg-slate-200/80 dark:bg-white/[0.06] my-4 sm:my-5" />
+          <div className={`w-full h-[1px] my-4 sm:my-5 ${isLight ? "bg-slate-200/80" : "bg-white/[0.06]"}`} />
 
           {/* Bottom Features Row */}
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-500 dark:text-neutral-400">
+          <div className={`flex flex-wrap items-center gap-x-6 gap-y-2 text-xs ${isLight ? "text-slate-600" : "text-neutral-400"}`}>
             <span className="flex items-center gap-2">
-              <Star className="w-3.5 h-3.5 text-rose-500 fill-rose-500/20" />
+              <Star className="w-3.5 h-3.5 text-[#ff334b] fill-[#ff334b]/20" />
               <span>สินค้าคุณภาพสูง</span>
             </span>
             <span className="flex items-center gap-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-rose-500" />
+              <ShieldCheck className="w-3.5 h-3.5 text-[#ff334b]" />
               <span>ความปลอดภัยสูง ตรวจสอบได้</span>
             </span>
             <span className="flex items-center gap-2">
-              <Headphones className="w-3.5 h-3.5 text-rose-500" />
+              <Headphones className="w-3.5 h-3.5 text-[#ff334b]" />
               <span>บริการซัพพอร์ตตลอดการใช้งาน</span>
             </span>
           </div>

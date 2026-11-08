@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const slipImage = body?.slipImage;
     const expectedAmount =
       body?.amount !== undefined && body?.amount !== ""

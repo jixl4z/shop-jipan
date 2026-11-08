@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: var(--font-kanit), "Kanit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -346,15 +348,32 @@ html.light .text-amber-400 { color: #d97706 !important; }
 html.light .text-violet-400 { color: #7c3aed !important; }
 
 /* Keep white text on colorful buttons/badges */
+html.light [class*="bg-[#ff334b]"],
+html.light [class*="bg-[#ff334b]"] *,
+html.light [class*="bg-[#ff203a]"],
+html.light [class*="bg-[#ff203a]"] *,
+html.light [class*="bg-[#e02b41]"],
+html.light [class*="bg-[#e02b41]"] *,
+html.light [class*="bg-rose-"],
 html.light [class*="bg-rose-"] *,
+html.light [class*="bg-violet-"],
 html.light [class*="bg-violet-"] *,
+html.light [class*="bg-emerald-"],
 html.light [class*="bg-emerald-"] *,
+html.light [class*="bg-cyan-"],
 html.light [class*="bg-cyan-"] *,
+html.light [class*="bg-amber-"],
 html.light [class*="bg-amber-"] *,
+html.light [class*="bg-blue-"],
 html.light [class*="bg-blue-"] *,
+html.light [class*="bg-gradient-to-"],
 html.light [class*="bg-gradient-to-"] *,
+html.light .bg-red-500,
 html.light .bg-red-500 *,
-html.light .bg-emerald-500 * {
+html.light .bg-emerald-500,
+html.light .bg-emerald-500 *,
+html.light .btn-shine,
+html.light .btn-shine * {
   color: #ffffff !important;
 }
 

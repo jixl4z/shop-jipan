@@ -45,22 +45,39 @@ export async function getCurrentUser(): Promise<(SessionUser & { balance: number
     const decoded = verifyToken(token);
     if (!decoded || !decoded.id) return null;
 
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        role: true,
-        balance: true,
-        avatar: true,
-        discordId: true,
-        googleId: true,
-        createdAt: true,
-      },
-    });
+    // Try full columns select first
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          role: true,
+          balance: true,
+          avatar: true,
+          discordId: true,
+          googleId: true,
+          createdAt: true,
+        },
+      });
+      if (user) return user;
+    } catch {
+      // Fallback to core guaranteed columns if D1 schema differs
+      const coreUser = await prisma.user.findUnique({
+        where: { id: decoded.id },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          role: true,
+          balance: true,
+        },
+      });
+      if (coreUser) return coreUser;
+    }
 
-    return user;
+    return null;
   } catch (err) {
     console.error("[getCurrentUser Error]:", err);
     return null;

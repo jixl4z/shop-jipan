@@ -11,7 +11,7 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "กรุณาเข้าสู่ระบบก่อนทำรายการ" }, { status: 401 });
     }
 
-    const body = await req.json();
+    const body = (await req.json()) as any;
     const avatar = typeof body?.avatar === "string" ? body.avatar.trim() : undefined;
 
     const updated = await prisma.user.update({
