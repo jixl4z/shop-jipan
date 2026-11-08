@@ -56,6 +56,7 @@ import NextTopLoader from "nextjs-toploader";
 import FloatingChat from "@/components/FloatingChat";
 import RecentSalesToast from "@/components/RecentSalesToast";
 import CookieConsentBanner from "@/components/CookieConsentBanner";
+import AnnouncementPopup from "@/components/AnnouncementPopup";
 
 const kanit = Kanit({
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
@@ -115,6 +116,7 @@ export default function RootLayout({
           <FloatingChat />
           <RecentSalesToast />
           <CookieConsentBanner />
+          <AnnouncementPopup />
         </StoreProvider>
       </body>
     </html>

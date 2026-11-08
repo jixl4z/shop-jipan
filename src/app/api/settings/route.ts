@@ -50,6 +50,12 @@ export async function GET() {
       contactFacebook: setting.contactFacebook,
       contactLine: setting.contactLine,
       discordServerId: setting.discordServerId || "",
+      popupEnabled: setting.popupEnabled,
+      popupTitle: setting.popupTitle || "ข่าวสารและกิจกรรม",
+      popupMediaUrl: setting.popupMediaUrl || "",
+      popupMediaType: setting.popupMediaType || "auto",
+      popupLink: setting.popupLink || "",
+      popupLinkText: setting.popupLinkText || "เปิดลิงก์",
     };
 
     return NextResponse.json({ setting: publicSetting });

@@ -29,6 +29,12 @@ export interface PublicSetting {
   contactFacebook?: string;
   contactLine?: string;
   discordServerId?: string;
+  popupEnabled?: boolean;
+  popupTitle?: string;
+  popupMediaUrl?: string;
+  popupMediaType?: string;
+  popupLink?: string;
+  popupLinkText?: string;
 }
 
 interface ToastMessage {

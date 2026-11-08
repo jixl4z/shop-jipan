@@ -131,6 +131,12 @@ model ShopSetting {
   contactFacebook String?  @default("https://facebook.com/")
   contactLine     String?  @default("https://line.me/ti/p/")
   discordServerId String?  @default("")
+  popupEnabled    Boolean  @default(false)
+  popupTitle      String?  @default("ข่าวสารและกิจกรรม")
+  popupMediaUrl   String?  @default("")
+  popupMediaType  String?  @default("auto") // "auto", "image", "video"
+  popupLink       String?  @default("")
+  popupLinkText   String?  @default("เปิดลิงก์")
   updatedAt       DateTime @updatedAt
 }
 

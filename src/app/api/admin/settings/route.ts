@@ -84,6 +84,12 @@ export async function PUT(req: Request) {
         contactFacebook: data.contactFacebook,
         contactLine: data.contactLine,
         discordServerId: data.discordServerId,
+        popupEnabled: data.popupEnabled !== undefined ? !!data.popupEnabled : undefined,
+        popupTitle: data.popupTitle,
+        popupMediaUrl: data.popupMediaUrl,
+        popupMediaType: data.popupMediaType,
+        popupLink: data.popupLink,
+        popupLinkText: data.popupLinkText,
       },
       create: {
         id: "default",
@@ -109,6 +115,12 @@ export async function PUT(req: Request) {
         contactFacebook: data.contactFacebook || "",
         contactLine: data.contactLine || "",
         discordServerId: data.discordServerId || "",
+        popupEnabled: !!data.popupEnabled,
+        popupTitle: data.popupTitle || "ข่าวสารและกิจกรรม",
+        popupMediaUrl: data.popupMediaUrl || "",
+        popupMediaType: data.popupMediaType || "auto",
+        popupLink: data.popupLink || "",
+        popupLinkText: data.popupLinkText || "เปิดลิงก์",
       },
     });
 

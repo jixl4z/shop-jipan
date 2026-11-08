@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Settings, Save, CheckCircle2, Shield, QrCode, Palette, Bell, Loader2 } from "lucide-react";
+import { Settings, Save, CheckCircle2, Shield, QrCode, Palette, Bell, Loader2, Megaphone, Video, Image as ImageIcon } from "lucide-react";
 import { THEMES, ThemeColor } from "@/lib/theme";
 import { useStore } from "@/context/StoreContext";
 
@@ -27,6 +27,12 @@ export default function AdminSettingsPage() {
   const [contactFacebook, setContactFacebook] = useState("");
   const [contactLine, setContactLine] = useState("");
   const [discordServerId, setDiscordServerId] = useState("");
+  const [popupEnabled, setPopupEnabled] = useState(false);
+  const [popupTitle, setPopupTitle] = useState("ข่าวสารและกิจกรรม");
+  const [popupMediaUrl, setPopupMediaUrl] = useState("");
+  const [popupMediaType, setPopupMediaType] = useState("auto");
+  const [popupLink, setPopupLink] = useState("");
+  const [popupLinkText, setPopupLinkText] = useState("เปิดลิงก์");
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
   const [turnstileSiteKey, setTurnstileSiteKey] = useState("");
   const [turnstileSecretKey, setTurnstileSecretKey] = useState("");
@@ -65,6 +71,12 @@ export default function AdminSettingsPage() {
           setContactFacebook(s.contactFacebook || "");
           setContactLine(s.contactLine || "");
           setDiscordServerId(s.discordServerId || "");
+          setPopupEnabled(!!s.popupEnabled);
+          setPopupTitle(s.popupTitle || "ข่าวสารและกิจกรรม");
+          setPopupMediaUrl(s.popupMediaUrl || "");
+          setPopupMediaType(s.popupMediaType || "auto");
+          setPopupLink(s.popupLink || "");
+          setPopupLinkText(s.popupLinkText || "เปิดลิงก์");
           setTurnstileEnabled(!!s.turnstileEnabled);
           setTurnstileSiteKey(s.turnstileSiteKey || "");
           setTurnstileSecretKey(s.turnstileSecretKey || "");
@@ -110,6 +122,12 @@ export default function AdminSettingsPage() {
           contactFacebook,
           contactLine,
           discordServerId,
+          popupEnabled,
+          popupTitle,
+          popupMediaUrl,
+          popupMediaType,
+          popupLink,
+          popupLinkText,
           turnstileEnabled,
           turnstileSiteKey,
           turnstileSecretKey,
@@ -239,6 +257,125 @@ export default function AdminSettingsPage() {
               className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none focus:border-neutral-500 text-xs"
             />
           </div>
+        </div>
+
+        {/* Announcement Modal Popup Settings (New Feature) */}
+        <div className="p-5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold text-sm text-white flex items-center gap-2">
+              <Megaphone className="w-4 h-4 text-sky-400" />
+              <span>ระบบป๊อปอัปประกาศหน้าเว็บ (Announcement Modal Popup)</span>
+            </h2>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={popupEnabled}
+                onChange={(e) => setPopupEnabled(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-neutral-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-rose-500"></div>
+              <span className="ml-2.5 text-xs text-neutral-300">
+                {popupEnabled ? "เปิดใช้งาน (Active)" : "ปิดการใช้งาน"}
+              </span>
+            </label>
+          </div>
+          <p className="text-[11px] text-neutral-400">
+            แสดงหน้าต่างป๊อปอัปแจ้งเตือน ข่าวสาร กิจกรรม หรือกฎร้านค้า เมื่อผู้ใช้เข้าชมเว็บไซต์ (รองรับทั้งรูปภาพและไฟล์วิดีโอ MP4 พร้อมระบบติ๊กไม่แสดงอีก 1 ชั่วโมง)
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+            <div>
+              <label className="block text-neutral-300 font-medium mb-1.5 text-xs">
+                หัวข้อป๊อปอัป (Popup Title)
+              </label>
+              <input
+                type="text"
+                value={popupTitle}
+                onChange={(e) => setPopupTitle(e.target.value)}
+                placeholder="เช่น ข่าวสารและกิจกรรม หรือ กฎร้านค้า"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-neutral-300 font-medium mb-1.5 text-xs">
+                ประเภทสื่อ (Media Type)
+              </label>
+              <select
+                value={popupMediaType}
+                onChange={(e) => setPopupMediaType(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 text-sm cursor-pointer"
+              >
+                <option value="auto">ตรวจจับอัตโนมัติ (Auto Detect จากนามสกุล)</option>
+                <option value="image">รูปภาพ (Image: JPG, PNG, WEBP, GIF)</option>
+                <option value="video">วิดีโอ (Video: MP4, WebM)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-neutral-300 font-medium mb-1.5 text-xs">
+              ลิงก์รูปภาพ หรือ ไฟล์วิดีโอ MP4 (Media URL)
+            </label>
+            <input
+              type="text"
+              value={popupMediaUrl}
+              onChange={(e) => setPopupMediaUrl(e.target.value)}
+              placeholder="เช่น https://.../banner.png หรือ https://.../promo.mp4"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono focus:outline-none focus:border-neutral-500 text-xs"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-neutral-300 font-medium mb-1.5 text-xs">
+                ลิงก์ปลายทางเมื่อคลิก (Popup Target Link - เว้นว่างได้)
+              </label>
+              <input
+                type="text"
+                value={popupLink}
+                onChange={(e) => setPopupLink(e.target.value)}
+                placeholder="เช่น https://discord.gg/... หรือ /categories"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 text-xs font-mono"
+              />
+            </div>
+
+            <div>
+              <label className="block text-neutral-300 font-medium mb-1.5 text-xs">
+                ข้อความบนปุ่มเปิดลิงก์ (Button Label)
+              </label>
+              <input
+                type="text"
+                value={popupLinkText}
+                onChange={(e) => setPopupLinkText(e.target.value)}
+                placeholder="เช่น เปิดลิงก์ หรือ ดูรายละเอียด"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500 text-sm"
+              />
+            </div>
+          </div>
+
+          {/* Mini Live Preview */}
+          {popupMediaUrl.trim() && (
+            <div className="pt-2 border-t border-neutral-800">
+              <span className="text-[11px] font-semibold text-neutral-400 block mb-2">
+                ตัวอย่างการแสดงผล (Preview):
+              </span>
+              <div className="max-w-xs rounded-2xl overflow-hidden border border-neutral-700 bg-neutral-950 p-2">
+                {popupMediaType === "video" || (popupMediaType === "auto" && /\.(mp4|webm|mov)(\?.*)?$/i.test(popupMediaUrl)) ? (
+                  <video src={popupMediaUrl} autoPlay muted loop playsInline className="w-full rounded-xl max-h-48 object-cover" />
+                ) : (
+                  <img src={popupMediaUrl} alt="Preview" className="w-full rounded-xl max-h-48 object-cover" />
+                )}
+                {popupLink && (
+                  <div className="mt-2 text-center">
+                    <span className="inline-block px-3 py-1 text-[10px] font-bold rounded-lg bg-neutral-800 text-white border border-neutral-700">
+                      {popupLinkText || "เปิดลิงก์"} ↗
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Theme Color Customization */}
