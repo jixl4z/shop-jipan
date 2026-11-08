@@ -16,7 +16,19 @@ import {
   Ban,
   PackageX,
   Sparkles,
+  Layers,
 } from "lucide-react";
+
+export interface ProductOptionItem {
+  id?: string;
+  productId?: string;
+  name: string;
+  price: number;
+  originalPrice?: number | null;
+  badge?: string | null;
+  order?: number;
+  stockCount?: number;
+}
 
 interface ProductItem {
   id: string;
@@ -30,6 +42,8 @@ interface ProductItem {
   isActive: boolean;
   isSuspended?: boolean;
   isRecommended: boolean;
+  hasVariants?: boolean;
+  options?: ProductOptionItem[];
   categoryId: string;
   stockCount: number;
   category?: { name: string };
@@ -45,6 +59,12 @@ interface StockRecord {
   content: string;
   isUsed: boolean;
   createdAt: string;
+  optionId?: string | null;
+  option?: {
+    id: string;
+    name: string;
+    badge?: string | null;
+  } | null;
 }
 
 export default function AdminProductsPage() {
@@ -70,6 +90,10 @@ export default function AdminProductsPage() {
   const [formIsActive, setFormIsActive] = useState(true);
   const [formIsSuspended, setFormIsSuspended] = useState(false);
   const [formIsRecommended, setFormIsRecommended] = useState(false);
+  const [formHasVariants, setFormHasVariants] = useState(false);
+  const [formOptions, setFormOptions] = useState<
+    Array<{ id?: string; name: string; price: string; originalPrice?: string; badge?: string }>
+  >([]);
   const [formInitialStock, setFormInitialStock] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<{ msg: string; type: "success" | "error" } | null>(null);
@@ -77,6 +101,7 @@ export default function AdminProductsPage() {
   // Stock Form state
   const [rawStockInput, setRawStockInput] = useState("");
   const [stockItems, setStockItems] = useState<StockRecord[]>([]);
+  const [selectedStockOptionId, setSelectedStockOptionId] = useState("");
   const [loadingStock, setLoadingStock] = useState(false);
 
   const fetchCategories = async (): Promise<CategoryItem[]> => {
@@ -179,6 +204,20 @@ export default function AdminProductsPage() {
     setFormIsActive(prod.isActive);
     setFormIsSuspended(Boolean(prod.isSuspended));
     setFormIsRecommended(prod.isRecommended);
+    setFormHasVariants(Boolean(prod.hasVariants));
+    if (prod.options && prod.options.length > 0) {
+      setFormOptions(
+        prod.options.map((o) => ({
+          id: o.id,
+          name: o.name,
+          price: String(o.price),
+          originalPrice: o.originalPrice ? String(o.originalPrice) : "",
+          badge: o.badge || "",
+        }))
+      );
+    } else {
+      setFormOptions([]);
+    }
     setFeedback(null);
 
     let currentCats = categories;
@@ -216,6 +255,7 @@ export default function AdminProductsPage() {
 
   const openStockModal = (prod: ProductItem) => {
     setSelectedProduct(prod);
+    setSelectedStockOptionId(prod.options?.[0]?.id || "");
     setRawStockInput("");
     setIsStockOpen(true);
     loadProductStock(prod.id);
@@ -240,6 +280,8 @@ export default function AdminProductsPage() {
           description: formDesc,
           isSuspended: formIsSuspended,
           isRecommended: formIsRecommended,
+          hasVariants: formHasVariants,
+          options: formHasVariants ? formOptions : [],
           initialStock: formInitialStock,
         }),
       });
@@ -259,6 +301,8 @@ export default function AdminProductsPage() {
       setFormDesc("");
       setFormIsSuspended(false);
       setFormIsRecommended(false);
+      setFormHasVariants(false);
+      setFormOptions([]);
       setFormInitialStock("");
       await loadData();
     } catch {
@@ -290,6 +334,8 @@ export default function AdminProductsPage() {
           isActive: formIsActive,
           isSuspended: formIsSuspended,
           isRecommended: formIsRecommended,
+          hasVariants: formHasVariants,
+          options: formHasVariants ? formOptions : [],
         }),
       });
 
@@ -319,6 +365,7 @@ export default function AdminProductsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId: selectedProduct.id,
+          optionId: selectedStockOptionId || null,
           rawStock: rawStockInput,
         }),
       });
@@ -474,6 +521,11 @@ export default function AdminProductsPage() {
                             <span>{prod.name}</span>
                             {prod.isRecommended && (
                               <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
+                            )}
+                            {prod.hasVariants && (
+                              <span className="text-[10px] px-1.5 py-0.2 rounded bg-sky-500/15 border border-sky-500/30 text-sky-400 font-bold">
+                                {prod.options?.length ?? 0} ตัวเลือก
+                              </span>
                             )}
                           </div>
                           {prod.badge && (
@@ -718,6 +770,117 @@ export default function AdminProductsPage() {
                 />
               </div>
 
+              {/* Product Variants (Options) Section */}
+              <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-3">
+                <label className="flex items-center justify-between cursor-pointer">
+                  <div>
+                    <span className="font-bold text-neutral-200 block text-xs">
+                      🔀 เปิดใช้ตัวเลือกย่อยหลายแบบ (Variants / Options)
+                    </span>
+                    <span className="text-[11px] text-neutral-400 font-light block">
+                      เช่น สินค้ามีให้เลือก 1 วัน (฿10), 7 วัน (฿20), 30 วัน (฿100), ถาวร (฿299)
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={formHasVariants}
+                    onChange={(e) => {
+                      setFormHasVariants(e.target.checked);
+                      if (e.target.checked && formOptions.length === 0) {
+                        setFormOptions([
+                          { name: "1 วัน", price: formPrice || "10", badge: "🌸" },
+                          { name: "7 วัน", price: "20", badge: "" },
+                        ]);
+                      }
+                    }}
+                    className="w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-sky-500 cursor-pointer"
+                  />
+                </label>
+
+                {formHasVariants && (
+                  <div className="space-y-2.5 pt-3 border-t border-neutral-800/80">
+                    <div className="grid grid-cols-12 gap-2 text-[11px] font-semibold text-neutral-400">
+                      <div className="col-span-5">ชื่อตัวเลือก *</div>
+                      <div className="col-span-3">ราคา (฿) *</div>
+                      <div className="col-span-3">ป้ายกำกับ</div>
+                      <div className="col-span-1 text-right">ลบ</div>
+                    </div>
+
+                    {formOptions.map((opt, idx) => (
+                      <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+                        <div className="col-span-5">
+                          <input
+                            type="text"
+                            required
+                            placeholder="เช่น 1 วัน"
+                            value={opt.name}
+                            onChange={(e) => {
+                              const updated = [...formOptions];
+                              updated[idx].name = e.target.value;
+                              setFormOptions(updated);
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <input
+                            type="number"
+                            step="any"
+                            required
+                            placeholder="10"
+                            value={opt.price}
+                            onChange={(e) => {
+                              const updated = [...formOptions];
+                              updated[idx].price = e.target.value;
+                              setFormOptions(updated);
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-sky-400 font-mono text-xs"
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <input
+                            type="text"
+                            placeholder="เช่น 🌸"
+                            value={opt.badge || ""}
+                            onChange={(e) => {
+                              const updated = [...formOptions];
+                              updated[idx].badge = e.target.value;
+                              setFormOptions(updated);
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="col-span-1 text-right">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setFormOptions(formOptions.filter((_, i) => i !== idx))
+                            }
+                            className="p-1 rounded text-neutral-500 hover:text-rose-400 hover:bg-white/5 transition-colors cursor-pointer"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormOptions([
+                          ...formOptions,
+                          { name: "", price: "10", badge: "" },
+                        ])
+                      }
+                      className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 pt-1 cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>เพิ่มตัวเลือกย่อย</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-1">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -915,6 +1078,117 @@ export default function AdminProductsPage() {
                 />
               </div>
 
+              {/* Product Variants (Options) Section */}
+              <div className="p-4 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-3">
+                <label className="flex items-center justify-between cursor-pointer">
+                  <div>
+                    <span className="font-bold text-neutral-200 block text-xs">
+                      🔀 เปิดใช้ตัวเลือกย่อยหลายแบบ (Variants / Options)
+                    </span>
+                    <span className="text-[11px] text-neutral-400 font-light block">
+                      เช่น สินค้ามีให้เลือก 1 วัน (฿10), 7 วัน (฿20), 30 วัน (฿100), ถาวร (฿299)
+                    </span>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={formHasVariants}
+                    onChange={(e) => {
+                      setFormHasVariants(e.target.checked);
+                      if (e.target.checked && formOptions.length === 0) {
+                        setFormOptions([
+                          { name: "1 วัน", price: formPrice || "10", badge: "🌸" },
+                          { name: "7 วัน", price: "20", badge: "" },
+                        ]);
+                      }
+                    }}
+                    className="w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-sky-500 cursor-pointer"
+                  />
+                </label>
+
+                {formHasVariants && (
+                  <div className="space-y-2.5 pt-3 border-t border-neutral-800/80">
+                    <div className="grid grid-cols-12 gap-2 text-[11px] font-semibold text-neutral-400">
+                      <div className="col-span-5">ชื่อตัวเลือก *</div>
+                      <div className="col-span-3">ราคา (฿) *</div>
+                      <div className="col-span-3">ป้ายกำกับ</div>
+                      <div className="col-span-1 text-right">ลบ</div>
+                    </div>
+
+                    {formOptions.map((opt, idx) => (
+                      <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+                        <div className="col-span-5">
+                          <input
+                            type="text"
+                            required
+                            placeholder="เช่น 1 วัน"
+                            value={opt.name}
+                            onChange={(e) => {
+                              const updated = [...formOptions];
+                              updated[idx].name = e.target.value;
+                              setFormOptions(updated);
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <input
+                            type="number"
+                            step="any"
+                            required
+                            placeholder="10"
+                            value={opt.price}
+                            onChange={(e) => {
+                              const updated = [...formOptions];
+                              updated[idx].price = e.target.value;
+                              setFormOptions(updated);
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-sky-400 font-mono text-xs"
+                          />
+                        </div>
+                        <div className="col-span-3">
+                          <input
+                            type="text"
+                            placeholder="เช่น 🌸"
+                            value={opt.badge || ""}
+                            onChange={(e) => {
+                              const updated = [...formOptions];
+                              updated[idx].badge = e.target.value;
+                              setFormOptions(updated);
+                            }}
+                            className="w-full px-2.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-white text-xs"
+                          />
+                        </div>
+                        <div className="col-span-1 text-right">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setFormOptions(formOptions.filter((_, i) => i !== idx))
+                            }
+                            className="p-1 rounded text-neutral-500 hover:text-rose-400 hover:bg-white/5 transition-colors cursor-pointer"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setFormOptions([
+                          ...formOptions,
+                          { name: "", price: "10", badge: "" },
+                        ])
+                      }
+                      className="text-xs font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1 pt-1 cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>เพิ่มตัวเลือกย่อย</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <div className="flex flex-wrap items-center gap-4 pt-1">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
@@ -988,6 +1262,25 @@ export default function AdminProductsPage() {
 
             {/* Add Stock Form */}
             <form onSubmit={handleAddStock} className="space-y-3 text-xs">
+              {selectedProduct.hasVariants && selectedProduct.options && selectedProduct.options.length > 0 && (
+                <div>
+                  <label className="block text-neutral-300 font-semibold mb-1.5">
+                    🎯 เลือกตัวเลือกย่อยที่ต้องการเติมสต็อก:
+                  </label>
+                  <select
+                    value={selectedStockOptionId}
+                    onChange={(e) => setSelectedStockOptionId(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-medium text-xs focus:outline-none focus:border-sky-500 cursor-pointer"
+                  >
+                    {selectedProduct.options.map((opt) => (
+                      <option key={opt.id} value={opt.id}>
+                        {opt.name} (฿{opt.price}) {opt.badge ? `[${opt.badge}]` : ""} - คงเหลือ {opt.stockCount ?? 0} ชิ้น
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
               <div>
                 <label className="block text-neutral-300 font-semibold mb-1.5">
                   ➕ เพิ่มสต็อกใหม่ (วางข้อมูล 1 บรรทัด = 1 ชิ้น):
@@ -1044,9 +1337,16 @@ export default function AdminProductsPage() {
                       key={st.id}
                       className="flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-neutral-950 border border-neutral-800/90"
                     >
-                      <code className="text-emerald-400 font-mono text-[11px] truncate">
-                        {st.content}
-                      </code>
+                      <div className="flex items-center gap-2 min-w-0">
+                        {st.option && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-sky-500/15 border border-sky-500/30 text-sky-400 font-bold shrink-0">
+                            {st.option.name}
+                          </span>
+                        )}
+                        <code className="text-emerald-400 font-mono text-[11px] truncate">
+                          {st.content}
+                        </code>
+                      </div>
                       <button
                         type="button"
                         onClick={() => handleDeleteStockItem(st.id)}

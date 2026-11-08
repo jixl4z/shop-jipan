@@ -12,19 +12,43 @@ export async function GET() {
     const products = await prisma.product.findMany({
       include: {
         category: true,
+        options: {
+          include: {
+            stockItems: {
+              where: { isUsed: false },
+              select: { id: true },
+            },
+          },
+          orderBy: { order: "asc" },
+        },
         stockItems: {
           where: { isUsed: false },
-          select: { id: true },
+          select: { id: true, optionId: true },
         },
       },
       orderBy: { createdAt: "desc" },
     });
 
     const formatted = products.map((p) => {
-      const stockCount = Array.isArray(p.stockItems) ? p.stockItems.length : 0;
+      const optionsFormatted = p.options.map((opt) => ({
+        id: opt.id,
+        productId: opt.productId,
+        name: opt.name,
+        price: opt.price,
+        originalPrice: opt.originalPrice,
+        badge: opt.badge,
+        order: opt.order,
+        stockCount: opt.stockItems.length,
+      }));
+
+      const stockCount = p.hasVariants && p.options.length > 0
+        ? optionsFormatted.reduce((acc, curr) => acc + curr.stockCount, 0)
+        : p.stockItems.length;
+
       const { stockItems, ...rest } = p;
       return {
         ...rest,
+        options: optionsFormatted,
         stockCount,
       };
     });
@@ -56,6 +80,8 @@ export async function POST(req: Request) {
       categoryId,
       isRecommended,
       isSuspended,
+      hasVariants,
+      options,
       initialStock,
     } = data;
 
@@ -96,10 +122,26 @@ export async function POST(req: Request) {
         categoryId,
         isRecommended: !!isRecommended,
         isSuspended: !!isSuspended,
+        hasVariants: !!hasVariants,
       },
     });
 
-    if (initialStock && typeof initialStock === "string") {
+    // Create options if hasVariants
+    if (hasVariants && Array.isArray(options) && options.length > 0) {
+      await prisma.productOption.createMany({
+        data: options.map((opt: any, index: number) => ({
+          productId: product.id,
+          name: opt.name || `ตัวเลือกที่ ${index + 1}`,
+          price: Number(opt.price || parsedPrice),
+          originalPrice: opt.originalPrice ? Number(opt.originalPrice) : null,
+          badge: opt.badge || null,
+          order: opt.order ?? index,
+        })),
+      });
+    }
+
+    // Initial stock (for single product)
+    if (!hasVariants && initialStock && typeof initialStock === "string") {
       const lines = initialStock
         .split("\n")
         .map((l) => l.trim())
@@ -144,6 +186,8 @@ export async function PUT(req: Request) {
       isActive,
       isSuspended,
       isRecommended,
+      hasVariants,
+      options,
     } = data;
 
     if (!id) {
@@ -177,8 +221,53 @@ export async function PUT(req: Request) {
         isActive: isActive !== undefined ? Boolean(isActive) : undefined,
         isSuspended: isSuspended !== undefined ? Boolean(isSuspended) : undefined,
         isRecommended: isRecommended !== undefined ? Boolean(isRecommended) : undefined,
+        hasVariants: hasVariants !== undefined ? Boolean(hasVariants) : undefined,
       },
     });
+
+    // Update options if provided
+    if (options && Array.isArray(options)) {
+      const existingOptions = await prisma.productOption.findMany({
+        where: { productId: id },
+      });
+      const incomingIds = options.map((o: any) => o.id).filter(Boolean);
+
+      // Delete options that are not in incoming list
+      const toDelete = existingOptions.filter((o) => !incomingIds.includes(o.id));
+      if (toDelete.length > 0) {
+        await prisma.productOption.deleteMany({
+          where: { id: { in: toDelete.map((o) => o.id) } },
+        });
+      }
+
+      // Upsert incoming options
+      for (let i = 0; i < options.length; i++) {
+        const opt = options[i];
+        if (opt.id) {
+          await prisma.productOption.update({
+            where: { id: opt.id },
+            data: {
+              name: opt.name,
+              price: Number(opt.price),
+              originalPrice: opt.originalPrice ? Number(opt.originalPrice) : null,
+              badge: opt.badge || null,
+              order: opt.order ?? i,
+            },
+          });
+        } else {
+          await prisma.productOption.create({
+            data: {
+              productId: id,
+              name: opt.name,
+              price: Number(opt.price),
+              originalPrice: opt.originalPrice ? Number(opt.originalPrice) : null,
+              badge: opt.badge || null,
+              order: opt.order ?? i,
+            },
+          });
+        }
+      }
+    }
 
     return NextResponse.json({ success: true, product: updated });
   } catch (err: unknown) {

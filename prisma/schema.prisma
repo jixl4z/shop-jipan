@@ -39,30 +39,49 @@ model Category {
 }
 
 model Product {
-  id            String      @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String
-  slug          String      @unique
+  slug          String          @unique
   description   String?
   price         Float
   originalPrice Float?
   image         String
   badge         String?
-  isActive      Boolean     @default(true)
-  isSuspended   Boolean     @default(false)
-  isRecommended Boolean     @default(false)
+  isActive      Boolean         @default(true)
+  isSuspended   Boolean         @default(false)
+  isRecommended Boolean         @default(false)
+  hasVariants   Boolean         @default(false) // มีตัวเลือกย่อยหรือไม่
   categoryId    String
-  category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category      Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  options       ProductOption[]
+  stockItems    StockItem[]
+  orders        Order[]
+}
+
+model ProductOption {
+  id            String      @id @default(cuid())
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name          String      // e.g. "1 วัน", "7 วัน", "30 วัน", "ถาวร"
+  price         Float
+  originalPrice Float?
+  badge         String?     // e.g. "🌸"
+  order         Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  stockItems StockItem[]
-  orders     Order[]
+  stockItems    StockItem[]
 }
 
 model StockItem {
-  id        String    @id @default(cuid())
+  id        String          @id @default(cuid())
   productId String
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  optionId  String?
+  option    ProductOption?  @relation(fields: [optionId], references: [id], onDelete: Cascade)
   content   String    // รหัสคีย์ / บัญชี:รหัสผ่าน / ลิงก์ดาวน์โหลด
   isUsed    Boolean   @default(false)
   orderId   String?
@@ -72,21 +91,41 @@ model StockItem {
 }
 
 model Order {
-  id            String      @id @default(cuid())
-  orderNumber   String      @unique
-  userId        String
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  productId     String
-  product       Product     @relation(fields: [productId], references: [id])
-  productName   String
-  price         Float
-  quantity      Int         @default(1)
-  totalAmount   Float
-  deliveredData String      // ข้อมูลสินค้าที่ส่งมอบ (กุญแจ/รหัส)
-  status        String      @default("COMPLETED")
-  createdAt     DateTime    @default(now())
+  id             String      @id @default(cuid())
+  orderNumber    String      @unique
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId      String
+  product        Product     @relation(fields: [productId], references: [id])
+  productName    String
+  optionName     String?     // ชื่อตัวเลือกที่สั่งซื้อ (ถ้ามี)
+  price          Float
+  quantity       Int         @default(1)
+  discountAmount Float       @default(0)
+  couponCode     String?
+  totalAmount    Float
+  deliveredData  String      // ข้อมูลสินค้าที่ส่งมอบ (กุญแจ/รหัส)
+  status         String      @default("COMPLETED")
+  createdAt      DateTime    @default(now())
 
-  stockItems StockItem[]
+  stockItems     StockItem[]
+}
+
+model Coupon {
+  id             String    @id @default(cuid())
+  code           String    @unique
+  title          String    // e.g. "ลดพิเศษ 10%"
+  description    String?   // e.g. "ลด 10% (สูงสุด 50 บาท)"
+  discountType   String    @default("PERCENT") // "PERCENT" | "FIXED"
+  discountValue  Float     // e.g. 10 (%) หรือ 50 (บาท)
+  minSpend       Float     @default(0)
+  maxDiscount    Float?    // สูงสุดกี่บาท
+  usageLimit     Int?      // จำนวนครั้งทั้งหมดที่ใช้ได้ (null = ไม่จำกัด)
+  usedCount      Int       @default(0)
+  productId      String?   // ผูกเฉพาะสินค้า (null = ทุกสินค้า)
+  isActive       Boolean   @default(true)
+  expiresAt      DateTime? // หมดอายุ
+  createdAt      DateTime  @default(now())
 }
 
 model TopupTransaction {

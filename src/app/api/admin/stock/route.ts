@@ -11,13 +11,22 @@ export async function GET(req: Request) {
 
     const { searchParams } = new URL(req.url);
     const productId = searchParams.get("productId");
+    const optionId = searchParams.get("optionId");
 
     if (!productId) {
       return NextResponse.json({ error: "productId required" }, { status: 400 });
     }
 
+    const where: Record<string, unknown> = { productId };
+    if (optionId) {
+      where.optionId = optionId;
+    }
+
     const stockItems = await prisma.stockItem.findMany({
-      where: { productId },
+      where,
+      include: {
+        option: true,
+      },
       orderBy: { createdAt: "desc" },
     });
 
@@ -35,7 +44,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Access denied" }, { status: 403 });
     }
 
-    const { productId, rawStock } = await req.json();
+    const { productId, optionId, rawStock } = await req.json();
 
     if (!productId || !rawStock) {
       return NextResponse.json(
@@ -59,6 +68,7 @@ export async function POST(req: Request) {
     await prisma.stockItem.createMany({
       data: lines.map((content: string) => ({
         productId,
+        optionId: optionId || null,
         content,
         isUsed: false,
       })),

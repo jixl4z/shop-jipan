@@ -5,6 +5,16 @@ import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import { Package, PackageX, Ban, ChevronRight, Droplets, Sparkles } from "lucide-react";
 
+export interface ProductOptionItem {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number | null;
+  badge?: string | null;
+  order?: number;
+  stockCount: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -17,6 +27,8 @@ export interface Product {
   isActive?: boolean;
   isSuspended?: boolean;
   isRecommended?: boolean;
+  hasVariants?: boolean;
+  options?: ProductOptionItem[];
   stockCount: number;
   soldCount?: number;
   category?: {
@@ -180,14 +192,13 @@ export default function ProductCard({ product }: { product: Product }) {
             <span>สินค้าหมด</span>
           </button>
         ) : (
-          <button
-            type="button"
-            onClick={() => openBuyModal(product)}
+          <Link
+            href={`/products/${product.slug}`}
             className="w-full mt-3 py-2 sm:py-2.5 rounded-xl bg-[#0090ff] hover:bg-[#0077e6] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md shadow-sky-500/20 active:scale-95 transition-all cursor-pointer"
           >
             <span>รายละเอียด</span>
             <ChevronRight className="w-3.5 h-3.5" />
-          </button>
+          </Link>
         )}
       </div>
     </div>

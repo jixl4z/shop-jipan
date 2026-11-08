@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Loader2,
   Lock,
+  Ticket,
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -62,6 +63,7 @@ export default function AdminLayout({
   const navItems = [
     { href: "/admin", label: "ภาพรวมระบบ (Dashboard)", icon: LayoutDashboard },
     { href: "/admin/products", label: "จัดการสินค้า & สต็อก", icon: Package },
+    { href: "/admin/coupons", label: "คูปองส่วนลด (Coupons)", icon: Ticket },
     { href: "/admin/categories", label: "หมวดหมู่สินค้า", icon: Layers },
     { href: "/admin/orders", label: "รายการสั่งซื้อทั้งหมด", icon: ShoppingBag },
     { href: "/admin/topups", label: "ประวัติสลิป & เติมเงิน", icon: CreditCard },

@@ -95,8 +95,17 @@ export async function GET(req: Request) {
       where,
       include: {
         category: true,
+        options: {
+          include: {
+            stockItems: {
+              where: { isUsed: false },
+              select: { id: true },
+            },
+          },
+          orderBy: { order: "asc" },
+        },
         stockItems: {
-          select: { id: true },
+          select: { id: true, optionId: true },
           where: { isUsed: false },
         },
         _count: {
@@ -123,6 +132,20 @@ export async function GET(req: Request) {
           }
         : null;
 
+      const optionsFormatted = p.options.map((opt) => ({
+        id: opt.id,
+        name: opt.name,
+        price: opt.price,
+        originalPrice: opt.originalPrice,
+        badge: opt.badge,
+        order: opt.order,
+        stockCount: opt.stockItems.length,
+      }));
+
+      const totalStock = p.hasVariants && p.options.length > 0
+        ? optionsFormatted.reduce((acc, curr) => acc + curr.stockCount, 0)
+        : p.stockItems.length;
+
       return {
         id: p.id,
         name: p.name,
@@ -135,8 +158,10 @@ export async function GET(req: Request) {
         isRecommended: p.isRecommended,
         isSuspended: p.isSuspended,
         isActive: p.isActive,
+        hasVariants: p.hasVariants,
+        options: optionsFormatted,
         category: cleanCat,
-        stockCount: p.stockItems.length,
+        stockCount: totalStock,
         soldCount: p._count?.orders ?? 0,
       };
     });

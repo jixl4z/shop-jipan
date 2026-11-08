@@ -31,24 +31,42 @@ export default function BuyModal() {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>(null);
 
   // Success state with delivered digital keys
   const [orderResult, setOrderResult] = useState<{
     orderNumber: string;
     productName: string;
+    optionName?: string | null;
     deliveredData: string;
     quantity: number;
   } | null>(null);
 
+  React.useEffect(() => {
+    if (buyingProduct?.hasVariants && buyingProduct.options && buyingProduct.options.length > 0) {
+      const inStockOpt = buyingProduct.options.find((o) => o.stockCount > 0);
+      setSelectedOptionId(inStockOpt ? inStockOpt.id : buyingProduct.options[0].id);
+    } else {
+      setSelectedOptionId(null);
+    }
+    setQuantity(1);
+    setErrorMsg("");
+    setOrderResult(null);
+  }, [buyingProduct]);
+
   if (!buyingProduct) return null;
 
+  const currentOption = buyingProduct.options?.find((o) => o.id === selectedOptionId) || null;
+  const unitPrice = buyingProduct.hasVariants && currentOption ? currentOption.price : buyingProduct.price;
+  const currentStock = buyingProduct.hasVariants && currentOption ? currentOption.stockCount : buyingProduct.stockCount || 0;
+
   const isSuspended = buyingProduct.isSuspended === true || buyingProduct.isActive === false;
-  const inStock = (buyingProduct.stockCount || 0) > 0 && !isSuspended;
-  const totalCost = buyingProduct.price * quantity;
+  const inStock = currentStock > 0 && !isSuspended;
+  const totalCost = unitPrice * quantity;
   const userBalance = user?.balance || 0;
   const hasEnoughBalance = userBalance >= totalCost;
   const missingAmount = Math.max(0, totalCost - userBalance);
-  const maxAvailable = buyingProduct.stockCount || 0;
+  const maxAvailable = currentStock || 0;
 
   const handleConfirmPurchase = async () => {
     if (isSuspended) {
@@ -80,6 +98,7 @@ export default function BuyModal() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           productId: buyingProduct.id,
+          optionId: selectedOptionId,
           quantity,
         }),
       });
@@ -95,6 +114,7 @@ export default function BuyModal() {
       setOrderResult({
         orderNumber: data.orderNumber,
         productName: data.productName,
+        optionName: data.optionName,
         deliveredData: data.deliveredData,
         quantity,
       });
@@ -156,6 +176,11 @@ export default function BuyModal() {
                 <span className="text-white font-mono font-medium">
                   {orderResult.orderNumber}
                 </span>
+                {orderResult.optionName && (
+                  <span className="text-sky-400 font-bold ml-1.5">
+                    [{orderResult.optionName}]
+                  </span>
+                )}
               </p>
             </div>
 
@@ -206,11 +231,46 @@ export default function BuyModal() {
                 <h3 className="font-bold text-base text-white line-clamp-2 leading-tight">
                   {buyingProduct.name}
                 </h3>
-                <div className="text-sm font-bold font-mono text-white mt-1">
-                  ฿{buyingProduct.price.toFixed(2)} / ชิ้น
+                <div className="text-sm font-bold font-mono text-sky-400 mt-1">
+                  ฿{unitPrice.toFixed(2)} / ชิ้น
                 </div>
               </div>
             </div>
+
+            {/* Options Selection */}
+            {buyingProduct.hasVariants && buyingProduct.options && buyingProduct.options.length > 0 && (
+              <div className="mb-4 space-y-2">
+                <label className="text-xs font-semibold text-neutral-300 block">เลือกตัวเลือกสินค้า:</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {buyingProduct.options.map((opt) => {
+                    const isSelected = selectedOptionId === opt.id;
+                    const optInStock = opt.stockCount > 0;
+                    return (
+                      <button
+                        type="button"
+                        key={opt.id}
+                        onClick={() => setSelectedOptionId(opt.id)}
+                        className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer ${
+                          isSelected
+                            ? "bg-[#0090ff]/10 border-[#0090ff] ring-1 ring-[#0090ff]/50 text-white"
+                            : "bg-neutral-950 border-neutral-800 text-neutral-300 hover:border-neutral-700"
+                        }`}
+                      >
+                        <div className="font-bold text-xs truncate">
+                          {opt.name} {opt.badge && <span>{opt.badge}</span>}
+                        </div>
+                        <div className="flex items-center justify-between mt-1 text-[11px]">
+                          <span className="text-sky-400 font-mono font-bold">฿{opt.price.toFixed(0)}</span>
+                          <span className={optInStock ? "text-neutral-400" : "text-rose-500 font-bold"}>
+                            {optInStock ? `เหลือ ${opt.stockCount}` : "หมด"}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {errorMsg && (
               <div className="mb-4 px-3.5 py-2.5 rounded-xl bg-rose-950/80 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
