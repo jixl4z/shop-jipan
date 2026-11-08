@@ -15,6 +15,7 @@ export interface Product {
   image: string;
   badge?: string;
   stockCount: number;
+  soldCount?: number;
   category?: {
     id: string;
     name: string;

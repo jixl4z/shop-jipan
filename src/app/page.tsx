@@ -14,6 +14,7 @@ import AuthModal from "@/components/AuthModal";
 import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
+import BestSellerSpotlight from "@/components/BestSellerSpotlight";
 import { Search, ShoppingBag, Loader2, Package } from "lucide-react";
 
 export default function HomePage() {
@@ -69,7 +70,10 @@ export default function HomePage() {
         <HeroBanner />
 
         {/* Storefront Section (Directly Accessible, Balanced) */}
-        <div id="products" className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+        <div id="products" className="max-w-6xl mx-auto px-4 sm:px-6 pb-12 space-y-6 sm:space-y-8">
+          {/* Best Seller Spotlight Banner */}
+          <BestSellerSpotlight products={products} />
+
           {/* Categories Horizontal Tabs */}
           <section id="categories">
             <CategoryFilter

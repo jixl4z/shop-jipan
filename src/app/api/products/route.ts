@@ -99,6 +99,9 @@ export async function GET(req: Request) {
           select: { id: true },
           where: { isUsed: false },
         },
+        _count: {
+          select: { orders: true },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -132,6 +135,7 @@ export async function GET(req: Request) {
         isRecommended: p.isRecommended,
         category: cleanCat,
         stockCount: p.stockItems.length,
+        soldCount: p._count?.orders ?? 0,
       };
     });
 
