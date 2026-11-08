@@ -42,13 +42,23 @@ export default function BuyModal() {
 
   if (!buyingProduct) return null;
 
+  const isSuspended = buyingProduct.isSuspended === true || buyingProduct.isActive === false;
+  const inStock = (buyingProduct.stockCount || 0) > 0 && !isSuspended;
   const totalCost = buyingProduct.price * quantity;
   const userBalance = user?.balance || 0;
   const hasEnoughBalance = userBalance >= totalCost;
   const missingAmount = Math.max(0, totalCost - userBalance);
-  const maxAvailable = buyingProduct.stockCount || 1;
+  const maxAvailable = buyingProduct.stockCount || 0;
 
   const handleConfirmPurchase = async () => {
+    if (isSuspended) {
+      setErrorMsg("สินค้านี้ปิดการขายชั่วคราว ไม่สามารถสั่งซื้อได้");
+      return;
+    }
+    if (!inStock) {
+      setErrorMsg("สินค้าหมด รอเติมสต็อก ไม่สามารถสั่งซื้อได้");
+      return;
+    }
     if (!user) {
       closeBuyModal();
       openAuth("login");
@@ -267,7 +277,21 @@ export default function BuyModal() {
             )}
 
             {/* Action Buttons */}
-            {!user ? (
+            {isSuspended ? (
+              <button
+                disabled
+                className="w-full py-3.5 rounded-xl font-bold text-sm bg-neutral-900 border border-neutral-800 text-neutral-500 cursor-not-allowed text-center"
+              >
+                สินค้านี้ปิดการขายชั่วคราว
+              </button>
+            ) : !inStock ? (
+              <button
+                disabled
+                className="w-full py-3.5 rounded-xl font-bold text-sm bg-neutral-900 border border-neutral-800 text-neutral-500 cursor-not-allowed text-center"
+              >
+                สินค้าหมด (รอเติมสต็อก)
+              </button>
+            ) : !user ? (
               <button
                 onClick={() => {
                   closeBuyModal();

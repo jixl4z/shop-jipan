@@ -48,6 +48,7 @@ model Product {
   image         String
   badge         String?
   isActive      Boolean     @default(true)
+  isSuspended   Boolean     @default(false)
   isRecommended Boolean     @default(false)
   categoryId    String
   category      Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)

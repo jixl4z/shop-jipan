@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
-import { ShoppingCart, Sparkles, Tag, Package } from "lucide-react";
+import { Package, PackageX, Ban, ChevronRight, Droplets, Sparkles } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -11,133 +11,185 @@ export interface Product {
   slug: string;
   description?: string;
   price: number;
-  originalPrice?: number;
+  originalPrice?: number | null;
   image: string;
-  badge?: string;
+  badge?: string | null;
+  isActive?: boolean;
+  isSuspended?: boolean;
+  isRecommended?: boolean;
   stockCount: number;
   soldCount?: number;
   category?: {
     id: string;
     name: string;
     slug: string;
-  };
+  } | null;
 }
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { openBuyModal, currentTheme } = useStore();
-  const inStock = product.stockCount > 0;
+  const { openBuyModal } = useStore();
+
+  const isSuspended = product.isSuspended === true || product.isActive === false;
+  const inStock = product.stockCount > 0 && !isSuspended;
+  const hasDiscount =
+    product.originalPrice &&
+    product.originalPrice > product.price;
+  const discountPercent = hasDiscount
+    ? Math.round(((product.originalPrice! - product.price) / product.originalPrice!) * 100)
+    : 0;
 
   return (
-    <div className="flex flex-col rounded-2xl glass-panel interactive-card overflow-hidden group relative border border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300">
-      
-      {/* Product Image Container */}
+    <div className="flex flex-col rounded-2xl sm:rounded-3xl bg-[#0b0c10] border border-white/[0.08] hover:border-white/20 p-3 sm:p-3.5 shadow-lg group relative overflow-hidden transition-all duration-300">
+      {/* Product Image Area */}
       <Link
         href={`/products/${product.slug}`}
-        className="block relative w-full aspect-[16/10] bg-[#07080a] overflow-hidden"
+        className="block relative w-full aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-black/60 border border-white/[0.05]"
       >
+        {/* Main image */}
         {product.image && !product.image.startsWith("/images/") ? (
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            className={`w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 ${
+              isSuspended
+                ? "opacity-40 grayscale"
+                : !inStock
+                ? "opacity-55"
+                : "opacity-100"
+            }`}
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-neutral-900 to-neutral-950 text-neutral-600 group-hover:text-neutral-400 transition-colors">
+          <div
+            className={`w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-neutral-900 to-neutral-950 text-neutral-600 ${
+              isSuspended
+                ? "opacity-40 grayscale"
+                : !inStock
+                ? "opacity-55"
+                : "opacity-100"
+            }`}
+          >
             <Package className="w-10 h-10 stroke-[1.2]" />
-            <span className="text-[10px] font-mono mt-2 tracking-widest text-neutral-500 uppercase">JIPAN GOODS</span>
+            <span className="text-[10px] font-mono mt-2 tracking-widest text-neutral-500 uppercase">
+              JIPAN GOODS
+            </span>
           </div>
         )}
 
-        {/* Top Badges (Left: Custom Badge, Right: Stock Status Pill) */}
+        {/* Top Badges (e.g. ยอดนิยม or custom badge) */}
         <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
           <div>
-            {product.badge && (
-              <span className="px-2.5 py-0.5 rounded-md bg-white text-black text-[10px] font-black uppercase tracking-wider shadow-md backdrop-blur-md flex items-center gap-1">
+            {product.isRecommended || product.badge === "ยอดนิยม" ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-500 text-white text-[10px] font-bold shadow-md">
+                <Droplets className="w-3 h-3 fill-current" />
+                <span>ยอดนิยม</span>
+              </span>
+            ) : product.badge ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold shadow-md">
                 <Sparkles className="w-3 h-3 fill-current" />
                 <span>{product.badge}</span>
               </span>
-            )}
-          </div>
-
-          <div>
-            {inStock ? (
-              <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-semibold backdrop-blur-md shadow-md">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>พร้อมขาย</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/70 border border-white/10 text-neutral-400 text-[10px] font-medium backdrop-blur-md shadow-md">
-                <span className="w-1.5 h-1.5 rounded-full bg-neutral-500" />
-                <span>สินค้าหมด</span>
-              </div>
-            )}
+            ) : null}
           </div>
         </div>
+
+        {/* Center Floating Status Overlays (สินค้าหมด / ปิดขายชั่วคราว) */}
+        {isSuspended ? (
+          <div className="absolute inset-0 flex items-center justify-center p-3 pointer-events-none z-10">
+            <div className="px-3.5 py-2.5 rounded-2xl bg-black/85 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center text-center shadow-2xl">
+              <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white mb-1">
+                <Ban className="w-4 h-4" />
+              </div>
+              <span className="text-white font-bold text-xs">ปิดขาย</span>
+              <span className="text-neutral-400 text-[10px] font-light mt-0.5">
+                ปิดชั่วคราว
+              </span>
+            </div>
+          </div>
+        ) : !inStock ? (
+          <div className="absolute inset-0 flex items-center justify-center p-3 pointer-events-none z-10">
+            <div className="px-3.5 py-2.5 rounded-2xl bg-black/85 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center text-center shadow-2xl">
+              <div className="w-7 h-7 rounded-lg bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-500 mb-1">
+                <PackageX className="w-4 h-4" />
+              </div>
+              <span className="text-rose-500 font-bold text-xs">สินค้าหมด</span>
+              <span className="text-neutral-400 text-[10px] font-light mt-0.5">
+                รอเติมสต็อก
+              </span>
+            </div>
+          </div>
+        ) : null}
       </Link>
 
-      {/* Content Body */}
-      <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between space-y-3 sm:space-y-4">
+      {/* Product Details */}
+      <div className="flex-1 flex flex-col justify-between pt-2.5">
         <div>
-          {/* Category Tag */}
-          {product.category && (
-            <div className="text-[10px] sm:text-[11px] font-mono tracking-wider text-neutral-400 uppercase mb-1 flex items-center gap-1">
-              <Tag className="w-3 h-3 text-neutral-500" />
-              <span>{product.category.name}</span>
-            </div>
-          )}
-
-          {/* Product Title */}
+          {/* Title */}
           <Link href={`/products/${product.slug}`} className="block">
-            <h3 className="font-bold text-xs sm:text-base text-white group-hover:text-neutral-200 line-clamp-2 leading-snug transition-colors">
+            <h3 className="font-bold text-xs sm:text-sm text-white group-hover:text-sky-400 transition-colors line-clamp-1 leading-snug">
               {product.name}
             </h3>
           </Link>
 
-          {/* Stock remaining info */}
-          <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs font-mono text-neutral-400 flex items-center gap-1.5">
-            {inStock ? (
-              <span>
-                คงเหลือ <strong className="text-white font-semibold">{product.stockCount}</strong> ชิ้น
-              </span>
-            ) : (
-              <span className="text-neutral-500">สินค้าหมดชั่วคราว</span>
+          {/* Price & Discount Tag */}
+          <div className="flex items-center gap-1.5 sm:gap-2 mt-1 flex-wrap">
+            <span className="text-sky-400 font-extrabold text-sm sm:text-base font-mono">
+              ฿{product.price.toFixed(2)}
+            </span>
+            {hasDiscount && (
+              <>
+                <span className="text-neutral-500 line-through text-xs font-mono">
+                  ฿{product.originalPrice!.toFixed(2)}
+                </span>
+                <span className="px-1.5 py-0.5 rounded-md bg-rose-500/15 border border-rose-500/30 text-rose-500 text-[10px] font-bold">
+                  ลด {discountPercent}%
+                </span>
+              </>
             )}
           </div>
-        </div>
 
-        {/* Price & CTA Button */}
-        <div className="pt-2.5 sm:pt-3 border-t border-white/[0.08] space-y-2.5 sm:space-y-3">
-          <div className="flex items-baseline justify-between">
-            <span className="text-[10px] sm:text-[11px] text-neutral-400 font-light">ราคาสินค้า</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base sm:text-xl font-extrabold font-mono text-white tracking-tight">
-                ฿{product.price.toFixed(2)}
-              </span>
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-[10px] sm:text-xs text-neutral-500 line-through font-mono">
-                  ฿{product.originalPrice.toFixed(2)}
-                </span>
-              )}
-            </div>
+          {/* Stock remaining & Sold count */}
+          <div className="text-[11px] text-neutral-400 font-light flex items-center gap-1.5 mt-0.5">
+            <span>
+              คงเหลือ <strong className="text-white font-mono">{product.stockCount}</strong>
+            </span>
+            <span className="text-neutral-600">|</span>
+            <span>
+              ขายแล้ว <strong className="text-neutral-300 font-mono">{product.soldCount ?? 0}</strong>
+            </span>
           </div>
-
-          {/* Order Button (Reactive to Theme) */}
-          <button
-            onClick={() => openBuyModal(product)}
-            disabled={!inStock}
-            className={`w-full py-2 sm:py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 sm:gap-2 transition-all duration-200 shadow-md cursor-pointer ${
-              inStock
-                ? `${currentTheme.accent} active:scale-[0.98] btn-shine`
-                : "bg-neutral-900 text-neutral-500 cursor-not-allowed border border-neutral-800"
-            }`}
-          >
-            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            <span>{inStock ? "สั่งซื้อสินค้า" : "สินค้าหมด"}</span>
-          </button>
         </div>
-      </div>
 
+        {/* Action Button */}
+        {isSuspended ? (
+          <button
+            type="button"
+            disabled
+            className="w-full mt-3 py-2 sm:py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-neutral-500 font-semibold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed select-none"
+          >
+            <Ban className="w-3.5 h-3.5" />
+            <span>ปิดขายชั่วคราว</span>
+          </button>
+        ) : !inStock ? (
+          <button
+            type="button"
+            disabled
+            className="w-full mt-3 py-2 sm:py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06] text-neutral-500 font-semibold text-xs flex items-center justify-center gap-1.5 cursor-not-allowed select-none"
+          >
+            <PackageX className="w-3.5 h-3.5" />
+            <span>สินค้าหมด</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => openBuyModal(product)}
+            className="w-full mt-3 py-2 sm:py-2.5 rounded-xl bg-[#0090ff] hover:bg-[#0077e6] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md shadow-sky-500/20 active:scale-95 transition-all cursor-pointer"
+          >
+            <span>รายละเอียด</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
     </div>
   );
 }

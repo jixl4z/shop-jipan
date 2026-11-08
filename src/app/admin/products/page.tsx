@@ -13,6 +13,9 @@ import {
   X,
   Search,
   Star,
+  Ban,
+  PackageX,
+  Sparkles,
 } from "lucide-react";
 
 interface ProductItem {
@@ -25,6 +28,7 @@ interface ProductItem {
   image: string;
   badge?: string;
   isActive: boolean;
+  isSuspended?: boolean;
   isRecommended: boolean;
   categoryId: string;
   stockCount: number;
@@ -64,6 +68,7 @@ export default function AdminProductsPage() {
   const [formBadge, setFormBadge] = useState("");
   const [formDesc, setFormDesc] = useState("");
   const [formIsActive, setFormIsActive] = useState(true);
+  const [formIsSuspended, setFormIsSuspended] = useState(false);
   const [formIsRecommended, setFormIsRecommended] = useState(false);
   const [formInitialStock, setFormInitialStock] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -172,6 +177,7 @@ export default function AdminProductsPage() {
     setFormBadge(prod.badge || "");
     setFormDesc(prod.description || "");
     setFormIsActive(prod.isActive);
+    setFormIsSuspended(Boolean(prod.isSuspended));
     setFormIsRecommended(prod.isRecommended);
     setFeedback(null);
 
@@ -184,6 +190,28 @@ export default function AdminProductsPage() {
     }
 
     setIsEditOpen(true);
+  };
+
+  const handleToggleSuspend = async (prod: ProductItem) => {
+    try {
+      const nextSuspended = !prod.isSuspended;
+      const res = await fetch("/api/admin/products", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: prod.id,
+          isSuspended: nextSuspended,
+        }),
+      });
+      if (res.ok) {
+        await loadData();
+      } else {
+        const d = await res.json();
+        alert(d.error || "เกิดข้อผิดพลาด");
+      }
+    } catch {
+      alert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+    }
   };
 
   const openStockModal = (prod: ProductItem) => {
@@ -210,6 +238,7 @@ export default function AdminProductsPage() {
           image: formImage,
           badge: formBadge,
           description: formDesc,
+          isSuspended: formIsSuspended,
           isRecommended: formIsRecommended,
           initialStock: formInitialStock,
         }),
@@ -228,6 +257,7 @@ export default function AdminProductsPage() {
       setFormImage("");
       setFormBadge("");
       setFormDesc("");
+      setFormIsSuspended(false);
       setFormIsRecommended(false);
       setFormInitialStock("");
       await loadData();
@@ -258,6 +288,7 @@ export default function AdminProductsPage() {
           badge: formBadge || null,
           description: formDesc,
           isActive: formIsActive,
+          isSuspended: formIsSuspended,
           isRecommended: formIsRecommended,
         }),
       });
@@ -460,13 +491,20 @@ export default function AdminProductsPage() {
                       ฿{prod.price.toFixed(2)}
                     </td>
                     <td className="p-3.5">
-                      {prod.isActive ? (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">
-                          เปิดขาย
+                      {prod.isSuspended || !prod.isActive ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full bg-neutral-800 text-neutral-300 border border-neutral-700 font-semibold">
+                          <Ban className="w-3 h-3 text-neutral-400" />
+                          <span>ปิดขายชั่วคราว</span>
+                        </span>
+                      ) : prod.stockCount <= 0 ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/25 font-semibold">
+                          <PackageX className="w-3 h-3 text-rose-500" />
+                          <span>สินค้าหมด</span>
                         </span>
                       ) : (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-800 text-neutral-400 border border-neutral-700 font-semibold">
-                          ปิดชั่วคราว
+                        <span className="inline-flex items-center gap-1 text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>พร้อมขาย</span>
                         </span>
                       )}
                     </td>
@@ -483,6 +521,18 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="p-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleSuspend(prod)}
+                          className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
+                            prod.isSuspended
+                              ? "bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20"
+                              : "bg-neutral-800 border-neutral-700 text-neutral-400 hover:text-white hover:bg-neutral-700"
+                          }`}
+                          title={prod.isSuspended ? "คลิกเพื่อเปิดจำหน่ายตามปกติ" : "คลิกเพื่อปิดขายชั่วคราว"}
+                        >
+                          <Ban className="w-3.5 h-3.5" />
+                        </button>
                         <button
                           onClick={() => openStockModal(prod)}
                           className="px-2.5 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
@@ -621,9 +671,16 @@ export default function AdminProductsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">
-                    ราคาเต็ม (สำหรับขีดฆ่า)
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-neutral-300 font-medium">
+                      ราคาเต็ม (สำหรับขีดฆ่า)
+                    </label>
+                    {Number(formOriginalPrice) > Number(formPrice) && Number(formPrice) > 0 && (
+                      <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/25">
+                        ลด {Math.round(((Number(formOriginalPrice) - Number(formPrice)) / Number(formOriginalPrice)) * 100)}%
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="number"
                     step="any"
@@ -661,15 +718,27 @@ export default function AdminProductsPage() {
                 />
               </div>
 
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formIsRecommended}
-                  onChange={(e) => setFormIsRecommended(e.target.checked)}
-                  className="rounded border-neutral-700 bg-neutral-950"
-                />
-                <span className="text-neutral-300">แสดงในหมวดหมู่ &quot;สินค้าแนะนำ&quot; หน้าแรก</span>
-              </label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-1">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formIsRecommended}
+                    onChange={(e) => setFormIsRecommended(e.target.checked)}
+                    className="rounded border-neutral-700 bg-neutral-950 text-sky-500"
+                  />
+                  <span className="text-neutral-300 text-xs">สินค้าแนะนำ (💧 ยอดนิยม)</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formIsSuspended}
+                    onChange={(e) => setFormIsSuspended(e.target.checked)}
+                    className="rounded border-neutral-700 bg-neutral-950 text-amber-500"
+                  />
+                  <span className="text-amber-400 text-xs font-medium">ปิดขายชั่วคราว (Suspended)</span>
+                </label>
+              </div>
 
               {/* Initial Stock Keys */}
               <div>
@@ -802,9 +871,16 @@ export default function AdminProductsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-neutral-300 font-medium mb-1">
-                    ราคาเต็ม (สำหรับขีดฆ่า)
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-neutral-300 font-medium">
+                      ราคาเต็ม (สำหรับขีดฆ่า)
+                    </label>
+                    {Number(formOriginalPrice) > Number(formPrice) && Number(formPrice) > 0 && (
+                      <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/25">
+                        ลด {Math.round(((Number(formOriginalPrice) - Number(formPrice)) / Number(formOriginalPrice)) * 100)}%
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="number"
                     step="any"
@@ -839,7 +915,7 @@ export default function AdminProductsPage() {
                 />
               </div>
 
-              <div className="flex items-center gap-6 pt-1">
+              <div className="flex flex-wrap items-center gap-4 pt-1">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
@@ -858,6 +934,16 @@ export default function AdminProductsPage() {
                     className="rounded border-neutral-700 bg-neutral-950"
                   />
                   <span className="text-neutral-300">สินค้าแนะนำ (Recommended)</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formIsSuspended}
+                    onChange={(e) => setFormIsSuspended(e.target.checked)}
+                    className="rounded border-neutral-700 bg-neutral-950 text-amber-500"
+                  />
+                  <span className="text-amber-400 font-medium">ปิดขายชั่วคราว (Suspended)</span>
                 </label>
               </div>
 

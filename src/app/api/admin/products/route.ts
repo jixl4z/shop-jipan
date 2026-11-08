@@ -55,6 +55,7 @@ export async function POST(req: Request) {
       badge,
       categoryId,
       isRecommended,
+      isSuspended,
       initialStock,
     } = data;
 
@@ -94,6 +95,7 @@ export async function POST(req: Request) {
         badge: badge || null,
         categoryId,
         isRecommended: !!isRecommended,
+        isSuspended: !!isSuspended,
       },
     });
 
@@ -140,6 +142,7 @@ export async function PUT(req: Request) {
       badge,
       categoryId,
       isActive,
+      isSuspended,
       isRecommended,
     } = data;
 
@@ -172,6 +175,7 @@ export async function PUT(req: Request) {
         badge: badge !== undefined ? badge : undefined,
         categoryId,
         isActive: isActive !== undefined ? Boolean(isActive) : undefined,
+        isSuspended: isSuspended !== undefined ? Boolean(isSuspended) : undefined,
         isRecommended: isRecommended !== undefined ? Boolean(isRecommended) : undefined,
       },
     });

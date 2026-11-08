@@ -133,6 +133,8 @@ export async function GET(req: Request) {
         image: p.image,
         badge: p.badge,
         isRecommended: p.isRecommended,
+        isSuspended: p.isSuspended,
+        isActive: p.isActive,
         category: cleanCat,
         stockCount: p.stockItems.length,
         soldCount: p._count?.orders ?? 0,
