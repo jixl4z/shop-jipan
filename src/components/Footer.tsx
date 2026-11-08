@@ -45,7 +45,7 @@ export default function Footer() {
             }`}
           >
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-600 to-red-500 border border-white/20 flex items-center justify-center font-black text-white text-base shadow-md overflow-hidden shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center font-black text-white text-base shadow-md overflow-hidden shrink-0">
                 {setting?.logoUrl && setting.logoUrl !== "/logo.png" ? (
                   <img
                     src={setting.logoUrl}
@@ -67,7 +67,7 @@ export default function Footer() {
             </p>
 
             <div className="flex items-center gap-2 text-xs text-neutral-400 pt-0.5">
-              <ShieldCheck className="w-4 h-4 text-rose-500 shrink-0" />
+              <ShieldCheck className="w-4 h-4 text-white shrink-0" />
               <span className="font-light">การันตีความปลอดภัย 100% เชื่อมต่อระบบตรวจสลิปมาตรฐาน</span>
             </div>
 
@@ -154,7 +154,7 @@ export default function Footer() {
                   href="/reviews"
                   className="text-neutral-400 hover:text-white transition-colors flex items-center gap-2 py-0.5 group"
                 >
-                  <Star className="w-3.5 h-3.5 text-neutral-400 group-hover:text-rose-400 transition-colors shrink-0" />
+                  <Star className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" />
                   <span>รีวิวจากลูกค้า (5 ดาว)</span>
                 </Link>
               </li>
@@ -163,7 +163,7 @@ export default function Footer() {
                   href="/news"
                   className="text-neutral-400 hover:text-white transition-colors flex items-center gap-2 py-0.5 group"
                 >
-                  <Megaphone className="w-3.5 h-3.5 text-neutral-400 group-hover:text-rose-400 transition-colors shrink-0" />
+                  <Megaphone className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" />
                   <span>โปรโมชั่นและข่าวสาร</span>
                 </Link>
               </li>
@@ -172,7 +172,7 @@ export default function Footer() {
                   href="/docs"
                   className="text-neutral-400 hover:text-white transition-colors flex items-center gap-2 py-0.5 group"
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-neutral-400 group-hover:text-rose-400 transition-colors shrink-0" />
+                  <BookOpen className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" />
                   <span>คู่มือการใช้งาน (Guide)</span>
                 </Link>
               </li>
@@ -181,7 +181,7 @@ export default function Footer() {
                   href="/support"
                   className="text-neutral-400 hover:text-white transition-colors flex items-center gap-2 py-0.5 group"
                 >
-                  <LifeBuoy className="w-3.5 h-3.5 text-neutral-400 group-hover:text-rose-400 transition-colors shrink-0" />
+                  <LifeBuoy className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" />
                   <span>ศูนย์ช่วยเหลือ & เคลม</span>
                 </Link>
               </li>
@@ -191,7 +191,7 @@ export default function Footer() {
                   onClick={openCookieSettings}
                   className="text-neutral-400 hover:text-white transition-colors flex items-center gap-2 py-0.5 group cursor-pointer text-left"
                 >
-                  <Cookie className="w-3.5 h-3.5 text-neutral-400 group-hover:text-rose-400 transition-colors shrink-0" />
+                  <Cookie className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" />
                   <span>ตั้งค่าความเป็นส่วนตัวคุกกี้</span>
                 </button>
               </li>
@@ -208,7 +208,7 @@ export default function Footer() {
                     href={setting.contactDiscord}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[11px] text-rose-500 hover:text-rose-400 flex items-center gap-1 font-semibold"
+                    className="text-[11px] text-neutral-300 hover:text-white flex items-center gap-1 font-semibold"
                   >
                     <span>เข้าร่วม</span>
                     <ExternalLink className="w-3 h-3" />
@@ -269,7 +269,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
             <span>สร้างด้วยความใส่ใจและปลอดภัย</span>
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <Heart className="w-3.5 h-3.5 text-white fill-white" />
           </div>
         </div>
       </div>

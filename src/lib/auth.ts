@@ -125,6 +125,10 @@ export async function ensureDatabaseSchema() {
   try { await prisma.$executeRawUnsafe(`ALTER TABLE "TopupTransaction" ADD COLUMN "rawPayload" TEXT;`); } catch {}
 
   // Product & StockItem columns
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Product" ADD COLUMN "isSuspended" INTEGER DEFAULT 0;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Product" ADD COLUMN "isActive" INTEGER DEFAULT 1;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Product" ADD COLUMN "isRecommended" INTEGER DEFAULT 0;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Product" ADD COLUMN "badge" TEXT;`); } catch {}
   try { await prisma.$executeRawUnsafe(`ALTER TABLE "Product" ADD COLUMN "hasVariants" INTEGER DEFAULT 0;`); } catch {}
   try { await prisma.$executeRawUnsafe(`ALTER TABLE "StockItem" ADD COLUMN "optionId" TEXT;`); } catch {}
 }

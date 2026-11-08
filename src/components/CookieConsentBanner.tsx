@@ -57,7 +57,7 @@ export default function CookieConsentBanner() {
         >
           <div className="rounded-2xl border border-white/[0.12] bg-[#0c0d12]/95 text-white shadow-2xl p-4 sm:p-5 space-y-3.5 backdrop-blur-2xl shadow-black/90">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
                 <Cookie className="w-5 h-5" />
               </div>
               <div className="space-y-1 min-w-0">
@@ -74,9 +74,9 @@ export default function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={handleAcceptAll}
-                className="flex-1 py-2 sm:py-2.5 rounded-xl bg-[#ff334b] hover:bg-[#e02b41] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md shadow-rose-500/20 active:scale-95"
+                className="flex-1 py-2 sm:py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md active:scale-95"
               >
-                <Check className="w-4 h-4 text-white" />
+                <Check className="w-4 h-4 text-black" />
                 <span>ยอมรับทั้งหมด</span>
               </button>
               <button

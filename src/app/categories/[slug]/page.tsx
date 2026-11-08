@@ -7,7 +7,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard, { Product } from "@/components/ProductCard";
 import AuthModal from "@/components/AuthModal";
-import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
 import { ArrowLeft, Loader2, Layers, ShoppingBag, Package } from "lucide-react";
@@ -31,25 +30,23 @@ export default function CategoryDetailPage() {
       fetch("/api/categories").then((r) => r.json()),
       fetch(`/api/products?category=${encodeURIComponent(slug)}`).then((r) => r.json()),
     ])
-      .then(([catData, prodData]) => {
-        if (catData.categories) {
-          const matched = catData.categories.find(
-            (c: { slug: string; name: string; bannerImage?: string; description?: string }) =>
-              c.slug === slug ||
-              c.slug === rawSlug ||
-              c.name === slug ||
-              c.slug?.toLowerCase() === slug.toLowerCase() ||
-              c.name?.toLowerCase() === slug.toLowerCase()
-          );
-          if (matched) {
-            setCategoryName(matched.name);
-            setCategoryDesc(matched.description || "");
-            setCategoryBanner(matched.bannerImage || null);
-          }
+      .then(([catData, prodData]: any) => {
+        const cats = Array.isArray(catData) ? catData : (catData?.categories || []);
+        const matched = cats.find(
+          (c: { slug: string; name: string; bannerImage?: string; description?: string }) =>
+            c.slug === slug ||
+            c.slug === rawSlug ||
+            c.name === slug ||
+            c.slug?.toLowerCase() === slug.toLowerCase() ||
+            c.name?.toLowerCase() === slug.toLowerCase()
+        );
+        if (matched) {
+          setCategoryName(matched.name);
+          setCategoryDesc(matched.description || "");
+          setCategoryBanner(matched.bannerImage || null);
         }
-        if (prodData.products) {
-          setProducts(prodData.products);
-        }
+        const prods = Array.isArray(prodData) ? prodData : (prodData?.products || []);
+        setProducts(prods);
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
@@ -147,7 +144,6 @@ export default function CategoryDetailPage() {
       <Footer />
 
       <AuthModal />
-      <TopupModal />
       <BuyModal />
       <MyOrdersModal />
     </div>

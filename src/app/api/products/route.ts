@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { ensureDatabaseSchema } from "@/lib/auth";
 
 export async function GET(req: Request) {
   try {
@@ -91,29 +92,86 @@ export async function GET(req: Request) {
       ];
     }
 
-    const products = await prisma.product.findMany({
-      where,
-      include: {
-        category: true,
-        options: {
+    let products: any[] = [];
+    try {
+      products = await prisma.product.findMany({
+        where,
+        include: {
+          category: true,
+          options: {
+            include: {
+              stockItems: {
+                where: { isUsed: false },
+                select: { id: true },
+              },
+            },
+            orderBy: { order: "asc" },
+          },
+          stockItems: {
+            select: { id: true, optionId: true },
+            where: { isUsed: false },
+          },
+          _count: {
+            select: { orders: true },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      });
+    } catch (dbErr: any) {
+      console.warn("Product findMany error, auto-healing schema:", dbErr?.message);
+      await ensureDatabaseSchema().catch(() => {});
+      try {
+        products = await prisma.product.findMany({
+          where,
           include: {
+            category: true,
+            options: {
+              include: {
+                stockItems: {
+                  where: { isUsed: false },
+                  select: { id: true },
+                },
+              },
+              orderBy: { order: "asc" },
+            },
             stockItems: {
+              select: { id: true, optionId: true },
               where: { isUsed: false },
-              select: { id: true },
+            },
+            _count: {
+              select: { orders: true },
             },
           },
-          orderBy: { order: "asc" },
-        },
-        stockItems: {
-          select: { id: true, optionId: true },
-          where: { isUsed: false },
-        },
-        _count: {
-          select: { orders: true },
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+          orderBy: { createdAt: "desc" },
+        });
+      } catch (retryErr) {
+        // Fallback to raw query without crashing
+        const rawProducts: any = await prisma.$queryRawUnsafe(`SELECT * FROM "Product" WHERE "isActive" = 1 OR "isActive" IS NULL`);
+        if (Array.isArray(rawProducts)) {
+          return NextResponse.json({
+            products: rawProducts.map((p: any) => ({
+              id: p.id,
+              name: p.name,
+              slug: p.slug,
+              description: p.description,
+              price: Number(p.price || 0),
+              originalPrice: p.originalPrice ? Number(p.originalPrice) : null,
+              image: p.image,
+              badge: p.badge || null,
+              isRecommended: Boolean(p.isRecommended),
+              isSuspended: Boolean(p.isSuspended),
+              isActive: p.isActive !== undefined ? Boolean(p.isActive) : true,
+              hasVariants: Boolean(p.hasVariants),
+              options: [],
+              category: null,
+              stockCount: 0,
+              soldCount: 0,
+            })),
+          });
+        }
+        return NextResponse.json({ products: [] });
+      }
+    }
 
     const formatted = products.map((p) => {
       const isSlugUrl =

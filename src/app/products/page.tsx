@@ -35,9 +35,11 @@ export default function ProductsPage() {
       fetch("/api/products").then((r) => r.json()),
       fetch("/api/categories").then((r) => r.json()),
     ])
-      .then(([prodData, catData]) => {
-        if (prodData.products) setProducts(prodData.products);
-        if (catData.categories) setCategories(catData.categories);
+      .then(([prodData, catData]: any) => {
+        const prods = Array.isArray(prodData) ? prodData : (prodData?.products || []);
+        const cats = Array.isArray(catData) ? catData : (catData?.categories || []);
+        setProducts(prods);
+        setCategories(cats);
       })
       .catch((e) => console.error(e))
       .finally(() => setLoading(false));
