@@ -97,7 +97,7 @@ function OrdersContent() {
       setLoadingOrders(true);
       fetch("/api/orders/my-orders")
         .then((res) => res.json())
-        .then((data) => {
+        .then((data: any) => {
           if (data && Array.isArray(data.orders)) setOrders(data.orders);
         })
         .catch(() => {})
@@ -113,7 +113,7 @@ function OrdersContent() {
       setLoadingTopups(true);
       fetch("/api/topup/history")
         .then((res) => res.json())
-        .then((data) => {
+        .then((data: any) => {
           if (data && Array.isArray(data.history)) setTopups(data.history);
         })
         .catch(() => {})

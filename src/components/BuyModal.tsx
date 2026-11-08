@@ -44,7 +44,7 @@ export default function BuyModal() {
 
   React.useEffect(() => {
     if (buyingProduct?.hasVariants && buyingProduct.options && buyingProduct.options.length > 0) {
-      const inStockOpt = buyingProduct.options.find((o) => o.stockCount > 0);
+      const inStockOpt = buyingProduct.options.find((o: any) => o.stockCount > 0);
       setSelectedOptionId(inStockOpt ? inStockOpt.id : buyingProduct.options[0].id);
     } else {
       setSelectedOptionId(null);
@@ -56,7 +56,7 @@ export default function BuyModal() {
 
   if (!buyingProduct) return null;
 
-  const currentOption = buyingProduct.options?.find((o) => o.id === selectedOptionId) || null;
+  const currentOption = buyingProduct.options?.find((o: any) => o.id === selectedOptionId) || null;
   const unitPrice = buyingProduct.hasVariants && currentOption ? currentOption.price : buyingProduct.price;
   const currentStock = buyingProduct.hasVariants && currentOption ? currentOption.stockCount : buyingProduct.stockCount || 0;
 
@@ -242,7 +242,7 @@ export default function BuyModal() {
               <div className="mb-4 space-y-2">
                 <label className="text-xs font-semibold text-neutral-300 block">เลือกตัวเลือกสินค้า:</label>
                 <div className="grid grid-cols-2 gap-2">
-                  {buyingProduct.options.map((opt) => {
+                  {buyingProduct.options.map((opt: any) => {
                     const isSelected = selectedOptionId === opt.id;
                     const optInStock = opt.stockCount > 0;
                     return (

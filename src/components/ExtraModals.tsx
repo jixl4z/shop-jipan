@@ -19,6 +19,7 @@ import {
   BookOpen,
   Crown,
   MessageCircle,
+  PackageCheck,
 } from "lucide-react";
 
 // 1. Profile Modal (จัดการโปรไฟล์)

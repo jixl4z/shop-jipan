@@ -8,7 +8,7 @@ import AuthModal from "@/components/AuthModal";
 import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
-import { Gamepad2, Tv, Key, Gift, Package, Layers, ArrowRight, Loader2, Sparkles } from "lucide-react";
+import { Gamepad2, Tv, Key, Gift, Package, Layers, ArrowRight, ChevronRight, Loader2, Sparkles } from "lucide-react";
 
 interface CategoryItem {
   id: string;

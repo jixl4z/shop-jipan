@@ -45,7 +45,7 @@ export async function verifyTurnstileToken(
       }
     );
 
-    const data = await res.json();
+    const data: any = await res.json();
 
     if (data.success) {
       return { success: true };

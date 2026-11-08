@@ -248,7 +248,7 @@ export default function Footer() {
                     </div>
                   </div>
                   <a
-                    href={setting.contactDiscord}
+                    href={setting?.contactDiscord || "#"}
                     target="_blank"
                     rel="noreferrer"
                     className="w-full py-2 rounded-xl bg-[#5865F2] hover:bg-[#4752c4] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-md active:scale-95"

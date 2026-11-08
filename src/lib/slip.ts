@@ -86,7 +86,7 @@ export async function verifySlip(
         body: JSON.stringify(payload),
       });
 
-      const resJson = await response.json();
+      const resJson: any = await response.json();
 
       if (!response.ok || !resJson.success) {
         let errorMsg = resJson.message || "สลิปไม่ถูกต้อง หรือไม่พบข้อมูลในระบบธนาคาร";

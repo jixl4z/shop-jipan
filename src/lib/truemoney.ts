@@ -83,7 +83,7 @@ export async function redeemTrueMoneyVoucher(
       }),
     });
 
-    const resJson = await response.json();
+    const resJson: any = await response.json();
 
     if (resJson?.status?.code === "SUCCESS") {
       const amountStr =

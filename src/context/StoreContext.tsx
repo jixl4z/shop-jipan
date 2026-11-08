@@ -178,7 +178,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     try {
       const res = await fetch("/api/settings");
       if (res.ok) {
-        const data = await res.json();
+        const data: any = await res.json();
         if (data.setting) {
           setSetting(data.setting);
           try {
