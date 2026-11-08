@@ -64,7 +64,7 @@ export default function CategoryFilter({
         <div className="flex items-center gap-2 shrink-0">
           <Link
             href="/categories"
-            className="text-xs text-neutral-400 hover:text-white flex items-center gap-1 transition-colors font-semibold px-2 py-1"
+            className="text-xs text-neutral-400 hover:text-black dark:hover:text-white flex items-center gap-1 transition-colors font-semibold px-2 py-1"
           >
             <span>ดูทั้งหมด</span>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -86,7 +86,7 @@ export default function CategoryFilter({
               onClick={() => {
                 if (onSelectCategory) onSelectCategory(cat.slug);
               }}
-              className="rounded-2xl glass-panel interactive-card p-3 sm:p-3.5 border border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer flex flex-col justify-between gap-3 group shadow-lg"
+              className="rounded-2xl bg-white dark:bg-[#0c0d12] interactive-card p-3 sm:p-3.5 border border-slate-200 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer flex flex-col justify-between gap-3 group shadow-md dark:shadow-lg"
             >
               {/* Top Banner Graphic / Artwork */}
               <div className="relative aspect-[21/8] sm:aspect-[21/7] w-full rounded-xl overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-950 to-black border border-black/5 dark:border-white/10 shadow-inner">
@@ -134,7 +134,7 @@ export default function CategoryFilter({
               {/* Bottom Row: Category Name & Count (Left) + Arrow Icon (Right) */}
               <div className="flex items-center justify-between px-1">
                 <div className="min-w-0 space-y-0.5">
-                  <h3 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white tracking-tight group-hover:text-white transition-colors truncate">
+                  <h3 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white tracking-tight group-hover:text-black dark:group-hover:text-white transition-colors truncate">
                     {cat.name}
                   </h3>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light">
