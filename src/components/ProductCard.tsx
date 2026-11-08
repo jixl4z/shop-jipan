@@ -31,6 +31,7 @@ export interface Product {
   options?: ProductOptionItem[];
   stockCount: number;
   soldCount?: number;
+  videoUrl?: string | null;
   category?: {
     id: string;
     name: string;
