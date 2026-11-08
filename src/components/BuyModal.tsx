@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import {
   X,
@@ -20,13 +21,13 @@ export default function BuyModal() {
     closeBuyModal,
     user,
     openAuth,
-    openTopup,
     refreshUser,
     updateBalance,
     addToast,
     openMyOrders,
     currentTheme,
   } = useStore();
+  const router = useRouter();
 
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -85,7 +86,7 @@ export default function BuyModal() {
 
     if (!hasEnoughBalance) {
       closeBuyModal();
-      openTopup();
+      router.push("/topup");
       return;
     }
 
@@ -387,7 +388,7 @@ export default function BuyModal() {
                 <button
                   onClick={() => {
                     closeBuyModal();
-                    openTopup();
+                    router.push("/topup");
                   }}
                   className="w-full py-3.5 rounded-xl bg-white text-black hover:bg-neutral-200 font-bold text-sm flex items-center justify-center gap-2 shadow-xl transition-all cursor-pointer active:scale-95 btn-shine"
                 >

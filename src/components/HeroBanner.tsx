@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useStore } from "@/context/StoreContext";
 import StatsCounter from "@/components/StatsCounter";
 import {
@@ -18,7 +19,7 @@ import {
 } from "lucide-react";
 
 export default function HeroBanner() {
-  const { setting, openTopup, currentTheme, themeMode } = useStore();
+  const { setting, currentTheme, themeMode } = useStore();
   const isLight = themeMode === "light";
 
   const userBanners =
@@ -188,8 +189,8 @@ export default function HeroBanner() {
                 <span className="text-white">เลือกดูสินค้า</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </a>
-              <button
-                onClick={openTopup}
+              <Link
+                href="/topup"
                 className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer border shadow-sm active:scale-95 ${
                   isLight
                     ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800"
@@ -198,7 +199,7 @@ export default function HeroBanner() {
               >
                 <Wallet className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-neutral-400"}`} />
                 <span>เติมเงินเข้ากระเป๋า</span>
-              </button>
+              </Link>
             </div>
           </div>
 

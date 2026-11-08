@@ -46,7 +46,6 @@ export default function Navbar() {
   const {
     user,
     setting,
-    openTopup,
     logout,
     themeMode,
     toggleThemeMode,
@@ -541,15 +540,13 @@ export default function Navbar() {
                     </div>
                   </div>
                 </Link>
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    openTopup();
-                  }}
+                <Link
+                  href="/topup"
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className="px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 cursor-pointer shadow-sm bg-white text-black hover:bg-neutral-200"
                 >
                   + เติมเงิน
-                </button>
+                </Link>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2 p-1">

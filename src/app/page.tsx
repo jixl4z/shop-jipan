@@ -11,7 +11,6 @@ import CustomerReviewsShowcase from "@/components/CustomerReviewsShowcase";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import AuthModal from "@/components/AuthModal";
-import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
 import BestSellerSpotlight from "@/components/BestSellerSpotlight";
@@ -78,7 +77,6 @@ export default function HomePage() {
 
       {/* Global Modals */}
       <AuthModal />
-      <TopupModal />
       <BuyModal />
       <MyOrdersModal />
     </div>
