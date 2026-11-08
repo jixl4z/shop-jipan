@@ -83,6 +83,7 @@ export async function PUT(req: Request) {
         contactDiscord: data.contactDiscord,
         contactFacebook: data.contactFacebook,
         contactLine: data.contactLine,
+        discordServerId: data.discordServerId,
       },
       create: {
         id: "default",
@@ -104,6 +105,10 @@ export async function PUT(req: Request) {
         discordClientSecret: data.discordClientSecret || "",
         googleClientId: data.googleClientId || "",
         googleClientSecret: data.googleClientSecret || "",
+        contactDiscord: data.contactDiscord || "",
+        contactFacebook: data.contactFacebook || "",
+        contactLine: data.contactLine || "",
+        discordServerId: data.discordServerId || "",
       },
     });
 

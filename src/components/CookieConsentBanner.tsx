@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Cookie, ShieldCheck, Check } from "lucide-react";
+import { Cookie, Check, SlidersHorizontal } from "lucide-react";
+import CookieSettingsModal from "./CookieSettingsModal";
 
 export default function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -21,9 +23,18 @@ export default function CookieConsentBanner() {
     }
   }, []);
 
-  const handleAccept = () => {
+  // Listen to open-cookie-settings custom event (e.g. from footer)
+  useEffect(() => {
+    const handleOpen = () => setIsModalOpen(true);
+    window.addEventListener("open-cookie-settings", handleOpen);
+    return () => window.removeEventListener("open-cookie-settings", handleOpen);
+  }, []);
+
+  const handleAcceptAll = () => {
     try {
       localStorage.setItem("jipan_cookie_consent", "accepted");
+      localStorage.setItem("jipan_cookie_perf", "true");
+      localStorage.setItem("jipan_cookie_pers", "true");
     } catch {}
     setIsVisible(false);
   };
@@ -31,50 +42,81 @@ export default function CookieConsentBanner() {
   const handleDecline = () => {
     try {
       localStorage.setItem("jipan_cookie_consent", "essential_only");
+      localStorage.setItem("jipan_cookie_perf", "false");
+      localStorage.setItem("jipan_cookie_pers", "false");
     } catch {}
     setIsVisible(false);
   };
 
-  if (!isVisible) return null;
-
   return (
-    <aside
-      aria-label="การตั้งค่าคุกกี้"
-      className="fixed bottom-4 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-50 max-w-md animate-in fade-in slide-in-from-bottom-5 duration-300"
-    >
-      <div className="rounded-2xl border border-slate-200 bg-white/95 text-slate-900 shadow-2xl p-4 sm:p-5 space-y-3.5 backdrop-blur-2xl dark:border-white/[0.12] dark:bg-[#0c0d12]/95 dark:text-white dark:shadow-black/90">
-        <div className="flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 shrink-0">
-            <Cookie className="w-5 h-5" />
-          </div>
-          <div className="space-y-1 min-w-0">
-            <div className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-              <span>นโยบายคุกกี้และความเป็นส่วนตัว</span>
+    <>
+      {isVisible && (
+        <aside
+          aria-label="การตั้งค่าคุกกี้"
+          className="fixed bottom-4 sm:bottom-6 left-4 right-4 sm:left-auto sm:right-6 z-40 max-w-md animate-in fade-in slide-in-from-bottom-5 duration-300"
+        >
+          <div className="rounded-2xl border border-white/[0.12] bg-[#0c0d12]/95 text-white shadow-2xl p-4 sm:p-5 space-y-3.5 backdrop-blur-2xl shadow-black/90">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+                <Cookie className="w-5 h-5" />
+              </div>
+              <div className="space-y-1 min-w-0">
+                <div className="text-sm font-bold text-white flex items-center gap-1.5">
+                  <span>นโยบายคุกกี้และความเป็นส่วนตัว</span>
+                </div>
+                <p className="text-xs text-neutral-400 font-light leading-relaxed">
+                  เว็บไซต์นี้ใช้คุกกี้เพื่อมอบประสบการณ์การใช้งานที่ดีที่สุด รักษาความปลอดภัยในการทำรายการ และจดจำสถานะการเข้าสู่ระบบของคุณ
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-slate-500 dark:text-neutral-400 font-light leading-relaxed">
-              เว็บไซต์นี้ใช้คุกกี้เพื่อมอบประสบการณ์การใช้งานที่ดีที่สุด รักษาความปลอดภัยในการทำรายการ และจดจำสถานะการเข้าสู่ระบบของคุณ
-            </p>
-          </div>
-        </div>
 
-        <div className="flex items-center gap-2 pt-1">
-          <button
-            type="button"
-            onClick={handleAccept}
-            className="flex-1 py-2 sm:py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md active:scale-95 btn-shine"
-          >
-            <Check className="w-4 h-4 text-current" />
-            <span>ยอมรับทั้งหมด</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleDecline}
-            className="px-4 py-2 sm:py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-white/[0.06] dark:hover:bg-white/10 dark:text-neutral-300 dark:hover:text-white font-medium text-xs transition-colors cursor-pointer border border-slate-200 dark:border-white/10"
-          >
-            จำเป็นเท่านั้น
-          </button>
-        </div>
-      </div>
-    </aside>
+            <div className="flex items-center gap-2 pt-1">
+              <button
+                type="button"
+                onClick={handleAcceptAll}
+                className="flex-1 py-2 sm:py-2.5 rounded-xl bg-[#ff334b] hover:bg-[#e02b41] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-md shadow-rose-500/20 active:scale-95"
+              >
+                <Check className="w-4 h-4 text-white" />
+                <span>ยอมรับทั้งหมด</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleDecline}
+                className="px-3.5 py-2 sm:py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/10 text-neutral-300 hover:text-white font-medium text-xs transition-colors cursor-pointer border border-white/10"
+              >
+                จำเป็นเท่านั้น
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsModalOpen(true)}
+                className="p-2 sm:p-2.5 rounded-xl bg-white/[0.06] hover:bg-white/10 text-neutral-300 hover:text-white transition-colors cursor-pointer border border-white/10"
+                title="ตั้งค่าตัวเลือกคุกกี้"
+                aria-label="ตั้งค่าตัวเลือกคุกกี้"
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </aside>
+      )}
+
+      {/* Floating Cookie Settings Trigger Button (Small bottom-left icon pill for easy re-opening) */}
+      <button
+        type="button"
+        onClick={() => setIsModalOpen(true)}
+        className="fixed bottom-4 left-4 z-30 w-9 h-9 rounded-full bg-[#0e0f14]/80 hover:bg-[#161720] border border-white/10 text-neutral-400 hover:text-rose-400 backdrop-blur-md shadow-lg flex items-center justify-center transition-all hover:scale-105 cursor-pointer"
+        title="ตั้งค่าความเป็นส่วนตัวคุกกี้"
+        aria-label="ตั้งค่าความเป็นส่วนตัวคุกกี้"
+      >
+        <Cookie className="w-4 h-4" />
+      </button>
+
+      {/* Detailed Privacy Settings Modal */}
+      <CookieSettingsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSaved={() => setIsVisible(false)}
+      />
+    </>
   );
 }

@@ -49,6 +49,7 @@ export async function GET() {
       contactDiscord: setting.contactDiscord,
       contactFacebook: setting.contactFacebook,
       contactLine: setting.contactLine,
+      discordServerId: setting.discordServerId || "",
     };
 
     return NextResponse.json({ setting: publicSetting });

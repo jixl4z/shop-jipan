@@ -130,6 +130,7 @@ model ShopSetting {
   contactDiscord  String?  @default("https://discord.gg/")
   contactFacebook String?  @default("https://facebook.com/")
   contactLine     String?  @default("https://line.me/ti/p/")
+  discordServerId String?  @default("")
   updatedAt       DateTime @updatedAt
 }
 

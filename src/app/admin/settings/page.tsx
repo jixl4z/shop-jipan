@@ -26,6 +26,7 @@ export default function AdminSettingsPage() {
   const [contactDiscord, setContactDiscord] = useState("");
   const [contactFacebook, setContactFacebook] = useState("");
   const [contactLine, setContactLine] = useState("");
+  const [discordServerId, setDiscordServerId] = useState("");
   const [turnstileEnabled, setTurnstileEnabled] = useState(false);
   const [turnstileSiteKey, setTurnstileSiteKey] = useState("");
   const [turnstileSecretKey, setTurnstileSecretKey] = useState("");
@@ -63,6 +64,7 @@ export default function AdminSettingsPage() {
           setContactDiscord(s.contactDiscord || "");
           setContactFacebook(s.contactFacebook || "");
           setContactLine(s.contactLine || "");
+          setDiscordServerId(s.discordServerId || "");
           setTurnstileEnabled(!!s.turnstileEnabled);
           setTurnstileSiteKey(s.turnstileSiteKey || "");
           setTurnstileSecretKey(s.turnstileSecretKey || "");
@@ -107,6 +109,7 @@ export default function AdminSettingsPage() {
           contactDiscord,
           contactFacebook,
           contactLine,
+          discordServerId,
           turnstileEnabled,
           turnstileSiteKey,
           turnstileSecretKey,
@@ -395,7 +398,7 @@ export default function AdminSettingsPage() {
 
         {/* Contact Links */}
         <div className="p-5 rounded-2xl bg-neutral-900 border border-neutral-800 space-y-4">
-          <h2 className="font-bold text-sm text-white">ช่องทางติดต่อร้านค้า (Contact Links)</h2>
+          <h2 className="font-bold text-sm text-white">ช่องทางติดต่อร้านค้า & Discord Widget</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
               <label className="block text-neutral-300 font-medium mb-1">LINE Official Link</label>
@@ -427,6 +430,22 @@ export default function AdminSettingsPage() {
                 className="w-full px-3.5 py-2 rounded-xl bg-neutral-950 border border-neutral-800 text-white focus:outline-none focus:border-neutral-500"
               />
             </div>
+          </div>
+
+          <div className="pt-2 border-t border-neutral-800">
+            <label className="block text-neutral-300 font-medium mb-1 text-xs">
+              Discord Server ID (สำหรับแสดงกล่องชุมชน / สมาชิกออนไลน์ มุมขวาล่างของ Footer - เว้นว่างได้)
+            </label>
+            <input
+              type="text"
+              value={discordServerId}
+              onChange={(e) => setDiscordServerId(e.target.value)}
+              placeholder="เช่น 123456789012345678 (ดูได้จาก Server Settings > Widget > Server ID)"
+              className="w-full px-3.5 py-2 rounded-xl bg-neutral-950 border border-neutral-800 text-white font-mono text-xs focus:outline-none focus:border-neutral-500"
+            />
+            <p className="text-[11px] text-neutral-500 mt-1">
+              *วิธีเปิดใช้งาน: ไปที่การตั้งค่าดิสคอร์ดเซิร์ฟเวอร์ของคุณ &gt; Widget (วิดเจ็ต) &gt; เปิด &quot;Enable Server Widget&quot; แล้วคัดลอก Server ID มาใส่ที่นี่ (หากเว้นว่างไว้ จะไม่แสดงกล่องวิดเจ็ต)
+            </p>
           </div>
         </div>
 

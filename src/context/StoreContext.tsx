@@ -28,6 +28,7 @@ export interface PublicSetting {
   contactDiscord?: string;
   contactFacebook?: string;
   contactLine?: string;
+  discordServerId?: string;
 }
 
 interface ToastMessage {
