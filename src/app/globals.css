@@ -243,47 +243,47 @@ html.light header > div {
   box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* General Text Color on Light Surfaces */
+/* General Text Color on Light Surfaces - True Neutral Monochrome */
 html.light h1,
 html.light h2,
 html.light h3,
 html.light h4,
 html.light h5,
 html.light h6 {
-  color: #0f172a !important;
+  color: #09090b !important;
 }
 
 html.light .text-white {
-  color: #0f172a !important;
+  color: #09090b !important;
 }
 
 html.light .text-neutral-100 {
-  color: #1e293b !important;
+  color: #18181b !important;
 }
 
 html.light .text-neutral-200 {
-  color: #334155 !important;
+  color: #27272a !important;
 }
 
 html.light .text-neutral-300 {
-  color: #475569 !important;
+  color: #3f3f46 !important;
 }
 
 html.light .text-neutral-400 {
-  color: #64748b !important;
+  color: #71717a !important;
 }
 
 html.light .text-neutral-500 {
-  color: #94a3b8 !important;
+  color: #a1a1aa !important;
 }
 
 /* Secondary Backgrounds */
 html.light .bg-neutral-800 {
-  background-color: #f1f5f9 !important;
+  background-color: #f4f4f5 !important;
 }
 
 html.light .bg-neutral-700 {
-  background-color: #e2e8f0 !important;
+  background-color: #e4e4e7 !important;
 }
 
 /* Faded Alpha Backgrounds */
@@ -317,48 +317,31 @@ html.light .border-neutral-700 {
   border-color: rgba(0, 0, 0, 0.09) !important;
 }
 
-/* Primary Dark Buttons in Light Mode */
+/* Primary Dark Buttons in Light Mode - Crisp Pure Neutral Black */
 html.light .bg-white.text-black {
-  background-color: #0f172a !important;
+  background-color: #09090b !important;
   color: #ffffff !important;
 }
 html.light .bg-white.text-black:hover {
-  background-color: #1e293b !important;
+  background-color: #27272a !important;
 }
 html.light .bg-white.text-black * {
   color: #ffffff !important;
   fill: #ffffff !important;
 }
 
-/* INTENTIONALLY DARK ELEMENTS MUST MAINTAIN WHITE TEXT */
-html.light .bg-slate-900,
-html.light .bg-slate-950,
-html.light [class*="bg-slate-900"],
-html.light [class*="bg-slate-950"],
-html.light .bg-black,
+/* INTENTIONALLY SOLID DARK ELEMENTS MUST MAINTAIN WHITE TEXT (exclude fixed/absolute backdrops) */
 html.light button.btn-shine,
-html.light [class*="bg-black/7"],
-html.light [class*="bg-black/8"],
-html.light [class*="bg-black/9"] {
-  color: #ffffff !important;
-}
-
-html.light .bg-slate-900 *,
-html.light .bg-slate-950 *,
-html.light [class*="bg-slate-900"] *,
-html.light [class*="bg-slate-950"] *,
-html.light .bg-black *,
 html.light button.btn-shine *,
-html.light [class*="bg-black/7"] *,
-html.light [class*="bg-black/8"] *,
-html.light [class*="bg-black/9"] * {
+html.light .btn-shine,
+html.light .btn-shine * {
   color: #ffffff !important;
 }
 
 /* Badges with dark text */
 html.light .bg-white\/10.text-white {
   background-color: rgba(0, 0, 0, 0.06) !important;
-  color: #0f172a !important;
+  color: #09090b !important;
   border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -412,23 +395,33 @@ html.light input,
 html.light textarea,
 html.light select {
   background-color: #ffffff !important;
-  color: #0f172a !important;
+  color: #09090b !important;
   border-color: rgba(0, 0, 0, 0.12) !important;
 }
 html.light input::placeholder,
 html.light textarea::placeholder {
-  color: #94a3b8 !important;
+  color: #71717a !important;
 }
 
 /* Scrollbars in Light Mode */
 html.light ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f4f4f5;
 }
 html.light ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #d4d4d8;
 }
 html.light ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #a1a1aa;
+}
+
+/* Text Selection - Clean Monochrome */
+::selection {
+  background-color: #09090b;
+  color: #ffffff;
+}
+html.dark ::selection {
+  background-color: #ffffff;
+  color: #09090b;
 }
 
 /* Top Loading Bar (Page navigation progress bar - Crisp White with glow) */
@@ -459,12 +452,12 @@ html.light ::-webkit-scrollbar-thumb:hover {
 }
 
 html.light #nprogress .bar {
-  background: #0f172a !important;
-  box-shadow: 0 0 16px rgba(15, 23, 42, 0.6), 0 0 8px rgba(15, 23, 42, 0.4) !important;
+  background: #09090b !important;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5), 0 0 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 html.light #nprogress .peg {
-  box-shadow: 0 0 14px #0f172a, 0 0 8px #0f172a !important;
+  box-shadow: 0 0 14px #09090b, 0 0 8px #09090b !important;
 }
 
 
