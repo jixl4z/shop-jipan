@@ -133,13 +133,20 @@ export default function Navbar() {
               )}
             </Link>
 
-            <button
-              onClick={openTopup}
-              className="relative px-3.5 py-2 text-xs font-semibold text-neutral-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
+            <Link
+              href="/topup"
+              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
+                pathname?.startsWith("/topup")
+                  ? "text-rose-500 font-bold"
+                  : "text-neutral-300 hover:text-white"
+              }`}
             >
               <Wallet className="w-3.5 h-3.5" />
               <span>เติมเงิน</span>
-            </button>
+              {pathname?.startsWith("/topup") && (
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+              )}
+            </Link>
 
             <Link
               href="/orders"
@@ -182,21 +189,19 @@ export default function Navbar() {
                     onClick={() => setIsExtraMenuOpen(false)}
                   />
                   <div className="absolute left-0 mt-2.5 w-64 rounded-2xl bg-[#0e1017]/95 backdrop-blur-2xl border border-white/10 p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
-                    <button
-                      onClick={() => {
-                        setIsExtraMenuOpen(false);
-                        openTopup();
-                      }}
+                    <Link
+                      href="/topup"
+                      onClick={() => setIsExtraMenuOpen(false)}
                       className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
                     >
                       <Wallet className="w-4 h-4 text-emerald-400 shrink-0" />
                       <div>
                         <div className="font-semibold text-white">เติมเงินอัตโนมัติ</div>
                         <div className="text-[10px] text-neutral-500">
-                          พร้อมเพย์ & ทรูวอเล็ท 24 ชม.
+                          พร้อมเพย์ & ทรูวอเล็ท & โค้ด 24 ชม.
                         </div>
                       </div>
-                    </button>
+                    </Link>
 
                     <Link
                       href="/orders"
@@ -421,16 +426,14 @@ export default function Navbar() {
                             <span>ร้านค้า</span>
                           </Link>
 
-                          <button
-                            onClick={() => {
-                              setIsUserMenuOpen(false);
-                              openTopup();
-                            }}
+                          <Link
+                            href="/topup"
+                            onClick={() => setIsUserMenuOpen(false)}
                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
                           >
                             <Wallet className="w-4 h-4 text-neutral-400 shrink-0" />
                             <span>เติมเงิน</span>
-                          </button>
+                          </Link>
 
                           {/* Divider */}
                           <div className="border-t border-white/[0.08] my-1" />
