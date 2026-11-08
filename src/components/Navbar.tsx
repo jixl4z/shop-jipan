@@ -35,6 +35,8 @@ import {
   Sun,
   Moon,
   ArrowRight,
+  Clock,
+  CreditCard,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -287,160 +289,181 @@ export default function Navbar() {
                 </button>
 
                 <div className="relative">
+                  {/* User pill in Navbar (Reference GenZX style: balance + circular avatar) */}
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 pl-1.5 pr-2.5 sm:pr-3 py-1 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 transition-all text-neutral-200 cursor-pointer group"
+                    className="flex items-center gap-2 pl-3 pr-1 py-1 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 transition-all cursor-pointer group shadow-sm"
                   >
-                    <div className="w-7 h-7 rounded-lg bg-neutral-800 border border-neutral-700 flex items-center justify-center overflow-hidden shrink-0">
-                      <span className="font-bold text-xs text-white">
-                        {user.username.slice(0, 1).toUpperCase()}
-                      </span>
-                    </div>
-                    <span className="text-xs font-medium text-white max-w-[80px] sm:max-w-[110px] truncate hidden min-[370px]:inline">
-                      {user.username}
-                    </span>
-                    <span className="text-xs font-mono font-bold text-white px-2 py-0.5 rounded-md bg-white/[0.06] border border-white/10">
+                    <span className="text-xs font-bold font-mono text-rose-500">
                       ฿{user.balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                     </span>
-                    <ChevronDown className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 border border-white/25 flex items-center justify-center text-white font-bold text-xs shadow-sm shrink-0 overflow-hidden">
+                      {user.avatar ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={user.avatar}
+                          alt={user.username}
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      ) : (
+                        user.username.slice(0, 1).toUpperCase()
+                      )}
+                    </div>
                   </button>
 
-                {/* Dropdown Menu Card */}
-                {isUserMenuOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
-                      onClick={() => setIsUserMenuOpen(false)}
-                    />
-                    <div className="absolute right-0 mt-3 w-72 rounded-2xl bg-neutral-900/95 backdrop-blur-2xl border border-neutral-800 p-4 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
-                      {/* Profile Card Header */}
-                      <div className="flex items-center justify-between pb-3.5 border-b border-neutral-800/90">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-neutral-800 to-neutral-700 border-2 border-neutral-700 flex items-center justify-center font-bold text-white text-sm shrink-0">
-                            {user.username.slice(0, 1).toUpperCase()}
+                  {/* Dropdown Menu Card (Exact match to genzxshop reference) */}
+                  {isUserMenuOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      />
+                      <div className="absolute right-0 mt-3 w-80 rounded-3xl bg-[#12131a]/98 backdrop-blur-2xl border border-white/10 p-4 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-3">
+                        {/* Profile Header (Avatar + Username + Role) */}
+                        <div className="flex items-center gap-3 px-1 pt-1">
+                          <div className="w-12 h-12 rounded-full ring-2 ring-white/10 bg-gradient-to-tr from-rose-600 to-red-500 flex items-center justify-center font-extrabold text-white text-base shadow-md shrink-0 overflow-hidden">
+                            {user.avatar ? (
+                              /* eslint-disable-next-line @next/next/no-img-element */
+                              <img
+                                src={user.avatar}
+                                alt={user.username}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              user.username.slice(0, 1).toUpperCase()
+                            )}
                           </div>
                           <div className="min-w-0">
-                            <div className="font-bold text-sm text-white truncate">
+                            <div className="font-extrabold text-base text-white truncate tracking-tight">
                               {user.username}
                             </div>
-                            <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-neutral-800 border border-neutral-700/80 text-[10px] text-neutral-300 font-medium mt-0.5">
-                              <UserIcon className="w-2.5 h-2.5" />
-                              <span>{user.role === "ADMIN" ? "ADMIN" : "MEMBER"}</span>
+                            <div className="text-xs text-neutral-400 font-light">
+                              {user.role === "ADMIN" ? "ผู้ดูแลระบบ (ADMIN)" : "สมาชิก"}
                             </div>
                           </div>
                         </div>
 
-                        {/* Balance */}
-                        <div className="text-right shrink-0">
-                          <div className="text-[10px] text-neutral-400">ยอดเงิน</div>
-                          <div className="font-bold text-sm text-white font-mono">
-                            ฿{user.balance.toFixed(2)}
+                        {/* 2-Column Stats Grid (ยอดเงินคงเหลือ + แต้มสะสม) */}
+                        <div className="grid grid-cols-2 gap-2.5">
+                          {/* Balance Card */}
+                          <div className="rounded-2xl bg-[#0c0d12] border border-white/5 p-3 space-y-0.5">
+                            <div className="text-[11px] text-neutral-400 font-light">
+                              ยอดเงินคงเหลือ
+                            </div>
+                            <div className="font-extrabold text-sm font-mono text-rose-500">
+                              {user.balance.toFixed(2)}{" "}
+                              <span className="text-xs font-normal text-neutral-400">
+                                บาท
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Points Card */}
+                          <div className="rounded-2xl bg-[#1c0f16] border border-rose-500/20 p-3 space-y-0.5">
+                            <div className="text-[11px] text-rose-400 font-light flex items-center gap-1">
+                              <Star className="w-3 h-3 text-rose-400 fill-rose-400" />
+                              <span>แต้มสะสม</span>
+                            </div>
+                            <div className="font-extrabold text-sm font-mono text-rose-500">
+                              {Math.floor(user.balance)}{" "}
+                              <span className="text-xs font-normal text-neutral-400">
+                                แต้ม
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Dropdown Items List */}
-                      <div className="pt-2 space-y-0.5 text-xs text-neutral-300 font-medium">
-                        {user.role === "ADMIN" && (
+                        {/* Divider */}
+                        <div className="border-t border-white/[0.08]" />
+
+                        {/* Menu Items List - Grouped & Clean (genzxshop reference) */}
+                        <div className="space-y-1 text-xs font-medium">
+                          {/* Admin Dashboard (if admin) */}
+                          {user.role === "ADMIN" && (
+                            <Link
+                              href="/admin"
+                              onClick={() => setIsUserMenuOpen(false)}
+                              className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 font-bold transition-colors mb-1.5"
+                            >
+                              <ShieldCheck className="w-4 h-4 shrink-0" />
+                              <span>แผงควบคุมแอดมิน</span>
+                            </Link>
+                          )}
+
+                          {/* Group 1: Store & Topup */}
                           <Link
-                            href="/admin"
+                            href="/"
                             onClick={() => setIsUserMenuOpen(false)}
-                            className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors font-semibold mb-1"
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
                           >
-                            <ShieldCheck className="w-4 h-4 shrink-0" />
-                            <span>แผงควบคุมแอดมิน</span>
+                            <ShoppingBag className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <span>ร้านค้า</span>
                           </Link>
-                        )}
 
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            setIsProfileOpen(true);
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors text-left cursor-pointer"
-                        >
-                          <UserCog className="w-4 h-4 text-neutral-400" />
-                          <span>จัดการโปรไฟล์</span>
-                        </button>
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              openTopup();
+                            }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
+                          >
+                            <Wallet className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <span>เติมเงิน</span>
+                          </button>
 
-                        <Link
-                          href="/orders"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors"
-                        >
-                          <Package className="w-4 h-4 text-neutral-400" />
-                          <span>สถานะคำสั่งซื้อ (คลังของฉัน)</span>
-                        </Link>
+                          {/* Divider */}
+                          <div className="border-t border-white/[0.08] my-1" />
 
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            setIsSupportOpen(true);
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors text-left cursor-pointer"
-                        >
-                          <Headphones className="w-4 h-4 text-neutral-400" />
-                          <span>ช่วยเหลือ & เคลมสินค้า</span>
-                        </button>
+                          {/* Group 2: History */}
+                          <Link
+                            href="/orders"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                          >
+                            <Clock className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <span>ประวัติสั่งซื้อ</span>
+                          </Link>
 
-                        <Link
-                          href="/topup"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors"
-                        >
-                          <Wallet className="w-4 h-4 text-emerald-400" />
-                          <span>เติมเงิน</span>
-                        </Link>
+                          <Link
+                            href="/topup#history"
+                            onClick={() => setIsUserMenuOpen(false)}
+                            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                          >
+                            <CreditCard className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <span>ประวัติเติมเงิน</span>
+                          </Link>
 
-                        <Link
-                          href="/topup#history"
-                          onClick={() => setIsUserMenuOpen(false)}
-                          className="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors"
-                        >
-                          <Receipt className="w-4 h-4 text-neutral-400" />
-                          <span>ประวัติการเติมเงิน</span>
-                        </Link>
+                          {/* Divider */}
+                          <div className="border-t border-white/[0.08] my-1" />
 
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            setIsGuideOpen(true);
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors text-left cursor-pointer"
-                        >
-                          <BookOpen className="w-4 h-4 text-neutral-400" />
-                          <span>คู่มือการใช้งาน</span>
-                        </button>
+                          {/* Group 3: Profile & Logout */}
+                          <button
+                            onClick={() => {
+                              setIsUserMenuOpen(false);
+                              setIsProfileOpen(true);
+                            }}
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
+                          >
+                            <UserIcon className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <span>โปรไฟล์ส่วนตัว</span>
+                          </button>
 
-                        <button
-                          onClick={() => {
-                            setIsUserMenuOpen(false);
-                            setIsContactOpen(true);
-                          }}
-                          className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-neutral-800 hover:text-white transition-colors text-left cursor-pointer"
-                        >
-                          <PhoneCall className="w-4 h-4 text-neutral-400" />
-                          <span>ติดต่อเรา</span>
-                        </button>
-
-                        <div className="border-t border-neutral-800/80 my-1 pt-1">
                           <button
                             onClick={() => {
                               setIsUserMenuOpen(false);
                               logout();
                             }}
-                            className="w-full flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-rose-500/10 text-rose-400 font-semibold transition-colors text-left cursor-pointer"
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-500 hover:text-rose-400 hover:bg-rose-500/10 font-bold transition-colors text-left cursor-pointer mt-1"
                           >
-                            <LogOut className="w-4 h-4 shrink-0" />
+                            <LogOut className="w-4 h-4 text-rose-500 shrink-0" />
                             <span>ออกจากระบบ</span>
                           </button>
                         </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
           ) : (
               <div className="flex items-center gap-2">
                 <Link
