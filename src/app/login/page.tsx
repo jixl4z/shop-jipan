@@ -16,11 +16,11 @@ import {
   Check,
 } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
-import { playSuccessChime } from "@/lib/sound";
+import { triggerLoginSuccess } from "@/lib/sound";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { refreshUser, addToast, setting } = useStore();
+  const { refreshUser, setting } = useStore();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +29,7 @@ export default function LoginPage() {
   const [cfToken, setCfToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -65,10 +66,14 @@ export default function LoginPage() {
         return;
       }
 
-      playSuccessChime();
-      addToast("เข้าสู่ระบบสำเร็จ!", "success");
+      // Success! Play sound chime + voice announcement + show modal
+      setShowSuccessModal(true);
+      triggerLoginSuccess();
       await refreshUser();
-      router.push("/");
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1800);
     } catch {
       setErrorMsg("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้ โปรดลองอีกครั้ง");
       setLoading(false);
@@ -79,6 +84,34 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#060608] text-white flex flex-col selection:bg-white selection:text-black relative overflow-x-hidden">
       {/* Top Navigation */}
       <Navbar />
+
+      {/* Login Success Modal (Exact Match to Reference Screenshot) */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-[340px] rounded-3xl bg-[#101217] border border-white/10 p-7 shadow-2xl flex flex-col items-center text-center animate-in zoom-in-95 duration-200 relative">
+            {/* Green glowing checkmark circle badge */}
+            <div className="w-16 h-16 rounded-full bg-emerald-500/10 border-2 border-emerald-500/40 flex items-center justify-center text-emerald-400 mb-4 shadow-lg shadow-emerald-500/15">
+              <Check className="w-8 h-8 stroke-[2.5]" />
+            </div>
+
+            {/* Title & Subtitle */}
+            <h2 className="text-xl font-bold text-white tracking-tight">
+              เข้าสู่ระบบสำเร็จ
+            </h2>
+            <p className="text-xs text-neutral-400 font-light mt-1.5">
+              ยินดีต้อนรับเข้าสู่ระบบ
+            </p>
+
+            {/* Redirecting Pill Box */}
+            <div className="w-full rounded-2xl bg-black/50 border border-white/10 py-3.5 px-4 text-xs text-neutral-200 flex items-center justify-center gap-2.5 mt-5 shadow-inner">
+              <span className="text-base animate-bounce">🎃</span>
+              <span className="font-medium text-neutral-300">
+                กำลังย้ายคุณไปหน้าหลัก...
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Container */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 relative">

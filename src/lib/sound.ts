@@ -4,7 +4,7 @@ import confetti from "canvas-confetti";
  * Plays a high-fidelity melodic success chime using the Web Audio API
  * and an optional spoken announcement in Thai.
  */
-export function playSuccessChime() {
+export function playSuccessChime(customMessage?: string) {
   if (typeof window === "undefined") return;
 
   try {
@@ -56,12 +56,11 @@ export function playSuccessChime() {
 
     // Voice announcement in Thai via SpeechSynthesis
     if ("speechSynthesis" in window) {
+      const message = customMessage || "เข้าสู่ระบบสำเร็จเรียบร้อยแล้วค่ะ";
       setTimeout(() => {
         try {
           window.speechSynthesis.cancel(); // cancel any pending speech
-          const utterance = new SpeechSynthesisUtterance(
-            "สมัครสมาชิกสำเร็จเรียบร้อยแล้วค่ะ"
-          );
+          const utterance = new SpeechSynthesisUtterance(message);
           utterance.lang = "th-TH";
           utterance.rate = 1.05;
           utterance.pitch = 1.1;
@@ -70,7 +69,7 @@ export function playSuccessChime() {
         } catch {
           // Ignore speech synthesis errors if browser blocks it
         }
-      }, 300);
+      }, 250);
     }
   } catch (e) {
     console.warn("Audio chime playback error:", e);
@@ -78,10 +77,17 @@ export function playSuccessChime() {
 }
 
 /**
+ * Triggers login success celebration: Melodic Chime + Thai voice confirmation
+ */
+export function triggerLoginSuccess() {
+  playSuccessChime("เข้าสู่ระบบสำเร็จเรียบร้อยแล้วค่ะ");
+}
+
+/**
  * Triggers full celebration: Melodic Chime + Confetti burst + Thai voice confirmation
  */
 export function triggerRegisterSuccess() {
-  playSuccessChime();
+  playSuccessChime("สมัครสมาชิกสำเร็จเรียบร้อยแล้วค่ะ");
 
   try {
     confetti({
