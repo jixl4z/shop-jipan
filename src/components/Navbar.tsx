@@ -106,14 +106,14 @@ export default function Navbar() {
               href="/"
               className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
                 pathname === "/"
-                  ? "text-rose-500 font-bold"
-                  : "text-neutral-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-neutral-400 hover:text-white"
               }`}
             >
               <Home className="w-3.5 h-3.5" />
               <span>หน้าหลัก</span>
               {pathname === "/" && (
-                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-white rounded-full" />
               )}
             </Link>
 
@@ -121,14 +121,14 @@ export default function Navbar() {
               href="/categories"
               className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
                 pathname?.startsWith("/categories")
-                  ? "text-rose-500 font-bold"
-                  : "text-neutral-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-neutral-400 hover:text-white"
               }`}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>ร้านค้า</span>
               {pathname?.startsWith("/categories") && (
-                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-white rounded-full" />
               )}
             </Link>
 
@@ -136,14 +136,14 @@ export default function Navbar() {
               href="/topup"
               className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
                 pathname?.startsWith("/topup")
-                  ? "text-rose-500 font-bold"
-                  : "text-neutral-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-neutral-400 hover:text-white"
               }`}
             >
               <Wallet className="w-3.5 h-3.5" />
               <span>เติมเงิน</span>
               {pathname?.startsWith("/topup") && (
-                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-white rounded-full" />
               )}
             </Link>
 
@@ -151,14 +151,14 @@ export default function Navbar() {
               href="/orders"
               className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
                 pathname?.startsWith("/orders")
-                  ? "text-rose-500 font-bold"
-                  : "text-neutral-300 hover:text-white"
+                  ? "text-white font-bold"
+                  : "text-neutral-400 hover:text-white"
               }`}
             >
               <Clock className="w-3.5 h-3.5" />
               <span>ประวัติการสั่งซื้อ</span>
               {pathname?.startsWith("/orders") && (
-                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-white rounded-full" />
               )}
             </Link>
 
@@ -169,8 +169,8 @@ export default function Navbar() {
                 className={`flex items-center gap-1 px-3 py-2 text-xs font-semibold transition-all duration-150 cursor-pointer ${
                   isExtraMenuOpen ||
                   ["/reviews", "/news", "/docs"].some((p) => pathname?.startsWith(p))
-                    ? "text-rose-500 font-bold"
-                    : "text-neutral-300 hover:text-white"
+                    ? "text-white font-bold"
+                    : "text-neutral-400 hover:text-white"
                 }`}
               >
                 <span>ฟังก์ชั่นเสริม</span>
@@ -560,7 +560,7 @@ export default function Navbar() {
                 <Link
                   href="/register"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-2.5 rounded-xl font-bold text-xs text-center shadow-md bg-[#ff334b] hover:bg-[#e02b41] text-white"
+                  className="w-full py-2.5 rounded-xl font-bold text-xs text-center shadow-md bg-white hover:bg-neutral-200 text-black"
                 >
                   สมัครสมาชิกฟรี
                 </Link>
@@ -679,8 +679,8 @@ export default function Navbar() {
         <div className="animate-marquee flex items-center whitespace-nowrap">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <div key={i} className="flex items-center gap-2 mr-16 shrink-0">
-              <Bell className="w-3.5 h-3.5 text-rose-500 fill-rose-500 shrink-0" />
-              <span className="text-xs text-neutral-300 font-normal tracking-wide">
+              <Bell className="w-3.5 h-3.5 text-neutral-400 fill-neutral-400 shrink-0" />
+              <span suppressHydrationWarning className="text-xs text-neutral-300 font-normal tracking-wide">
                 {setting?.shopNotice || "เติมเงินซื้อสินค้าแล้ว ไม่มีนโยบาย คืนเงินทุกกรณี"}
               </span>
             </div>

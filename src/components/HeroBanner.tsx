@@ -155,7 +155,7 @@ export default function HeroBanner() {
                     : "bg-white/[0.05] border-white/10 text-neutral-300"
                 }`}
               >
-                <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="text-[11px] font-medium">{setting?.shopName?.toLowerCase().replace(/\s+/g, '') || "jipanstore"}</span>
               </div>
 
@@ -166,7 +166,7 @@ export default function HeroBanner() {
                 }`}
               >
                 <span>ยินดีต้อนรับสู่</span>
-                <span className="text-[#ff334b] font-black">{setting?.shopName || "JIPAN STORE"}</span>
+                <span className="text-white font-black">{setting?.shopName || "JIPAN STORE"}</span>
               </h1>
 
               {/* Slogan */}
@@ -183,11 +183,11 @@ export default function HeroBanner() {
             <div className="flex flex-col gap-2 w-full sm:w-48 shrink-0">
               <a
                 href="#products"
-                className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#ff334b] hover:bg-[#ff203a] text-white flex items-center justify-center gap-2 shadow-lg shadow-rose-500/25 active:scale-95 transition-all cursor-pointer btn-shine"
+                className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-neutral-200 text-black flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer btn-shine"
               >
-                <ShoppingBag className="w-4 h-4 text-white" />
-                <span className="text-white">เลือกดูสินค้า</span>
-                <ArrowRight className="w-4 h-4 text-white" />
+                <ShoppingBag className="w-4 h-4 text-black" />
+                <span className="text-black">เลือกดูสินค้า</span>
+                <ArrowRight className="w-4 h-4 text-black" />
               </a>
               <Link
                 href="/topup"

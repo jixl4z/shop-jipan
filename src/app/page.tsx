@@ -27,11 +27,14 @@ export default function HomePage() {
           fetch("/api/categories"),
           fetch("/api/products"),
         ]);
-        const catData = await catRes.json();
-        const prodData = await prodRes.json();
+        const catData = (await catRes.json()) as any;
+        const prodData = (await prodRes.json()) as any;
 
-        if (catData.categories) setCategories(catData.categories);
-        if (prodData.products) setProducts(prodData.products);
+        if (catData?.categories) setCategories(catData.categories);
+        else if (Array.isArray(catData)) setCategories(catData);
+
+        if (prodData?.products) setProducts(prodData.products);
+        else if (Array.isArray(prodData)) setProducts(prodData);
       } catch (err) {
         console.error("Failed to load store data:", err);
       }

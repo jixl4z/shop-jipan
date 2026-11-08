@@ -50,8 +50,8 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
 
           {/* Top: Badge + Title */}
           <div className="relative z-10 space-y-1">
-            <div className="flex items-center gap-1.5 text-[11px] font-bold text-rose-500 uppercase tracking-wider">
-              <TrendingUp className="w-3.5 h-3.5 text-rose-500" />
+            <div className="flex items-center gap-1.5 text-[11px] font-bold text-white uppercase tracking-wider">
+              <TrendingUp className="w-3.5 h-3.5 text-white" />
               <span>BEST SELLER</span>
             </div>
             <h3 className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-snug">
@@ -102,7 +102,7 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
             {/* Product Meta */}
             <div className="min-w-0 flex-1 space-y-1">
               <Link href={`/products/${bestSeller.slug}`} className="block">
-                <h4 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white line-clamp-1 group-hover:text-rose-500 transition-colors tracking-tight">
+                <h4 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white line-clamp-1 group-hover:text-white transition-colors tracking-tight">
                   {bestSeller.name}
                 </h4>
               </Link>
@@ -123,7 +123,7 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
           {/* Price & CTA Button */}
           <div className="flex items-center sm:flex-col sm:items-end justify-between sm:justify-center gap-2 sm:gap-2.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-white/[0.06] shrink-0">
             <div className="text-left sm:text-right">
-              <div className="text-base sm:text-xl font-black font-mono text-rose-500 tracking-tight">
+              <div className="text-base sm:text-xl font-black font-mono text-white tracking-tight">
                 ฿{bestSeller.price.toFixed(2)}
               </div>
               {bestSeller.originalPrice && bestSeller.originalPrice > bestSeller.price && (
@@ -135,7 +135,7 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
 
             <Link
               href={`/products/${bestSeller.slug}`}
-              className="px-4 py-2 sm:py-2.5 rounded-xl bg-[#ff334b] hover:bg-[#ff203a] text-white text-xs sm:text-sm font-bold inline-flex items-center gap-1.5 shadow-md shadow-rose-500/20 active:scale-95 transition-all btn-shine shrink-0 cursor-pointer"
+              className="px-4 py-2 sm:py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 text-xs sm:text-sm font-bold inline-flex items-center gap-1.5 shadow-md active:scale-95 transition-all btn-shine shrink-0 cursor-pointer"
             >
               <span>ดูรายละเอียด</span>
               <ChevronRight className="w-4 h-4" />

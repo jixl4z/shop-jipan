@@ -92,15 +92,17 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<UserSession | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [setting, setSetting] = useState<PublicSetting | null>(() => {
+  const [setting, setSetting] = useState<PublicSetting | null>(null);
+
+  // Load cached settings on client mount (prevents SSR hydration mismatch)
+  useEffect(() => {
     if (typeof window !== "undefined") {
       try {
         const cached = localStorage.getItem("jipan_shop_setting");
-        if (cached) return JSON.parse(cached);
+        if (cached) setSetting(JSON.parse(cached));
       } catch {}
     }
-    return null;
-  });
+  }, []);
   const [themeColor, setThemeColorState] = useState<ThemeColor>("monochrome");
   const [themeMode, setThemeModeState] = useState<"dark" | "light">("dark");
 

@@ -49,7 +49,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       setLoading(true);
       fetch("/api/products")
         .then((res) => res.json())
-        .then((data) => {
+        .then((data: any) => {
           const list = Array.isArray(data) ? data : data?.products || [];
           setProducts(list);
         })
@@ -129,7 +129,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         {!query && (
           <div className="px-4 py-3 border-b border-white/[0.06] bg-black/40">
             <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Sparkles className="w-3 h-3 text-rose-500" />
+              <Sparkles className="w-3 h-3 text-white" />
               <span>เมนูลัด (Quick Links)</span>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -187,7 +187,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
               </>
             ) : (
               <>
-                <Flame className="w-3.5 h-3.5 text-rose-500" />
+                <Flame className="w-3.5 h-3.5 text-white" />
                 <span>สินค้าทั้งหมดในร้าน</span>
               </>
             )}
@@ -201,7 +201,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         <div className="overflow-y-auto p-3 space-y-1.5 flex-1">
           {loading ? (
             <div className="py-14 flex flex-col items-center justify-center gap-2 text-neutral-400 text-xs">
-              <Loader2 className="w-6 h-6 animate-spin text-rose-500" />
+              <Loader2 className="w-6 h-6 animate-spin text-white" />
               <span>กำลังโหลดรายการสินค้า...</span>
             </div>
           ) : filtered.length === 0 ? (
@@ -241,11 +241,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-xs sm:text-sm text-white truncate group-hover:text-rose-400 transition-colors">
+                        <span className="font-semibold text-xs sm:text-sm text-white truncate group-hover:text-white transition-colors">
                           {item.name}
                         </span>
                         {item.badge && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-rose-500/15 border border-rose-500/30 text-rose-400 font-bold shrink-0">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-white/10 border border-white/20 text-white font-bold shrink-0">
                             {item.badge}
                           </span>
                         )}
@@ -281,7 +281,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         </div>
                       )}
                     </div>
-                    <div className="w-7 h-7 rounded-lg bg-white/[0.04] group-hover:bg-rose-500 text-neutral-400 group-hover:text-white flex items-center justify-center transition-all">
+                    <div className="w-7 h-7 rounded-lg bg-white/[0.04] group-hover:bg-white text-neutral-400 group-hover:text-black flex items-center justify-center transition-all">
                       <ChevronRight className="w-4 h-4" />
                     </div>
                   </div>
@@ -294,7 +294,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
         {/* Footer info */}
         <div className="px-4 sm:px-5 py-3 border-t border-white/[0.08] bg-black/60 text-[11px] text-neutral-400 flex items-center justify-between">
           <span className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-rose-400" />
+            <Sparkles className="w-3.5 h-3.5 text-white" />
             <span>กดเลือกสินค้าเพื่อดูรายละเอียดและสั่งซื้อทันที</span>
           </span>
           <span className="font-mono text-neutral-500">{filtered.length} รายการ</span>

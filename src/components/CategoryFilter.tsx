@@ -45,7 +45,7 @@ export default function CategoryFilter({
       {/* Category Section Header (genzxshop reference style) */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-500 shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-white shrink-0">
             <Tag className="w-4 h-4" />
           </div>
           <div className="flex items-baseline gap-2">
@@ -59,12 +59,12 @@ export default function CategoryFilter({
         </div>
 
         {/* Gradient divider line */}
-        <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-rose-500/30 via-rose-500/10 to-transparent mx-4" />
+        <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-white/20 via-white/5 to-transparent mx-4" />
 
         <div className="flex items-center gap-2 shrink-0">
           <Link
             href="/categories"
-            className="text-xs text-rose-500 hover:text-rose-400 flex items-center gap-1 transition-colors font-semibold px-2 py-1"
+            className="text-xs text-neutral-400 hover:text-white flex items-center gap-1 transition-colors font-semibold px-2 py-1"
           >
             <span>ดูทั้งหมด</span>
             <ChevronRight className="w-3.5 h-3.5" />
