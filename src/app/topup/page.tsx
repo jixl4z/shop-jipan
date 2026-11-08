@@ -367,17 +367,17 @@ export default function DedicatedTopupPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-[#060608] text-white flex flex-col selection:bg-rose-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-white flex flex-col selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
       <Navbar />
 
       <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
-        {/* Topup 2-Column Grid Layout matching Reference Screenshots */}
+        {/* Topup 2-Column Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           {/* Left Column: User Profile, Balance & Method Selector */}
           <div className="lg:col-span-5 space-y-4">
             {/* User Greeting */}
-            <div className="flex items-center gap-3.5 p-2">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 bg-neutral-900 shrink-0 flex items-center justify-center">
+            <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-white dark:bg-[#0f1015]/80 border border-slate-200 dark:border-white/[0.08] shadow-sm dark:shadow-xl">
+              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-slate-200 dark:border-white/20 bg-slate-100 dark:bg-neutral-900 shrink-0 flex items-center justify-center">
                 {user?.avatar ? (
                   <img
                     src={user.avatar}
@@ -385,36 +385,36 @@ export default function DedicatedTopupPage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-tr from-rose-700 to-red-500 flex items-center justify-center font-bold text-lg text-white">
+                  <div className="w-full h-full bg-gradient-to-tr from-neutral-800 to-neutral-600 flex items-center justify-center font-bold text-lg text-white">
                     {user?.username ? user.username.slice(0, 1).toUpperCase() : "U"}
                   </div>
                 )}
               </div>
               <div className="min-w-0">
-                <span className="text-[11px] text-neutral-400 font-light block leading-none">
+                <span className="text-[11px] text-slate-500 dark:text-neutral-400 font-light block leading-none">
                   ยินดีต้อนรับ
                 </span>
-                <span className="font-extrabold text-sm sm:text-base text-white truncate block mt-1">
+                <span className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white truncate block mt-1">
                   {user ? user.username : "ผู้เยี่ยมชม (กรุณาเข้าสู่ระบบ)"}
                 </span>
               </div>
             </div>
 
             {/* Current Balance Box */}
-            <div className="p-5 rounded-2xl bg-[#0f1015]/80 border border-white/[0.08] space-y-1.5 shadow-xl">
-              <div className="flex items-center gap-2 text-xs text-neutral-400 font-medium">
-                <CreditCard className="w-3.5 h-3.5 text-rose-500" />
+            <div className="p-5 rounded-2xl bg-white dark:bg-[#0f1015]/80 border border-slate-200 dark:border-white/[0.08] space-y-1.5 shadow-sm dark:shadow-xl">
+              <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-neutral-400 font-medium">
+                <CreditCard className="w-3.5 h-3.5 text-slate-700 dark:text-neutral-300" />
                 <span>ยอดเงินคงเหลือปัจจุบัน</span>
               </div>
-              <div className="text-3xl font-extrabold font-mono text-white flex items-baseline gap-2">
+              <div className="text-3xl font-extrabold font-mono text-slate-900 dark:text-white flex items-baseline gap-2">
                 <span>฿{user ? user.balance.toFixed(2) : "0.00"}</span>
-                <span className="text-xs font-normal text-neutral-400 font-sans">บาท</span>
+                <span className="text-xs font-normal text-slate-500 dark:text-neutral-400 font-sans">บาท</span>
               </div>
             </div>
 
             {/* Payment Methods List */}
             <div className="space-y-2.5 pt-2">
-              <label className="text-xs font-semibold text-neutral-400 block px-1">
+              <label className="text-xs font-semibold text-slate-600 dark:text-neutral-400 block px-1">
                 เลือกช่องทางการชำระเงิน
               </label>
 
@@ -427,22 +427,22 @@ export default function DedicatedTopupPage() {
                 }}
                 className={`w-full p-4 rounded-2xl text-left border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                   activeMethod === "bank"
-                    ? "bg-[#181920] border-rose-600 ring-1 ring-rose-600/50 shadow-lg shadow-rose-950/20"
-                    : "bg-[#0f1015]/80 border-white/[0.08] hover:border-white/20 hover:bg-[#14151b]"
+                    ? "bg-slate-100 border-black ring-2 ring-black/10 shadow-md dark:bg-[#181920] dark:border-white/30 dark:ring-1 dark:ring-white/20 dark:shadow-xl"
+                    : "bg-white hover:bg-slate-50 border-slate-200 dark:bg-[#0f1015]/80 dark:border-white/[0.08] dark:hover:border-white/20 dark:hover:bg-[#14151b]"
                 }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-11 h-11 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-neutral-900 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0">
                     <BankSlipIcon className="w-7 h-7" />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xs text-white">โอนผ่านบัญชีธนาคาร</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+                      <span className="font-extrabold text-xs text-slate-900 dark:text-white">โอนผ่านบัญชีธนาคาร</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
                         แนบสลิป
                       </span>
                     </div>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] text-slate-500 dark:text-neutral-400 truncate mt-0.5">
                       โอนตามเลขบัญชีและอัปโหลดสลิป
                     </p>
                   </div>
@@ -452,8 +452,8 @@ export default function DedicatedTopupPage() {
                 <div
                   className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
                     activeMethod === "bank"
-                      ? "bg-rose-600 text-white"
-                      : "border-2 border-neutral-700"
+                      ? "bg-black text-white dark:bg-white dark:text-black shadow-sm"
+                      : "border-2 border-slate-300 dark:border-neutral-700"
                   }`}
                 >
                   {activeMethod === "bank" && <Check className="w-3 h-3 stroke-[3]" />}
@@ -469,22 +469,22 @@ export default function DedicatedTopupPage() {
                 }}
                 className={`w-full p-4 rounded-2xl text-left border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                   activeMethod === "truemoney"
-                    ? "bg-[#181920] border-rose-600 ring-1 ring-rose-600/50 shadow-lg shadow-rose-950/20"
-                    : "bg-[#0f1015]/80 border-white/[0.08] hover:border-white/20 hover:bg-[#14151b]"
+                    ? "bg-slate-100 border-black ring-2 ring-black/10 shadow-md dark:bg-[#181920] dark:border-white/30 dark:ring-1 dark:ring-white/20 dark:shadow-xl"
+                    : "bg-white hover:bg-slate-50 border-slate-200 dark:bg-[#0f1015]/80 dark:border-white/[0.08] dark:hover:border-white/20 dark:hover:bg-[#14151b]"
                 }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-11 h-11 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-neutral-900 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0">
                     <TrueMoneyEnvelopeIcon className="w-7 h-7" />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xs text-white">ทรูมันนี่ วอลเล็ท</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-400">
+                      <span className="font-extrabold text-xs text-slate-900 dark:text-white">ทรูมันนี่ วอลเล็ท</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400">
                         ซองของขวัญ
                       </span>
                     </div>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] text-slate-500 dark:text-neutral-400 truncate mt-0.5">
                       เติมเงินด้วยลิงก์ซองของขวัญ
                     </p>
                   </div>
@@ -494,8 +494,8 @@ export default function DedicatedTopupPage() {
                 <div
                   className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
                     activeMethod === "truemoney"
-                      ? "bg-rose-600 text-white"
-                      : "border-2 border-neutral-700"
+                      ? "bg-black text-white dark:bg-white dark:text-black shadow-sm"
+                      : "border-2 border-slate-300 dark:border-neutral-700"
                   }`}
                 >
                   {activeMethod === "truemoney" && <Check className="w-3 h-3 stroke-[3]" />}
@@ -511,22 +511,22 @@ export default function DedicatedTopupPage() {
                 }}
                 className={`w-full p-4 rounded-2xl text-left border transition-all cursor-pointer flex items-center justify-between gap-3 ${
                   activeMethod === "redeem"
-                    ? "bg-[#181920] border-rose-600 ring-1 ring-rose-600/50 shadow-lg shadow-rose-950/20"
-                    : "bg-[#0f1015]/80 border-white/[0.08] hover:border-white/20 hover:bg-[#14151b]"
+                    ? "bg-slate-100 border-black ring-2 ring-black/10 shadow-md dark:bg-[#181920] dark:border-white/30 dark:ring-1 dark:ring-white/20 dark:shadow-xl"
+                    : "bg-white hover:bg-slate-50 border-slate-200 dark:bg-[#0f1015]/80 dark:border-white/[0.08] dark:hover:border-white/20 dark:hover:bg-[#14151b]"
                 }`}
               >
                 <div className="flex items-center gap-3.5 min-w-0">
-                  <div className="w-11 h-11 rounded-xl bg-neutral-900 border border-white/10 flex items-center justify-center shrink-0">
+                  <div className="w-11 h-11 rounded-xl bg-slate-100 dark:bg-neutral-900 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0">
                     <RedeemGiftIcon className="w-7 h-7" />
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-xs text-white">โค้ดเติมเงิน</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/15 border border-rose-500/30 text-rose-400">
+                      <span className="font-extrabold text-xs text-slate-900 dark:text-white">โค้ดเติมเงิน</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 dark:bg-white/10 border border-slate-300 dark:border-white/20 text-slate-800 dark:text-white">
                         เข้าทันที
                       </span>
                     </div>
-                    <p className="text-[11px] text-neutral-400 truncate mt-0.5">
+                    <p className="text-[11px] text-slate-500 dark:text-neutral-400 truncate mt-0.5">
                       แลกรับเงินด้วยรหัสคูปอง
                     </p>
                   </div>
@@ -536,8 +536,8 @@ export default function DedicatedTopupPage() {
                 <div
                   className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-all ${
                     activeMethod === "redeem"
-                      ? "bg-rose-600 text-white"
-                      : "border-2 border-neutral-700"
+                      ? "bg-black text-white dark:bg-white dark:text-black shadow-sm"
+                      : "border-2 border-slate-300 dark:border-neutral-700"
                   }`}
                 >
                   {activeMethod === "redeem" && <Check className="w-3 h-3 stroke-[3]" />}
@@ -546,21 +546,21 @@ export default function DedicatedTopupPage() {
             </div>
 
             {/* Bottom 3 Trust Features */}
-            <div className="p-4 rounded-2xl bg-[#0f1015]/60 border border-white/[0.06] grid grid-cols-3 gap-2 text-center text-xs">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#0f1015]/60 border border-slate-200 dark:border-white/[0.06] shadow-sm grid grid-cols-3 gap-2 text-center text-xs">
               <div className="space-y-1">
-                <Shield className="w-4 h-4 text-rose-500 mx-auto" />
-                <div className="font-bold text-white text-[11px]">ปลอดภัยสูง</div>
-                <div className="text-[10px] text-neutral-500">เข้ารหัสข้อมูล</div>
+                <Shield className="w-4 h-4 text-slate-700 dark:text-neutral-300 mx-auto" />
+                <div className="font-bold text-slate-800 dark:text-white text-[11px]">ปลอดภัยสูง</div>
+                <div className="text-[10px] text-slate-500 dark:text-neutral-500">เข้ารหัสข้อมูล</div>
               </div>
               <div className="space-y-1">
-                <Zap className="w-4 h-4 text-rose-500 mx-auto" />
-                <div className="font-bold text-white text-[11px]">รวดเร็วทันใจ</div>
-                <div className="text-[10px] text-neutral-500">ยอดเข้าอัตโนมัติ</div>
+                <Zap className="w-4 h-4 text-slate-700 dark:text-neutral-300 mx-auto" />
+                <div className="font-bold text-slate-800 dark:text-white text-[11px]">รวดเร็วทันใจ</div>
+                <div className="text-[10px] text-slate-500 dark:text-neutral-500">ยอดเข้าอัตโนมัติ</div>
               </div>
               <div className="space-y-1">
-                <Clock className="w-4 h-4 text-rose-500 mx-auto" />
-                <div className="font-bold text-white text-[11px]">บริการ 24 ชม.</div>
-                <div className="text-[10px] text-neutral-500">เติมได้ตลอดเวลา</div>
+                <Clock className="w-4 h-4 text-slate-700 dark:text-neutral-300 mx-auto" />
+                <div className="font-bold text-slate-800 dark:text-white text-[11px]">บริการ 24 ชม.</div>
+                <div className="text-[10px] text-slate-500 dark:text-neutral-500">เติมได้ตลอดเวลา</div>
               </div>
             </div>
           </div>
@@ -569,17 +569,17 @@ export default function DedicatedTopupPage() {
           <div className="lg:col-span-7">
             {/* METHOD 1: Bank Account & Slip Upload */}
             {activeMethod === "bank" && (
-              <div className="p-6 sm:p-7 rounded-3xl bg-[#0e0f14] border border-white/[0.08] shadow-2xl space-y-6">
+              <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0e0f14] border border-slate-200 dark:border-white/[0.08] shadow-md dark:shadow-2xl space-y-6">
                 {/* Header */}
-                <div className="flex items-center gap-3.5 pb-4 border-b border-white/[0.08]">
-                  <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-white/10 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3.5 pb-4 border-b border-slate-200 dark:border-white/[0.08]">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-neutral-900 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0">
                     <BankSlipIcon className="w-7 h-7" />
                   </div>
                   <div>
-                    <h2 className="text-base sm:text-lg font-bold text-white">
+                    <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                       โอนผ่านบัญชีธนาคาร (สลิป QR)
                     </h2>
-                    <p className="text-xs text-neutral-400 mt-0.5">
+                    <p className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
                       โอนเงินตามบัญชีด้านล่าง แล้วแนบรูปสลิปเพื่อตรวจสอบ
                     </p>
                   </div>
@@ -588,14 +588,14 @@ export default function DedicatedTopupPage() {
                 {/* Unified Virtual Bank Card */}
                 <div
                   onClick={() => handleCopy(rawTarget, "เลขบัญชี")}
-                  className="relative overflow-hidden rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-[#0a0c10] via-[#0d0f15] to-[#121118] border border-white/[0.08] hover:border-white/20 transition-all duration-300 shadow-xl group cursor-pointer"
+                  className="card-bank-premium relative overflow-hidden rounded-3xl p-5 sm:p-6 border border-white/10 hover:border-white/25 transition-all duration-300 shadow-xl group cursor-pointer"
                 >
                   {/* Ambient Bank Gradient Glows (ttb Blue & Orange signature glow) */}
-                  <div className="absolute -top-14 -left-14 w-48 h-48 bg-[#0057D9]/15 rounded-full blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-14 -right-14 w-48 h-48 bg-[#F37021]/15 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute -top-14 -left-14 w-48 h-48 bg-[#0057D9]/20 rounded-full blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-14 -right-14 w-48 h-48 bg-[#F37021]/20 rounded-full blur-3xl pointer-events-none" />
 
                   {/* Watermark bank icon background */}
-                  <div className="absolute -right-3 -bottom-3 w-32 h-32 text-white/[0.03] group-hover:text-white/[0.05] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
+                  <div className="absolute -right-3 -bottom-3 w-32 h-32 text-white/[0.03] group-hover:text-white/[0.06] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
                     <Landmark className="w-full h-full stroke-[1]" />
                   </div>
 
@@ -641,7 +641,7 @@ export default function DedicatedTopupPage() {
                         <span className="text-[11px] font-medium text-neutral-400 tracking-wider uppercase">
                           เลขที่บัญชีธนาคาร (แตะเพื่อคัดลอก)
                         </span>
-                        <span className="text-[11px] text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                        <span className="text-[11px] text-neutral-400 group-hover:text-white transition-colors">
                           คลิกเพื่อคัดลอก
                         </span>
                       </div>
@@ -658,7 +658,7 @@ export default function DedicatedTopupPage() {
                           className={`w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm active:scale-95 ${
                             copiedAccount
                               ? "bg-white text-black"
-                              : "bg-white/10 hover:bg-white text-white hover:text-black border border-white/20"
+                              : "bg-white/15 hover:bg-white text-white hover:text-black border border-white/20"
                           }`}
                         >
                           {copiedAccount ? (
@@ -695,19 +695,19 @@ export default function DedicatedTopupPage() {
                 </div>
 
                 {/* How-to Notice */}
-                <div className="text-xs text-neutral-400 bg-white/[0.02] p-3.5 rounded-xl border border-white/[0.06] space-y-1.5">
-                  <div className="text-neutral-200 font-semibold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-white" />
+                <div className="text-xs text-slate-600 dark:text-neutral-400 bg-slate-50 dark:bg-white/[0.02] p-3.5 rounded-xl border border-slate-200 dark:border-white/[0.06] space-y-1.5">
+                  <div className="text-slate-900 dark:text-neutral-200 font-semibold flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-slate-700 dark:text-white" />
                     <span>วิธีเติมเงิน:</span>
                   </div>
-                  <div>1. โอนเงินเข้าบัญชี <strong className="text-white font-medium">{bankName}</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
+                  <div>1. โอนเงินเข้าบัญชี <strong className="text-slate-900 dark:text-white font-medium">{bankName}</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
                   <div>2. แนบรูปสลิปด้านล่าง ระบบจะตรวจยอดเงินจากสลิปและปรับเงินเข้ากระเป๋าให้อัตโนมัติ 24 ชม.</div>
                 </div>
 
                 {/* Slip Upload Area */}
                 <form onSubmit={handleSubmitBankSlip} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-semibold text-neutral-300 mb-2">
+                    <label className="block text-xs font-semibold text-slate-800 dark:text-neutral-300 mb-2">
                       อัปโหลดรูปภาพสลิปโอนเงิน
                     </label>
 
@@ -724,18 +724,18 @@ export default function DedicatedTopupPage() {
                     />
 
                     {slipPreview ? (
-                      <div className="relative p-4 rounded-2xl bg-[#14151b] border border-white/20 flex flex-col items-center justify-center gap-3">
+                      <div className="relative p-4 rounded-2xl bg-slate-50 dark:bg-[#14151b] border border-slate-300 dark:border-white/20 flex flex-col items-center justify-center gap-3">
                         <img
                           src={slipPreview}
                           alt="Slip Preview"
-                          className="max-h-60 rounded-xl object-contain border border-white/10"
+                          className="max-h-60 rounded-xl object-contain border border-slate-200 dark:border-white/10"
                         />
-                        <div className="flex items-center justify-between w-full pt-2 text-xs text-neutral-400 border-t border-white/[0.08]">
+                        <div className="flex items-center justify-between w-full pt-2 text-xs text-slate-500 dark:text-neutral-400 border-t border-slate-200 dark:border-white/[0.08]">
                           <span className="truncate max-w-xs">{slipFileName}</span>
                           <button
                             type="button"
                             onClick={handleClearSlip}
-                            className="text-rose-400 hover:text-rose-300 font-semibold cursor-pointer"
+                            className="text-rose-600 dark:text-rose-400 hover:underline font-semibold cursor-pointer"
                           >
                             ลบรูปภาพ
                           </button>
@@ -746,15 +746,15 @@ export default function DedicatedTopupPage() {
                         onDragOver={(e) => e.preventDefault()}
                         onDrop={handleDrop}
                         onClick={() => fileInputRef.current?.click()}
-                        className="py-10 px-4 rounded-2xl bg-[#14151b]/80 hover:bg-[#14151b] border-2 border-dashed border-white/15 hover:border-rose-500/50 transition-all cursor-pointer text-center space-y-2 group"
+                        className="py-10 px-4 rounded-2xl bg-slate-50 hover:bg-slate-100 dark:bg-[#14151b]/80 dark:hover:bg-[#14151b] border-2 border-dashed border-slate-300 dark:border-white/15 hover:border-black dark:hover:border-white/40 transition-all cursor-pointer text-center space-y-2 group"
                       >
-                        <div className="w-12 h-12 rounded-full bg-rose-600/10 border border-rose-600/20 text-rose-500 flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                        <div className="w-12 h-12 rounded-full bg-slate-200 dark:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-white flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
                           <Upload className="w-5 h-5" />
                         </div>
-                        <div className="text-xs sm:text-sm font-bold text-white">
+                        <div className="text-xs sm:text-sm font-bold text-slate-800 dark:text-white">
                           คลิกเพื่อเลือกไฟล์ หรือลากรูปสลิปมาวางที่นี่
                         </div>
-                        <div className="text-[11px] text-neutral-500">
+                        <div className="text-[11px] text-slate-500 dark:text-neutral-500">
                           รองรับรูปภาพ JPG, PNG, WEBP (สูงสุด 10MB)
                         </div>
                       </div>
@@ -762,15 +762,15 @@ export default function DedicatedTopupPage() {
                   </div>
 
                   {/* Warning Notice Box */}
-                  <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs flex items-start gap-2.5 leading-relaxed">
-                    <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs flex items-start gap-2.5 leading-relaxed">
+                    <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                     <span>
                       กรุณาโอนเงินเข้าบัญชีที่ระบุไว้เท่านั้น และอัปโหลดสลิปที่มี QR Code ชัดเจน ระบบจะตรวจสอบและเติมเงินให้อัตโนมัติ
                     </span>
                   </div>
 
                   {errorMsg && (
-                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-300 text-xs flex items-center gap-2">
+                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
                       <AlertCircle className="w-4 h-4 shrink-0" />
                       <span>{errorMsg}</span>
                     </div>
@@ -780,7 +780,7 @@ export default function DedicatedTopupPage() {
                   <button
                     type="submit"
                     disabled={loading || !slipBase64}
-                    className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-black hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -800,11 +800,11 @@ export default function DedicatedTopupPage() {
 
             {/* METHOD 2: TrueMoney Wallet Voucher */}
             {activeMethod === "truemoney" && (
-              <div className="p-6 sm:p-7 rounded-3xl bg-[#0e0f14] border border-white/[0.08] shadow-2xl space-y-6">
+              <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0e0f14] border border-slate-200 dark:border-white/[0.08] shadow-md dark:shadow-2xl space-y-6">
                 {/* Virtual TrueMoney Angpao Digital Card */}
-                <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-gradient-to-br from-[#1c0c08] via-[#120704] to-[#0a0504] p-5 shadow-2xl space-y-4 group">
+                <div className="relative overflow-hidden rounded-2xl border border-orange-500/20 bg-gradient-to-br from-[#1c0c08] via-[#120704] to-[#0a0504] p-5 shadow-2xl space-y-4 group">
                   {/* TrueMoney Orange Ambient Radial Glow */}
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[#FF5500]/15 via-[#E52020]/10 to-transparent rounded-full blur-2xl pointer-events-none" />
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-[#FF5500]/20 via-[#E52020]/15 to-transparent rounded-full blur-2xl pointer-events-none" />
 
                   {/* Giant Translucent Gift Watermark */}
                   <div className="absolute -right-3 -bottom-3 w-32 h-32 text-[#FF5500]/[0.05] group-hover:text-[#FF5500]/[0.09] transition-all duration-300 pointer-events-none flex items-center justify-center">
@@ -835,7 +835,7 @@ export default function DedicatedTopupPage() {
 
                   {/* 3 Step Visual Guide Badges */}
                   <div className="relative z-10 grid grid-cols-3 gap-2.5 pt-1">
-                    <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-start gap-2">
+                    <div className="p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-start gap-2">
                       <span className="w-5 h-5 rounded-md bg-gradient-to-br from-[#FF5500] to-[#E52020] text-white font-mono font-bold text-xs flex items-center justify-center shrink-0">
                         1
                       </span>
@@ -845,7 +845,7 @@ export default function DedicatedTopupPage() {
                       </div>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-start gap-2">
+                    <div className="p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-start gap-2">
                       <span className="w-5 h-5 rounded-md bg-gradient-to-br from-[#FF5500] to-[#E52020] text-white font-mono font-bold text-xs flex items-center justify-center shrink-0">
                         2
                       </span>
@@ -855,7 +855,7 @@ export default function DedicatedTopupPage() {
                       </div>
                     </div>
 
-                    <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-start gap-2">
+                    <div className="p-2.5 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-start gap-2">
                       <span className="w-5 h-5 rounded-md bg-gradient-to-br from-[#FF5500] to-[#E52020] text-white font-mono font-bold text-xs flex items-center justify-center shrink-0">
                         3
                       </span>
@@ -870,11 +870,11 @@ export default function DedicatedTopupPage() {
                 <form onSubmit={handleSubmitTrueMoney} className="space-y-4 text-xs">
                   <div>
                     <div className="flex items-center justify-between text-xs mb-2">
-                      <label className="text-neutral-300 font-semibold">
+                      <label className="text-slate-800 dark:text-neutral-300 font-semibold">
                         วางลิงก์ซองของขวัญ TrueMoney:
                       </label>
                       {voucherLink.includes("gift.truemoney.com") && (
-                        <span className="text-[11px] text-emerald-400 flex items-center gap-1 font-mono font-medium">
+                        <span className="text-[11px] text-emerald-600 dark:text-emerald-400 flex items-center gap-1 font-mono font-medium">
                           <Check className="w-3 h-3" />
                           <span>ลิงก์ถูกต้อง</span>
                         </span>
@@ -887,25 +887,25 @@ export default function DedicatedTopupPage() {
                         value={voucherLink}
                         onChange={(e) => setVoucherLink(e.target.value)}
                         placeholder="https://gift.truemoney.com/campaign/?v=..."
-                        className="w-full pl-4 pr-24 py-3.5 rounded-xl bg-[#14151b] border border-white/[0.08] text-white placeholder-neutral-500 focus:outline-none focus:border-rose-500 transition-colors font-mono"
+                        className="w-full pl-4 pr-24 py-3.5 rounded-xl bg-slate-50 dark:bg-[#14151b] border border-slate-300 dark:border-white/[0.08] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-black dark:focus:border-white/40 transition-colors font-mono"
                       />
                       <button
                         type="button"
                         onClick={() => handlePasteClipboard(setVoucherLink)}
-                        className="absolute right-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer border border-white/10"
+                        className="absolute right-2 px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-white/10 dark:hover:bg-white dark:text-white dark:hover:text-black text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer border border-slate-300 dark:border-white/10"
                         title="กดเพื่อวางลิงก์จากคลิปบอร์ด"
                       >
                         <ClipboardPaste className="w-3.5 h-3.5" />
                         <span>วางลิงก์</span>
                       </button>
                     </div>
-                    <span className="text-[11px] text-neutral-500 mt-1.5 block">
+                    <span className="text-[11px] text-slate-500 dark:text-neutral-500 mt-1.5 block">
                       ตัวอย่าง : https://gift.truemoney.com/campaign/?v=XXXXXXXXXXXXXXXX
                     </span>
                   </div>
 
                   {errorMsg && (
-                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-300 text-xs flex items-center gap-2">
+                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
                       <AlertCircle className="w-4 h-4 shrink-0" />
                       <span>{errorMsg}</span>
                     </div>
@@ -915,7 +915,7 @@ export default function DedicatedTopupPage() {
                   <button
                     type="submit"
                     disabled={loading || !voucherLink.trim()}
-                    className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-black hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -935,17 +935,17 @@ export default function DedicatedTopupPage() {
 
             {/* METHOD 3: Redeem Code */}
             {activeMethod === "redeem" && (
-              <div className="p-6 sm:p-7 rounded-3xl bg-[#0e0f14] border border-white/[0.08] shadow-2xl space-y-6">
+              <div className="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#0e0f14] border border-slate-200 dark:border-white/[0.08] shadow-md dark:shadow-2xl space-y-6">
                 {/* Header */}
-                <div className="flex items-center gap-3.5 pb-4 border-b border-white/[0.08]">
-                  <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-white/10 flex items-center justify-center shrink-0">
+                <div className="flex items-center gap-3.5 pb-4 border-b border-slate-200 dark:border-white/[0.08]">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-neutral-900 border border-slate-200 dark:border-white/10 flex items-center justify-center shrink-0">
                     <RedeemGiftIcon className="w-7 h-7" />
                   </div>
                   <div>
-                    <h2 className="text-base sm:text-lg font-bold text-white">
+                    <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                       โค้ดเติมเงิน (Redeem Code)
                     </h2>
-                    <p className="text-xs text-neutral-400 mt-0.5">
+                    <p className="text-xs text-slate-500 dark:text-neutral-400 mt-0.5">
                       กรอกรหัสคูปองเพื่อแลกรับเงินเข้าบัญชีทันที
                     </p>
                   </div>
@@ -953,13 +953,13 @@ export default function DedicatedTopupPage() {
 
                 <form onSubmit={handleSubmitRedeemCode} className="space-y-4 text-xs">
                   {/* Notice Box */}
-                  <div className="p-3.5 rounded-xl bg-neutral-900/60 border border-white/[0.08] text-neutral-300 text-xs flex items-center gap-2.5">
-                    <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                  <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-neutral-900/60 border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-neutral-300 text-xs flex items-center gap-2.5">
+                    <AlertCircle className="w-4 h-4 text-slate-600 dark:text-neutral-400 shrink-0" />
                     <span>สามารถรับ Redeem Code ได้จากกิจกรรม หรือโค้ดโปรโมชั่นพิเศษของทางร้าน</span>
                   </div>
 
                   <div>
-                    <label className="block text-neutral-300 font-semibold mb-2">
+                    <label className="block text-slate-800 dark:text-neutral-300 font-semibold mb-2">
                       รหัสคูปอง
                     </label>
                     <div className="relative flex items-center">
@@ -969,23 +969,23 @@ export default function DedicatedTopupPage() {
                         value={redeemCode}
                         onChange={(e) => setRedeemCode(e.target.value.toUpperCase())}
                         placeholder="เช่น GIFT-XXXX-XXXX หรือ PROMO100"
-                        className="w-full pl-4 pr-24 py-3 rounded-xl bg-[#14151b] border border-white/[0.08] text-white placeholder-neutral-500 focus:outline-none focus:border-rose-500 transition-colors font-mono uppercase"
+                        className="w-full pl-4 pr-24 py-3 rounded-xl bg-slate-50 dark:bg-[#14151b] border border-slate-300 dark:border-white/[0.08] text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-neutral-500 focus:outline-none focus:border-black dark:focus:border-white/40 transition-colors font-mono uppercase"
                       />
                       <button
                         type="button"
                         onClick={() => handlePasteClipboard((val) => setRedeemCode(val.toUpperCase()))}
-                        className="absolute right-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-neutral-200 text-[11px] font-semibold transition-all cursor-pointer"
+                        className="absolute right-2 px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-white/10 dark:hover:bg-white/20 dark:text-neutral-200 text-[11px] font-semibold transition-all cursor-pointer"
                       >
                         วางรหัส
                       </button>
                     </div>
-                    <span className="text-[11px] text-neutral-500 mt-1.5 block">
+                    <span className="text-[11px] text-slate-500 dark:text-neutral-500 mt-1.5 block">
                       กรอกรหัสโค้ดให้ถูกต้อง ตัวพิมพ์ใหญ่หรือตัวพิมพ์เล็กสามารถใช้งานได้เหมือนกัน
                     </span>
                   </div>
 
                   {errorMsg && (
-                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-300 text-xs flex items-center gap-2">
+                    <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
                       <AlertCircle className="w-4 h-4 shrink-0" />
                       <span>{errorMsg}</span>
                     </div>
@@ -995,7 +995,7 @@ export default function DedicatedTopupPage() {
                   <button
                     type="submit"
                     disabled={loading || !redeemCode.trim()}
-                    className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-black hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -1016,65 +1016,65 @@ export default function DedicatedTopupPage() {
         </div>
 
         {/* Topup History Table */}
-        <div className="rounded-3xl bg-[#0e0f14] border border-white/[0.08] p-6 space-y-4 shadow-xl">
-          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-            <div className="flex items-center gap-2 font-bold text-sm text-white">
-              <Clock className="w-4 h-4 text-rose-500" />
+        <div className="rounded-3xl bg-white dark:bg-[#0e0f14] border border-slate-200 dark:border-white/[0.08] p-6 space-y-4 shadow-md dark:shadow-xl">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-white/[0.08]">
+            <div className="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-white">
+              <Clock className="w-4 h-4 text-slate-700 dark:text-neutral-300" />
               <span>ประวัติการเติมเงินของคุณ</span>
             </div>
             <button
               type="button"
               onClick={loadHistory}
               disabled={loadingHistory}
-              className="text-xs text-neutral-400 hover:text-white underline cursor-pointer"
+              className="text-xs text-slate-500 dark:text-neutral-400 hover:text-black dark:hover:text-white underline cursor-pointer"
             >
               {loadingHistory ? "กำลังโหลด..." : "รีเฟรช"}
             </button>
           </div>
 
           {loadingHistory ? (
-            <div className="py-8 text-center text-xs text-neutral-500">
+            <div className="py-8 text-center text-xs text-slate-500 dark:text-neutral-500">
               กำลังโหลดประวัติการเติมเงิน...
             </div>
           ) : history.length === 0 ? (
-            <div className="py-8 text-center text-xs text-neutral-500">
+            <div className="py-8 text-center text-xs text-slate-500 dark:text-neutral-500">
               ยังไม่มีประวัติการทำรายการเติมเงิน
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
-                  <tr className="text-neutral-400 border-b border-white/[0.06]">
+                  <tr className="text-slate-500 dark:text-neutral-400 border-b border-slate-200 dark:border-white/[0.06]">
                     <th className="py-2.5 px-3">วันและเวลา</th>
                     <th className="py-2.5 px-3">ช่องทาง</th>
                     <th className="py-2.5 px-3">จำนวนเงิน</th>
                     <th className="py-2.5 px-3">สถานะ</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.04]">
+                <tbody className="divide-y divide-slate-100 dark:divide-white/[0.04]">
                   {history.map((h) => (
-                    <tr key={h.id} className="hover:bg-white/[0.02]">
-                      <td className="py-3 px-3 text-neutral-400 font-mono text-[11px]">
+                    <tr key={h.id} className="hover:bg-slate-50 dark:hover:bg-white/[0.02]">
+                      <td className="py-3 px-3 text-slate-600 dark:text-neutral-400 font-mono text-[11px]">
                         {new Date(h.createdAt).toLocaleString("th-TH")}
                       </td>
-                      <td className="py-3 px-3 text-neutral-300 font-medium">
+                      <td className="py-3 px-3 text-slate-800 dark:text-neutral-300 font-medium">
                         {h.type === "SLIP"
                           ? "โอนธนาคาร (สลิป)"
                           : h.type === "TRUEMONEY"
                           ? "ทรูมันนี่ (ซอง)"
                           : "โค้ดเติมเงิน"}
                       </td>
-                      <td className="py-3 px-3 font-mono font-bold text-emerald-400">
+                      <td className="py-3 px-3 font-mono font-bold text-emerald-600 dark:text-emerald-400">
                         +฿{h.amount.toFixed(2)}
                       </td>
                       <td className="py-3 px-3">
                         <span
                           className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                             h.status === "SUCCESS"
-                              ? "bg-emerald-500/10 border border-emerald-500/25 text-emerald-400"
+                              ? "bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400"
                               : h.status === "PENDING"
-                              ? "bg-amber-500/10 border border-amber-500/25 text-amber-400"
-                              : "bg-rose-500/10 border border-rose-500/25 text-rose-400"
+                              ? "bg-amber-500/10 border border-amber-500/25 text-amber-600 dark:text-amber-400"
+                              : "bg-rose-500/10 border border-rose-500/25 text-rose-600 dark:text-rose-400"
                           }`}
                         >
                           {h.status === "SUCCESS" ? "สำเร็จ" : h.status === "PENDING" ? "รอดำเนินการ" : "ไม่สำเร็จ"}
@@ -1096,24 +1096,24 @@ export default function DedicatedTopupPage() {
             className="fixed inset-0 bg-black/80 backdrop-blur-sm"
             onClick={() => setSuccessResult(null)}
           />
-          <div className="relative w-full max-w-sm rounded-3xl bg-[#0e0f14] border border-white/20 p-6 space-y-4 shadow-2xl text-center z-10">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto text-3xl shadow-xl">
+          <div className="relative w-full max-w-sm rounded-3xl bg-white dark:bg-[#0e0f14] border border-slate-200 dark:border-white/20 p-6 space-y-4 shadow-2xl text-center z-10">
+            <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center mx-auto text-3xl shadow-xl">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <div>
-              <h3 className="font-extrabold text-lg text-white">{successResult.title}</h3>
-              <p className="text-xs text-neutral-400 mt-1">{successResult.msg}</p>
+              <h3 className="font-extrabold text-lg text-slate-900 dark:text-white">{successResult.title}</h3>
+              <p className="text-xs text-slate-500 dark:text-neutral-400 mt-1">{successResult.msg}</p>
             </div>
-            <div className="p-3.5 rounded-xl bg-black/60 border border-white/[0.08]">
-              <span className="text-xs text-neutral-400 block">ยอดเงินที่ได้รับ</span>
-              <span className="font-mono font-black text-2xl text-emerald-400 block mt-0.5">
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-black/60 border border-slate-200 dark:border-white/[0.08]">
+              <span className="text-xs text-slate-500 dark:text-neutral-400 block">ยอดเงินที่ได้รับ</span>
+              <span className="font-mono font-black text-2xl text-emerald-600 dark:text-emerald-400 block mt-0.5">
                 +฿{successResult.amount.toFixed(2)}
               </span>
             </div>
             <button
               type="button"
               onClick={() => setSuccessResult(null)}
-              className="w-full py-3 rounded-xl bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-colors cursor-pointer"
+              className="w-full py-3 rounded-xl bg-black text-white dark:bg-white dark:text-black font-bold text-xs hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors cursor-pointer"
             >
               ตกลง
             </button>

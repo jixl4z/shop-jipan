@@ -53,47 +53,47 @@ export default function CategoryDetailPage() {
   }, [slug, rawSlug]);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-slate-50 dark:bg-neutral-950 text-slate-900 dark:text-white flex flex-col selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
       <Navbar />
 
       <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-neutral-400">
-          <Link href="/" className="hover:text-white transition-colors">
+        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-neutral-400">
+          <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">
             หน้าแรก
           </Link>
           <span>/</span>
-          <Link href="/categories" className="hover:text-white transition-colors">
+          <Link href="/categories" className="hover:text-black dark:hover:text-white transition-colors">
             หมวดหมู่
           </Link>
           <span>/</span>
-          <span className="text-white font-medium">{categoryName || slug}</span>
+          <span className="text-slate-900 dark:text-white font-medium">{categoryName || slug}</span>
         </div>
 
         {/* Header / Category Banner */}
-        <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0d12]/90 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-xl">
+        <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-white/[0.08] bg-white dark:bg-[#0c0d12]/90 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-md dark:shadow-xl">
           {categoryBanner && (
             <div className="absolute inset-0 z-0">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={categoryBanner}
                 alt={categoryName}
-                className="w-full h-full object-cover opacity-30"
+                className="w-full h-full object-cover opacity-20 dark:opacity-30"
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-white via-white/80 to-transparent dark:from-neutral-950 dark:via-neutral-950/80 dark:to-transparent" />
             </div>
           )}
 
           <div className="relative z-10 space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-neutral-300 text-xs font-medium backdrop-blur-md">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 dark:bg-neutral-900/90 border border-slate-200 dark:border-neutral-700/80 text-slate-700 dark:text-neutral-300 text-xs font-medium backdrop-blur-md">
               <Layers className="w-3.5 h-3.5" />
               <span>หมวดหมู่สินค้า</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white drop-shadow">
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
               {categoryName || slug}
             </h1>
             {categoryDesc && (
-              <p className="text-xs sm:text-sm text-neutral-300 mt-1 font-light max-w-2xl drop-shadow">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-300 mt-1 font-light max-w-2xl drop-shadow-sm">
                 {categoryDesc}
               </p>
             )}
@@ -101,7 +101,7 @@ export default function CategoryDetailPage() {
 
           <Link
             href="/categories"
-            className="relative z-10 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-800/90 hover:bg-neutral-700 border border-neutral-700 text-xs text-neutral-200 hover:text-white transition-colors shrink-0 backdrop-blur-md shadow-md"
+            className="relative z-10 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-neutral-800/90 dark:hover:bg-neutral-700 border border-slate-200 dark:border-neutral-700 text-xs text-slate-800 dark:text-neutral-200 hover:text-black dark:hover:text-white transition-colors shrink-0 backdrop-blur-md shadow-sm"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>ดูหมวดหมู่อื่น</span>

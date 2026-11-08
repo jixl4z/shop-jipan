@@ -313,7 +313,7 @@ export default function TopupModal() {
                     {/* Unified Virtual Bank Card */}
                     <div
                       onClick={() => handleCopyAccount(rawTarget, "เลขบัญชี")}
-                      className="relative overflow-hidden rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-[#0a0c10] via-[#0d0f15] to-[#121118] border border-white/[0.08] hover:border-white/20 transition-all duration-300 shadow-xl group cursor-pointer"
+                      className="card-bank-premium relative overflow-hidden rounded-3xl p-4 sm:p-5 border border-white/10 hover:border-white/25 transition-all duration-300 shadow-xl group cursor-pointer"
                     >
                       {/* Ambient Bank Gradient Glows (ttb Blue & Orange signature glow) */}
                       <div className="absolute -top-14 -left-14 w-48 h-48 bg-[#0057D9]/15 rounded-full blur-3xl pointer-events-none" />

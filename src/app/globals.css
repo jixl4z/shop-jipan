@@ -203,15 +203,38 @@ html.light [class*="bg-[#0a0b0e]"] {
 html.light .glass-panel,
 html.light [class*="bg-[#0c0d12]"],
 html.light [class*="bg-[#0e1017]"],
+html.light [class*="bg-[#0e0f14]"],
 html.light [class*="bg-[#0e0f15]"],
 html.light [class*="bg-[#0f1015]"],
 html.light [class*="bg-[#0f1016]"],
 html.light [class*="bg-[#11121a]"],
 html.light [class*="bg-[#0a0a0d]"],
+html.light [class*="bg-[#181920]"],
+html.light [class*="bg-[#14151b]"],
 html.light [class*="bg-neutral-900"] {
   background-color: #ffffff !important;
   border-color: rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Card Bank Premium - Always maintain high-contrast dark metallic card in both light & dark mode */
+.card-bank-premium {
+  background: linear-gradient(135deg, #0a0c10 0%, #0d0f15 50%, #121118 100%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5) !important;
+}
+html.light .card-bank-premium,
+html.light .card-bank-premium * {
+  color: #ffffff !important;
+}
+html.light .card-bank-premium .text-neutral-400 {
+  color: #94a3b8 !important;
+}
+html.light .card-bank-premium .text-neutral-500 {
+  color: #64748b !important;
+}
+html.light .card-bank-premium .text-emerald-400 {
+  color: #34d399 !important;
 }
 
 html.light header > div {
