@@ -12,7 +12,9 @@ declare global {
           sitekey: string;
           callback: (token: string) => void;
           "error-callback"?: () => void;
+          "expired-callback"?: () => void;
           theme?: "dark" | "light" | "auto";
+          size?: "normal" | "flexible" | "compact";
         }
       ) => string;
       reset: (widgetId: string) => void;
@@ -52,6 +54,7 @@ export default function CloudflareTurnstile({
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
           theme: "dark",
+          size: "flexible",
           callback: (token: string) => {
             onVerify(token);
           },
@@ -71,52 +74,47 @@ export default function CloudflareTurnstile({
 
   if (!enabled || !siteKey) {
     return (
-      <div className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-xs">
+      <div className="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-[#0e1017] border border-white/10 text-xs shadow-md">
         <div className="flex items-center gap-2.5">
-          <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm shrink-0">
-            <svg
-              className="w-3 h-3 stroke-[3]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+          <div className="w-6 h-6 rounded-xl bg-white flex items-center justify-center text-black shadow-sm shrink-0">
+            <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
           </div>
-          <span className="font-semibold text-neutral-200 text-xs">
-            ยืนยันตัวตนแล้ว
-          </span>
+          <div className="leading-tight">
+            <span className="font-bold text-white text-xs block">
+              ยืนยันความปลอดภัยแล้ว
+            </span>
+            <span className="text-[10px] text-neutral-400 font-light">
+              ผ่านการตรวจสอบสิทธิ์การเข้าใช้งาน
+            </span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 text-right">
-          <svg
-            className="w-5 h-5 text-amber-500 fill-amber-500 shrink-0"
-            viewBox="0 0 24 24"
-          >
-            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
-          </svg>
-          <div className="leading-tight">
-            <div className="font-bold text-[11px] text-neutral-300">
-              Cloudflare
-            </div>
-            <div className="text-[9px] text-neutral-500">นโยบาย · เงื่อนไข</div>
-          </div>
+        <div className="flex items-center gap-1.5 text-right font-mono text-[10px] text-neutral-400 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/[0.08]">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span>Cloudflare Turnstile</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center py-2">
-      <div ref={containerRef} className="my-1" />
-      <span className="text-[10px] text-neutral-500 flex items-center gap-1 mt-1">
-        <ShieldCheck className="w-3 h-3 text-neutral-400" />
-        <span>ยืนยันตัวตนความปลอดภัย Cloudflare Turnstile</span>
-      </span>
+    <div className="w-full rounded-2xl bg-[#0e1017] border border-white/10 hover:border-white/20 p-2.5 sm:p-3 transition-all shadow-lg overflow-hidden space-y-2">
+      {/* Cloudflare Turnstile Widget (with size flexible and rounded corners) */}
+      <div className="w-full overflow-hidden rounded-xl bg-[#07080b] flex items-center justify-center min-h-[65px] [&>div]:w-full [&>div]:flex [&>div]:justify-center [&_iframe]:rounded-xl [&_iframe]:border-0">
+        <div ref={containerRef} className="w-full flex justify-center" />
+      </div>
+
+      {/* Security Brand Footer */}
+      <div className="flex items-center justify-between px-2 pt-0.5 text-[10px] text-neutral-400">
+        <div className="flex items-center gap-1.5 font-medium">
+          <ShieldCheck className="w-3.5 h-3.5 text-neutral-400" />
+          <span>ระบบป้องกันและยืนยันตัวตน</span>
+        </div>
+        <div className="flex items-center gap-1.5 font-mono text-[10px] text-neutral-500">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>Cloudflare Turnstile</span>
+        </div>
+      </div>
     </div>
   );
 }
