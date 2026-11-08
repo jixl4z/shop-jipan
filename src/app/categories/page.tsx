@@ -61,11 +61,11 @@ export default function CategoriesPage() {
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-3">
-                <Layers className="w-7 h-7 text-slate-600 dark:text-neutral-400" />
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white flex items-center gap-3">
+                <Layers className="w-7 h-7 text-neutral-700 dark:text-neutral-400" />
                 <span>หมวดหมู่สินค้าทั้งหมด (All Categories)</span>
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-neutral-400 mt-1 font-light">
+              <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 mt-1 font-light">
                 เลือกดูสินค้าตามประเภทที่คุณต้องการ สินค้าทุกชิ้นส่งมอบทันที 24 ชั่วโมง
               </p>
             </div>
@@ -79,10 +79,10 @@ export default function CategoriesPage() {
             <span>กำลังโหลดหมวดหมู่สินค้า...</span>
           </div>
         ) : categories.length === 0 ? (
-          <div className="py-20 text-center rounded-2xl bg-white dark:glass-panel border border-slate-200 dark:border-white/10 p-8 space-y-3">
+          <div className="py-20 text-center rounded-2xl bg-white dark:bg-[#0c0d12] border border-slate-200 dark:border-white/10 p-8 space-y-3">
             <Package className="w-12 h-12 text-neutral-400 mx-auto" />
-            <h3 className="font-bold text-base text-slate-800 dark:text-neutral-200">ยังไม่มีหมวดหมู่สินค้า</h3>
-            <p className="text-xs text-slate-500 dark:text-neutral-400 max-w-sm mx-auto">
+            <h3 className="font-bold text-base text-neutral-900 dark:text-neutral-200">ยังไม่มีหมวดหมู่สินค้า</h3>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-sm mx-auto">
               ยังไม่มีการสร้างหมวดหมู่ในระบบ โปรดตรวจสอบอีกครั้งในภายหลัง
             </p>
           </div>
@@ -96,7 +96,7 @@ export default function CategoriesPage() {
                 <Link
                   key={cat.id}
                   href={`/categories/${cat.slug}`}
-                  className="rounded-2xl bg-white dark:glass-panel interactive-card p-3 sm:p-3.5 border border-slate-200 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 shadow-md flex flex-col justify-between gap-3 group"
+                  className="rounded-2xl bg-white dark:bg-[#0c0d12] interactive-card p-3 sm:p-3.5 border border-slate-200 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 shadow-md flex flex-col justify-between gap-3 group"
                 >
                   {/* Top Banner Graphic / Artwork */}
                   <div className="relative aspect-[21/8] sm:aspect-[21/7] w-full rounded-xl overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-950 to-black border border-black/5 dark:border-white/10 shadow-inner">
@@ -132,10 +132,10 @@ export default function CategoriesPage() {
                   {/* Bottom Row: Category Name & Count (Left) + Arrow Icon (Right) */}
                   <div className="flex items-center justify-between px-1">
                     <div className="min-w-0 space-y-0.5">
-                      <h3 className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white tracking-tight group-hover:text-black dark:group-hover:text-white transition-colors truncate">
+                      <h3 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white tracking-tight group-hover:text-black dark:group-hover:text-white transition-colors truncate">
                         {cat.name}
                       </h3>
-                      <p className="text-xs text-slate-500 dark:text-neutral-400 font-light">
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light">
                         {cat.productCount} สินค้าในหมวดหมู่นี้
                       </p>
                     </div>
