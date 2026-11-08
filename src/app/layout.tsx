@@ -50,17 +50,17 @@ export const metadata: Metadata = {
   },
 };
 
-import { Prompt } from "next/font/google";
+import { Kanit } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
 import FloatingChat from "@/components/FloatingChat";
 import RecentSalesToast from "@/components/RecentSalesToast";
 import CookieConsentBanner from "@/components/CookieConsentBanner";
 
-const promptFont = Prompt({
-  weight: ["300", "400", "500", "600", "700", "800"],
+const kanit = Kanit({
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin", "thai"],
-  variable: "--font-prompt",
+  variable: "--font-kanit",
   display: "swap",
 });
 
@@ -70,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="th" suppressHydrationWarning className={`dark ${promptFont.variable}`}>
+    <html lang="th" suppressHydrationWarning className={`dark ${kanit.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -93,11 +93,11 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans bg-[#060608] text-neutral-100 min-h-screen antialiased selection:bg-white selection:text-black">
+      <body className={`${kanit.className} font-sans bg-[#060608] text-neutral-100 min-h-screen antialiased selection:bg-white selection:text-black`}>
         <NextTopLoader
           color="#ffffff"
           initialPosition={0.08}
