@@ -204,7 +204,7 @@ ${o.deliveredData}`;
   };
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
       <Navbar />
 
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 py-10 w-full space-y-6">
@@ -851,7 +851,7 @@ ${o.deliveredData}`;
 
 export default function DedicatedOrdersPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#08090d] text-white flex items-center justify-center">กำลังโหลด...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#060608] text-white flex items-center justify-center">กำลังโหลด...</div>}>
       <OrdersContent />
     </Suspense>
   );

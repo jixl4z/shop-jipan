@@ -368,7 +368,7 @@ export default function DedicatedTopupPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-[#07070a] text-white flex flex-col selection:bg-rose-600 selection:text-white">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col selection:bg-rose-600 selection:text-white">
       <Navbar />
 
       <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-8">

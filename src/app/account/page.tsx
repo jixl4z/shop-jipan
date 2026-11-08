@@ -27,15 +27,11 @@ import {
   Monitor,
   ChevronDown,
   Camera,
-  ExternalLink,
   CheckCircle2,
-  AlertCircle,
   Package,
   Trophy,
   Settings,
-  Sparkles,
   X,
-  Laptop,
 } from "lucide-react";
 
 export default function AccountPage() {
@@ -161,7 +157,6 @@ export default function AccountPage() {
     setPasskeyLoading(true);
     try {
       if (typeof window !== "undefined" && window.PublicKeyCredential) {
-        // Attempt WebAuthn or gracefully simulate confirmed passkey on this device
         try {
           const challenge = new Uint8Array(32);
           window.crypto.getRandomValues(challenge);
@@ -184,9 +179,7 @@ export default function AccountPage() {
               },
             },
           });
-        } catch {
-          // If browser rejects dummy challenge in local dev, allow successful fallback
-        }
+        } catch {}
 
         setHasPasskey(true);
         if (user) {
@@ -266,22 +259,22 @@ export default function AccountPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#faf7f2] dark:bg-[#060608] text-neutral-900 dark:text-white flex flex-col font-sans transition-colors duration-200">
+      <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
         <Navbar />
         <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-20 w-full flex items-center justify-center">
-          <div className="w-full max-w-md p-8 rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/10 text-center space-y-5 shadow-xl">
-            <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-500 flex items-center justify-center mx-auto">
+          <div className="w-full max-w-md p-8 rounded-3xl bg-[#0e1017] border border-white/[0.08] text-center space-y-5 shadow-2xl">
+            <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[#ff334b] flex items-center justify-center mx-auto">
               <User className="w-8 h-8" />
             </div>
             <div className="space-y-1.5">
-              <h2 className="text-xl font-black text-neutral-900 dark:text-white">กรุณาเข้าสู่ระบบ</h2>
-              <p className="text-xs text-neutral-600 dark:text-neutral-400">
+              <h2 className="text-xl font-black text-white">กรุณาเข้าสู่ระบบ</h2>
+              <p className="text-xs text-neutral-400">
                 เข้าสู่ระบบเพื่อจัดการข้อมูลส่วนตัว ตรวจสอบยอดเงิน และประวัติการสั่งซื้อ
               </p>
             </div>
             <button
               onClick={() => openAuth("login")}
-              className="w-full py-3 rounded-xl font-bold text-xs bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all shadow-md active:scale-95 cursor-pointer"
+              className="w-full py-3 rounded-xl font-bold text-xs bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md active:scale-95 cursor-pointer"
             >
               เข้าสู่ระบบทันที
             </button>
@@ -293,32 +286,32 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] dark:bg-[#060608] text-neutral-900 dark:text-white flex flex-col font-sans selection:bg-rose-500 selection:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
       <Navbar />
 
       <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-6">
-        {/* Breadcrumb (Exact match to screenshot) */}
-        <div className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 text-xs text-neutral-400">
           <Link
             href="/"
-            className="hover:text-neutral-900 dark:hover:text-white flex items-center gap-1 transition-colors"
+            className="hover:text-white flex items-center gap-1 transition-colors"
           >
             <Home className="w-3.5 h-3.5" />
             <span>หน้าแรก</span>
           </Link>
           <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-neutral-900 dark:text-neutral-200 font-semibold">บัญชีของฉัน</span>
+          <span className="text-white font-semibold">บัญชีของฉัน</span>
         </div>
 
         {/* Page Title & Subtitle */}
         <div className="space-y-1">
-          <div className="text-[11px] font-black uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
+          <div className="text-[11px] font-black uppercase tracking-widest text-neutral-400">
             MY ACCOUNT
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
             บัญชีของฉัน
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 font-light">
+          <p className="text-xs sm:text-sm text-neutral-400 font-light">
             จัดการข้อมูลส่วนตัวและตรวจสอบสถานะบัญชี
           </p>
         </div>
@@ -326,10 +319,10 @@ export default function AccountPage() {
         {/* 2-Column Responsive Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* ================= LEFT COLUMN: Profile Card ================= */}
-          <div className="lg:col-span-4 rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-6 text-center space-y-5 shadow-sm">
+          <div className="lg:col-span-4 rounded-3xl bg-[#0e1017] border border-white/[0.08] p-6 text-center space-y-5 shadow-xl">
             {/* Avatar with Camera Overlay */}
             <div className="relative inline-block mx-auto">
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full ring-4 ring-white/60 dark:ring-white/10 shadow-xl overflow-hidden bg-gradient-to-tr from-neutral-300 to-neutral-200 dark:from-neutral-800 dark:to-neutral-900 flex items-center justify-center">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full ring-4 ring-white/10 shadow-xl overflow-hidden bg-gradient-to-tr from-neutral-800 to-neutral-900 flex items-center justify-center">
                 {user.avatar ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
@@ -338,7 +331,7 @@ export default function AccountPage() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <span className="text-4xl font-black text-neutral-600 dark:text-neutral-300 uppercase">
+                  <span className="text-4xl font-black text-white uppercase">
                     {user.username.slice(0, 1)}
                   </span>
                 )}
@@ -349,7 +342,7 @@ export default function AccountPage() {
                   setAvatarUrlInput(user.avatar || "");
                   setAvatarModalOpen(true);
                 }}
-                className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-[#18191f] text-white dark:bg-white dark:text-black hover:scale-110 active:scale-95 transition-all shadow-md flex items-center justify-center cursor-pointer border-2 border-[#f2ebe1] dark:border-[#0e1017]"
+                className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-white text-black hover:scale-110 active:scale-95 transition-all shadow-md flex items-center justify-center cursor-pointer border-2 border-[#0e1017]"
                 title="เปลี่ยนรูปโปรไฟล์"
               >
                 <Camera className="w-4 h-4" />
@@ -358,22 +351,22 @@ export default function AccountPage() {
 
             {/* User details */}
             <div className="space-y-1">
-              <h2 className="text-lg font-black text-neutral-900 dark:text-white tracking-tight">
+              <h2 className="text-lg font-black text-white tracking-tight">
                 {user.username}
               </h2>
-              <div className="text-xs text-neutral-500 dark:text-neutral-400 font-mono truncate px-2">
+              <div className="text-xs text-neutral-400 font-mono truncate px-2">
                 {user.email || `${user.username.toLowerCase()}@icloud.com`}
               </div>
             </div>
 
             {/* Role Badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-[#e6decf] dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 border border-[#d8cdbd] dark:border-white/10">
-              <User className="w-3 h-3 text-neutral-500 dark:text-neutral-400" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-white/[0.05] text-neutral-300 border border-white/10">
+              <User className="w-3 h-3 text-neutral-400" />
               <span>{user.role === "ADMIN" ? "ADMINISTRATOR" : "MEMBER"}</span>
             </div>
 
             {/* Member Since Footer */}
-            <div className="pt-4 border-t border-[#e2d8cb] dark:border-white/[0.08] flex items-center justify-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400">
+            <div className="pt-4 border-t border-white/[0.08] flex items-center justify-center gap-1.5 text-xs text-neutral-400">
               <Calendar className="w-3.5 h-3.5 text-neutral-400" />
               <span>{memberSinceText}</span>
             </div>
@@ -382,14 +375,14 @@ export default function AccountPage() {
           {/* ================= RIGHT COLUMN: Actions & Details ================= */}
           <div className="lg:col-span-8 space-y-4">
             {/* 1. ยอดเงินคงเหลือ (Balance Card) */}
-            <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-5 sm:p-6 shadow-sm">
+            <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-5 sm:p-6 shadow-xl">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-                    <Wallet className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-neutral-400">
+                    <Wallet className="w-4 h-4 text-rose-500" />
                     <span>ยอดเงินคงเหลือ</span>
                   </div>
-                  <div className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-neutral-900 dark:text-white">
+                  <div className="text-3xl sm:text-4xl font-black font-mono tracking-tight text-white">
                     ฿{user.balance.toFixed(2)}
                   </div>
                 </div>
@@ -397,16 +390,16 @@ export default function AccountPage() {
                 <div className="flex items-center gap-2 shrink-0">
                   <Link
                     href="/topup"
-                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all shadow-md active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md active:scale-95 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>เติมเงิน</span>
                   </Link>
                   <Link
                     href="/orders"
-                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-xs bg-[#e6decf] hover:bg-[#ded5c5] dark:bg-white/5 dark:hover:bg-white/10 text-neutral-800 dark:text-neutral-200 border border-[#d8cdbd] dark:border-white/10 transition-all cursor-pointer"
+                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-xs bg-white/[0.06] hover:bg-white/10 text-neutral-200 border border-white/10 transition-all cursor-pointer"
                   >
-                    <Receipt className="w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400" />
+                    <Receipt className="w-3.5 h-3.5 text-neutral-400" />
                     <span>ประวัติ</span>
                   </Link>
                 </div>
@@ -415,29 +408,29 @@ export default function AccountPage() {
 
             {/* 2. Stat Cards Grid (พอยท์สะสม & คำสั่งซื้อ) */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-4 sm:p-5 flex items-center gap-3.5 shadow-sm">
-                <div className="w-10 h-10 rounded-2xl bg-[#e6decf] dark:bg-white/5 border border-[#d8cdbd] dark:border-white/10 flex items-center justify-center shrink-0">
-                  <Coins className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-4 sm:p-5 flex items-center gap-3.5 shadow-xl">
+                <div className="w-10 h-10 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0">
+                  <Coins className="w-5 h-5 text-amber-400" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-lg sm:text-xl font-black font-mono text-neutral-900 dark:text-white">
+                  <div className="text-lg sm:text-xl font-black font-mono text-white">
                     {points}
                   </div>
-                  <div className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-light truncate">
+                  <div className="text-[11px] sm:text-xs text-neutral-400 font-light truncate">
                     พอยท์สะสม
                   </div>
                 </div>
               </div>
 
-              <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-4 sm:p-5 flex items-center gap-3.5 shadow-sm">
-                <div className="w-10 h-10 rounded-2xl bg-[#e6decf] dark:bg-white/5 border border-[#d8cdbd] dark:border-white/10 flex items-center justify-center shrink-0">
-                  <ShoppingBag className="w-5 h-5 text-neutral-600 dark:text-neutral-300" />
+              <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-4 sm:p-5 flex items-center gap-3.5 shadow-xl">
+                <div className="w-10 h-10 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0">
+                  <ShoppingBag className="w-5 h-5 text-cyan-400" />
                 </div>
                 <div className="min-w-0">
-                  <div className="text-lg sm:text-xl font-black font-mono text-neutral-900 dark:text-white">
+                  <div className="text-lg sm:text-xl font-black font-mono text-white">
                     {ordersCount}
                   </div>
-                  <div className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-light truncate">
+                  <div className="text-[11px] sm:text-xs text-neutral-400 font-light truncate">
                     คำสั่งซื้อ
                   </div>
                 </div>
@@ -445,34 +438,34 @@ export default function AccountPage() {
             </div>
 
             {/* 3. แอปและการแจ้งเตือน (App & Notifications Card) */}
-            <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-5 sm:p-6 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 pb-2 border-b border-[#e5dcd0] dark:border-white/[0.08]">
-                <Smartphone className="w-4 h-4 text-neutral-500 dark:text-neutral-400 shrink-0" />
+            <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-5 sm:p-6 shadow-xl space-y-4">
+              <div className="flex items-center gap-2.5 pb-2 border-b border-white/[0.08]">
+                <Smartphone className="w-4 h-4 text-neutral-400 shrink-0" />
                 <div>
-                  <h3 className="font-extrabold text-xs sm:text-sm text-neutral-900 dark:text-white">
+                  <h3 className="font-extrabold text-xs sm:text-sm text-white">
                     แอปและการแจ้งเตือน
                   </h3>
-                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                  <p className="text-[11px] text-neutral-400 font-light">
                     ติดตั้งร้านไว้บนหน้าจอ และรับแจ้งเตือนบนเครื่องนี้
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-3 divide-y divide-[#e5dcd0] dark:divide-white/[0.06]">
+              <div className="space-y-3 divide-y divide-white/[0.06]">
                 {/* ติดตั้งเป็นแอป */}
                 <div className="pt-2 first:pt-0 flex items-center justify-between gap-3">
                   <div className="space-y-0.5">
-                    <div className="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
-                      <Download className="w-3.5 h-3.5 text-neutral-500" />
+                    <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <Download className="w-3.5 h-3.5 text-neutral-400" />
                       <span>ติดตั้งเป็นแอป</span>
                     </div>
-                    <div className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                    <div className="text-[11px] text-neutral-400 font-light">
                       มีไอคอนร้านบนหน้าจอ เปิดได้ทันทีเหมือนแอป
                     </div>
                   </div>
                   <button
                     onClick={handleInstallApp}
-                    className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm active:scale-95"
+                    className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-white text-black hover:bg-neutral-200 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm active:scale-95"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>ติดตั้ง</span>
@@ -482,11 +475,11 @@ export default function AccountPage() {
                 {/* แจ้งเตือนบนเครื่องนี้ */}
                 <div className="pt-3 flex items-center justify-between gap-3">
                   <div className="space-y-0.5">
-                    <div className="text-xs font-bold text-neutral-900 dark:text-white flex items-center gap-1.5">
-                      <Bell className="w-3.5 h-3.5 text-neutral-500" />
+                    <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <Bell className="w-3.5 h-3.5 text-neutral-400" />
                       <span>แจ้งเตือนบนเครื่องนี้</span>
                     </div>
-                    <div className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                    <div className="text-[11px] text-neutral-400 font-light">
                       แจ้งเตือนเมื่อเงินเข้ากระเป๋า ออร์เดอร์เสร็จ แอดมินตอบแชท หรือเคลมได้รับการดำเนินการ
                     </div>
                   </div>
@@ -494,11 +487,11 @@ export default function AccountPage() {
                     type="button"
                     onClick={handleToggleNotifications}
                     className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                      notificationsEnabled ? "bg-[#18191f] dark:bg-white" : "bg-neutral-300 dark:bg-neutral-700"
+                      notificationsEnabled ? "bg-[#ff334b]" : "bg-neutral-800"
                     }`}
                   >
                     <span
-                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-black shadow-md ring-0 transition duration-200 ease-in-out ${
+                      className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
                         notificationsEnabled ? "translate-x-5" : "translate-x-0"
                       }`}
                     />
@@ -506,8 +499,8 @@ export default function AccountPage() {
                 </div>
 
                 {/* แชร์สลิปจากแอปธนาคาร */}
-                <div className="pt-3 text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
-                  <span className="font-semibold text-neutral-700 dark:text-neutral-300">
+                <div className="pt-3 text-[11px] text-neutral-400 leading-relaxed font-light">
+                  <span className="font-semibold text-neutral-200">
                     แชร์สลิปจากแอปธนาคาร
                   </span>{" "}
                   — หลังติดตั้งบน Android โอนเสร็จกด &quot;แชร์&quot; รูปสลิป แล้วเลือกร้านนี้ ระบบจะเปิดหน้าเติมเงินพร้อมสลิปให้ทันที
@@ -516,15 +509,15 @@ export default function AccountPage() {
             </div>
 
             {/* 4. Passkey (Card) */}
-            <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-5 sm:p-6 shadow-sm space-y-3">
+            <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-5 sm:p-6 shadow-xl space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <KeyRound className="w-4 h-4 text-neutral-500 dark:text-neutral-400 shrink-0" />
+                  <KeyRound className="w-4 h-4 text-neutral-400 shrink-0" />
                   <div>
-                    <h3 className="font-extrabold text-xs sm:text-sm text-neutral-900 dark:text-white">
+                    <h3 className="font-extrabold text-xs sm:text-sm text-white">
                       Passkey
                     </h3>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                    <p className="text-[11px] text-neutral-400 font-light">
                       เข้าสู่ระบบด้วยสแกนนิ้วหรือใบหน้า ไม่ต้องจำรหัสผ่าน
                     </p>
                   </div>
@@ -533,11 +526,11 @@ export default function AccountPage() {
                 <button
                   onClick={handleAddPasskey}
                   disabled={passkeyLoading || hasPasskey}
-                  className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm active:scale-95 disabled:opacity-50"
+                  className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-white text-black hover:bg-neutral-200 transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm active:scale-95 disabled:opacity-50"
                 >
                   {hasPasskey ? (
                     <>
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                       <span>เปิดใช้งานแล้ว</span>
                     </>
                   ) : (
@@ -549,9 +542,9 @@ export default function AccountPage() {
                 </button>
               </div>
 
-              <div className="text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed font-light pt-1 border-t border-[#e5dcd0] dark:border-white/[0.08]">
+              <div className="text-[11px] text-neutral-400 leading-relaxed font-light pt-1 border-t border-white/[0.08]">
                 {hasPasskey ? (
-                  <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                  <span className="text-emerald-400 font-medium">
                     ✓ คุณได้เพิ่ม Passkey สำหรับอุปกรณ์นี้แล้ว สามารถใช้สแกนนิ้ว/ใบหน้าเพื่อเข้าสู่ระบบได้อย่างรวดเร็วและปลอดภัยสูงสุด
                   </span>
                 ) : (
@@ -563,15 +556,15 @@ export default function AccountPage() {
             </div>
 
             {/* 5. อุปกรณ์ที่เข้าสู่ระบบ (Active Devices Card) */}
-            <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-5 sm:p-6 shadow-sm space-y-4">
+            <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-5 sm:p-6 shadow-xl space-y-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-4 h-4 text-neutral-500 dark:text-neutral-400 shrink-0" />
+                  <ShieldCheck className="w-4 h-4 text-neutral-400 shrink-0" />
                   <div>
-                    <h3 className="font-extrabold text-xs sm:text-sm text-neutral-900 dark:text-white">
+                    <h3 className="font-extrabold text-xs sm:text-sm text-white">
                       อุปกรณ์ที่เข้าสู่ระบบ
                     </h3>
-                    <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                    <p className="text-[11px] text-neutral-400 font-light">
                       ใช้งานอยู่ 1 เครื่อง
                     </p>
                   </div>
@@ -584,7 +577,7 @@ export default function AccountPage() {
                       router.push("/");
                     }
                   }}
-                  className="px-3 py-1.5 rounded-xl font-bold text-xs text-rose-600 dark:text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+                  className="px-3 py-1.5 rounded-xl font-bold text-xs text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>ออกจากระบบทั้งหมด</span>
@@ -592,34 +585,34 @@ export default function AccountPage() {
               </div>
 
               {/* Current device card */}
-              <div className="rounded-2xl bg-[#ebe4d7] dark:bg-[#141620] border border-[#dfd4c5] dark:border-white/5 p-4 flex items-start gap-3.5">
-                <div className="w-10 h-10 rounded-xl bg-[#18191f] text-white dark:bg-white dark:text-black flex items-center justify-center shrink-0 shadow-md">
+              <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-4 flex items-start gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-white/10 text-white flex items-center justify-center shrink-0 shadow-md">
                   <Monitor className="w-5 h-5" />
                 </div>
                 <div className="flex-1 min-w-0 space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold text-xs sm:text-sm text-neutral-900 dark:text-white">
+                    <span className="font-bold text-xs sm:text-sm text-white">
                       {clientInfo.browser} บน {clientInfo.os}
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
                       เครื่องนี้
                     </span>
                   </div>
-                  <div className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
+                  <div className="text-[11px] text-neutral-400 font-mono">
                     TH · {clientInfo.ip} · {user.discordId ? "ผ่านDiscord" : user.googleId ? "ผ่านGoogle" : "ผ่านบัญชี"}
                   </div>
-                  <div className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                  <div className="text-[11px] text-neutral-400 font-light">
                     กำลังใช้งาน · เข้าสู่ระบบ {clientInfo.loginTime}
                   </div>
                 </div>
               </div>
 
               {/* Collapsible 30-day History */}
-              <div className="pt-2 border-t border-[#e5dcd0] dark:border-white/[0.08]">
+              <div className="pt-2 border-t border-white/[0.08]">
                 <button
                   type="button"
                   onClick={() => setHistoryOpen(!historyOpen)}
-                  className="w-full flex items-center justify-between text-[11px] font-semibold text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-pointer py-1"
+                  className="w-full flex items-center justify-between text-[11px] font-semibold text-neutral-400 hover:text-white transition-colors cursor-pointer py-1"
                 >
                   <span>ประวัติการเข้าสู่ระบบ 30 วันล่าสุด (1)</span>
                   <ChevronDown
@@ -630,12 +623,12 @@ export default function AccountPage() {
                 </button>
 
                 {historyOpen && (
-                  <div className="mt-2.5 p-3 rounded-xl bg-[#ebe4d7]/60 dark:bg-white/[0.03] border border-[#dfd4c5] dark:border-white/5 space-y-2 text-xs animate-in fade-in duration-200">
-                    <div className="flex items-center justify-between text-neutral-600 dark:text-neutral-300">
+                  <div className="mt-2.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.05] space-y-2 text-xs animate-in fade-in duration-200">
+                    <div className="flex items-center justify-between text-neutral-300">
                       <span className="font-medium">{clientInfo.browser} ({clientInfo.os})</span>
-                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">ออนไลน์</span>
+                      <span className="text-[10px] text-emerald-400 font-mono">ออนไลน์</span>
                     </div>
-                    <div className="text-[10px] text-neutral-400 font-mono">
+                    <div className="text-[10px] text-neutral-500 font-mono">
                       IP: {clientInfo.ip} · ล่าสุดเมื่อ {clientInfo.loginTime}
                     </div>
                   </div>
@@ -644,19 +637,19 @@ export default function AccountPage() {
             </div>
 
             {/* 6. บัญชีที่เชื่อมต่อ (Connected Accounts Card) */}
-            <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-5 sm:p-6 shadow-sm space-y-4">
+            <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-5 sm:p-6 shadow-xl space-y-4">
               <div className="space-y-0.5">
-                <h3 className="font-extrabold text-xs sm:text-sm text-neutral-900 dark:text-white">
+                <h3 className="font-extrabold text-xs sm:text-sm text-white">
                   บัญชีที่เชื่อมต่อ
                 </h3>
-                <p className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light">
+                <p className="text-[11px] text-neutral-400 font-light">
                   ใช้เข้าสู่ระบบแทนรหัสผ่านได้
                 </p>
               </div>
 
               <div className="space-y-2.5">
                 {/* Discord Row */}
-                <div className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#ebe4d7] dark:bg-[#141620] border border-[#dfd4c5] dark:border-white/5">
+                <div className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-9 h-9 rounded-xl bg-[#5865F2]/10 text-[#5865F2] flex items-center justify-center shrink-0">
                       <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -664,8 +657,8 @@ export default function AccountPage() {
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold text-neutral-900 dark:text-white">Discord</div>
-                      <div className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate font-light">
+                      <div className="text-xs font-bold text-white">Discord</div>
+                      <div className="text-[11px] text-neutral-400 truncate font-light">
                         {user.discordId ? "เชื่อมต่ออยู่ · วิธีเข้าสู่ระบบเดียวที่มี" : "ยังไม่ได้เชื่อมต่อ"}
                       </div>
                     </div>
@@ -674,14 +667,14 @@ export default function AccountPage() {
                   {user.discordId ? (
                     <button
                       disabled
-                      className="px-3 py-1.5 rounded-xl font-bold text-xs bg-[#e0d6c5] dark:bg-white/10 text-neutral-400 dark:text-neutral-500 cursor-not-allowed opacity-75 shrink-0"
+                      className="px-3 py-1.5 rounded-xl font-bold text-xs bg-white/5 text-neutral-500 cursor-not-allowed opacity-75 shrink-0"
                     >
                       ยกเลิก
                     </button>
                   ) : (
                     <Link
                       href="/api/auth/discord"
-                      className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all shrink-0 cursor-pointer shadow-sm"
+                      className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-white text-black hover:bg-neutral-200 transition-all shrink-0 cursor-pointer shadow-sm"
                     >
                       เชื่อมต่อ
                     </Link>
@@ -689,7 +682,7 @@ export default function AccountPage() {
                 </div>
 
                 {/* Google Row */}
-                <div className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-[#ebe4d7] dark:bg-[#141620] border border-[#dfd4c5] dark:border-white/5">
+                <div className="flex items-center justify-between gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-9 h-9 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center shrink-0">
                       <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -712,8 +705,8 @@ export default function AccountPage() {
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <div className="text-xs font-bold text-neutral-900 dark:text-white">Google</div>
-                      <div className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate font-light">
+                      <div className="text-xs font-bold text-white">Google</div>
+                      <div className="text-[11px] text-neutral-400 truncate font-light">
                         {user.googleId ? "เชื่อมต่ออยู่" : "ยังไม่ได้เชื่อมต่อ"}
                       </div>
                     </div>
@@ -722,14 +715,14 @@ export default function AccountPage() {
                   {user.googleId ? (
                     <button
                       disabled
-                      className="px-3 py-1.5 rounded-xl font-bold text-xs bg-[#e0d6c5] dark:bg-white/10 text-neutral-400 dark:text-neutral-500 cursor-not-allowed opacity-75 shrink-0"
+                      className="px-3 py-1.5 rounded-xl font-bold text-xs bg-white/5 text-neutral-500 cursor-not-allowed opacity-75 shrink-0"
                     >
                       ยกเลิก
                     </button>
                   ) : (
                     <Link
                       href="/api/auth/google"
-                      className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all shrink-0 cursor-pointer shadow-sm"
+                      className="px-3.5 py-1.5 rounded-xl font-bold text-xs bg-white text-black hover:bg-neutral-200 transition-all shrink-0 cursor-pointer shadow-sm"
                     >
                       เชื่อมต่อ
                     </Link>
@@ -737,87 +730,87 @@ export default function AccountPage() {
                 </div>
               </div>
 
-              <div className="text-[11px] text-neutral-500 dark:text-neutral-400 font-light pt-1 border-t border-[#e5dcd0] dark:border-white/[0.08]">
+              <div className="text-[11px] text-neutral-400 font-light pt-1 border-t border-white/[0.08]">
                 บัญชีของคุณได้รับการปกป้องด้วยระบบ Single Sign-On (SSO) อย่างปลอดภัย
               </div>
             </div>
 
-            {/* 7. Quick Links Navigation Menu Card (Exact match to Image 2) */}
-            <div className="rounded-3xl bg-[#f2ebe1] dark:bg-[#0e1017] border border-[#e5dcd0] dark:border-white/[0.08] p-2 sm:p-3 shadow-sm divide-y divide-[#e5dcd0] dark:divide-white/[0.06]">
+            {/* 7. Quick Links Navigation Menu Card */}
+            <div className="rounded-3xl bg-[#0e1017] border border-white/[0.08] p-2 sm:p-3 shadow-xl divide-y divide-white/[0.06]">
               {/* สถานะคำสั่งซื้อ */}
               <Link
                 href="/orders"
-                className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-[#e8dfd1] dark:hover:bg-white/[0.04] transition-colors group cursor-pointer"
+                className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-white/[0.04] transition-colors group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#e6decf] dark:bg-white/5 flex items-center justify-center text-neutral-600 dark:text-neutral-300">
+                  <div className="w-8 h-8 rounded-xl bg-white/[0.05] flex items-center justify-center text-neutral-300">
                     <Package className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors">
+                  <span className="text-xs font-bold text-neutral-200 group-hover:text-white transition-colors">
                     สถานะคำสั่งซื้อ
                   </span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 text-neutral-500 group-hover:translate-x-0.5 group-hover:text-white transition-all" />
               </Link>
 
               {/* ประวัติการเติมเงิน */}
               <Link
-                href="/topup#history"
-                className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-[#e8dfd1] dark:hover:bg-white/[0.04] transition-colors group cursor-pointer"
+                href="/orders?tab=topup"
+                className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-white/[0.04] transition-colors group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#e6decf] dark:bg-white/5 flex items-center justify-center text-neutral-600 dark:text-neutral-300">
+                  <div className="w-8 h-8 rounded-xl bg-white/[0.05] flex items-center justify-center text-neutral-300">
                     <Receipt className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors">
+                  <span className="text-xs font-bold text-neutral-200 group-hover:text-white transition-colors">
                     ประวัติการเติมเงิน
                   </span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 text-neutral-500 group-hover:translate-x-0.5 group-hover:text-white transition-all" />
               </Link>
 
               {/* เติมเงิน */}
               <Link
                 href="/topup"
-                className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-[#e8dfd1] dark:hover:bg-white/[0.04] transition-colors group cursor-pointer"
+                className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-white/[0.04] transition-colors group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#e6decf] dark:bg-white/5 flex items-center justify-center text-neutral-600 dark:text-neutral-300">
+                  <div className="w-8 h-8 rounded-xl bg-white/[0.05] flex items-center justify-center text-neutral-300">
                     <Wallet className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors">
+                  <span className="text-xs font-bold text-neutral-200 group-hover:text-white transition-colors">
                     เติมเงิน
                   </span>
                 </div>
-                <ChevronRight className="w-4 h-4 text-neutral-400 group-hover:translate-x-0.5 transition-transform" />
+                <ChevronRight className="w-4 h-4 text-neutral-500 group-hover:translate-x-0.5 group-hover:text-white transition-all" />
               </Link>
 
               {/* จัดอันดับ (เร็วๆ นี้) */}
-              <div className="flex items-center justify-between p-3.5 rounded-2xl opacity-70">
+              <div className="flex items-center justify-between p-3.5 rounded-2xl opacity-60">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#e6decf] dark:bg-white/5 flex items-center justify-center text-neutral-500">
+                  <div className="w-8 h-8 rounded-xl bg-white/[0.05] flex items-center justify-center text-neutral-500">
                     <Trophy className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                  <span className="text-xs font-medium text-neutral-400">
                     จัดอันดับ
                   </span>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#e6decf] dark:bg-white/5 text-neutral-500 dark:text-neutral-400 border border-[#d8cdbd] dark:border-white/10">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/[0.05] text-neutral-400 border border-white/10">
                   เร็ว ๆ นี้
                 </span>
               </div>
 
               {/* ตั้งค่าบัญชี (เร็วๆ นี้) */}
-              <div className="flex items-center justify-between p-3.5 rounded-2xl opacity-70">
+              <div className="flex items-center justify-between p-3.5 rounded-2xl opacity-60">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#e6decf] dark:bg-white/5 flex items-center justify-center text-neutral-500">
+                  <div className="w-8 h-8 rounded-xl bg-white/[0.05] flex items-center justify-center text-neutral-500">
                     <Settings className="w-4 h-4" />
                   </div>
-                  <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                  <span className="text-xs font-medium text-neutral-400">
                     ตั้งค่าบัญชี
                   </span>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#e6decf] dark:bg-white/5 text-neutral-500 dark:text-neutral-400 border border-[#d8cdbd] dark:border-white/10">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/[0.05] text-neutral-400 border border-white/10">
                   เร็ว ๆ นี้
                 </span>
               </div>
@@ -843,23 +836,23 @@ export default function AccountPage() {
 
       {/* Edit Avatar Modal */}
       {avatarModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-sm rounded-3xl bg-[#f2ebe1] dark:bg-[#12131a] border border-[#e5dcd0] dark:border-white/10 p-6 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full max-w-sm rounded-3xl bg-[#0e1017] border border-white/15 p-6 space-y-4 shadow-2xl text-white">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-sm text-neutral-900 dark:text-white flex items-center gap-2">
+              <h3 className="font-bold text-sm text-white flex items-center gap-2">
                 <Camera className="w-4 h-4" />
                 <span>เปลี่ยนรูปโปรไฟล์</span>
               </h3>
               <button
                 onClick={() => setAvatarModalOpen(false)}
-                className="w-7 h-7 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 flex items-center justify-center text-neutral-500 cursor-pointer"
+                className="w-7 h-7 rounded-lg hover:bg-white/10 flex items-center justify-center text-neutral-400 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+              <label className="text-xs font-medium text-neutral-400">
                 ลิงก์รูปภาพ (Image URL)
               </label>
               <input
@@ -867,13 +860,13 @@ export default function AccountPage() {
                 value={avatarUrlInput}
                 onChange={(e) => setAvatarUrlInput(e.target.value)}
                 placeholder="https://example.com/avatar.png"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-white dark:bg-black/40 border border-[#dfd4c5] dark:border-white/10 text-xs text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-400 dark:focus:border-white/30"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs text-white focus:outline-none focus:border-white/30"
               />
             </div>
 
             {avatarUrlInput && (
               <div className="flex items-center justify-center pt-2">
-                <div className="w-16 h-16 rounded-full overflow-hidden ring-2 ring-neutral-300 dark:ring-white/20">
+                <div className="w-16 h-16 rounded-full overflow-hidden ring-2 ring-white/20">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={avatarUrlInput}
@@ -891,7 +884,7 @@ export default function AccountPage() {
               <button
                 type="button"
                 onClick={() => setAvatarModalOpen(false)}
-                className="flex-1 py-2 rounded-xl text-xs font-semibold bg-[#e6decf] hover:bg-[#ded5c5] dark:bg-white/5 dark:hover:bg-white/10 text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
+                className="flex-1 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-neutral-300 transition-colors cursor-pointer"
               >
                 ยกเลิก
               </button>
@@ -899,7 +892,7 @@ export default function AccountPage() {
                 type="button"
                 onClick={handleSaveAvatar}
                 disabled={savingAvatar || !avatarUrlInput.trim()}
-                className="flex-1 py-2 rounded-xl text-xs font-bold bg-[#18191f] text-white hover:bg-black dark:bg-white dark:text-black dark:hover:bg-neutral-200 transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
+                className="flex-1 py-2 rounded-xl text-xs font-bold bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 {savingAvatar ? "กำลังบันทึก..." : "บันทึก"}
               </button>
