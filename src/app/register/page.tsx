@@ -127,13 +127,12 @@ export default function RegisterPage() {
       {/* Main Container */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-10 relative">
         {/* Subtle Decorative Ambient Background Glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-rose-600/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-red-600/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-white/[0.02] rounded-full blur-[120px] pointer-events-none" />
 
         <div className="w-full max-w-[430px] space-y-6 relative z-10">
           {/* Header & Logo Badge */}
           <div className="text-center space-y-2.5">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-red-700 text-white shadow-lg shadow-rose-600/25 mx-auto ring-1 ring-white/20">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.08] border border-white/10 text-white shadow-xl mx-auto">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -167,7 +166,7 @@ export default function RegisterPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="กรอกชื่อผู้ใช้ของคุณ"
-                className="w-full px-4 py-3 rounded-xl bg-[#0e1017] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-rose-500/80 focus:ring-1 focus:ring-rose-500/50 transition-all"
+                className="w-full px-4 py-3 rounded-xl bg-[#0e1017] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-white focus:ring-1 focus:ring-white/20 transition-all"
               />
             </div>
 
@@ -183,7 +182,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="กรอกรหัสผ่านของคุณ"
-                  className="w-full pl-4 pr-11 py-3 rounded-xl bg-[#0e1017] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-rose-500/80 focus:ring-1 focus:ring-rose-500/50 transition-all"
+                  className="w-full pl-4 pr-11 py-3 rounded-xl bg-[#0e1017] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-white focus:ring-1 focus:ring-white/20 transition-all"
                 />
                 <button
                   type="button"
@@ -212,7 +211,7 @@ export default function RegisterPage() {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="กรอกรหัสผ่านอีกครั้ง"
-                  className="w-full pl-4 pr-11 py-3 rounded-xl bg-[#0e1017] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-rose-500/80 focus:ring-1 focus:ring-rose-500/50 transition-all"
+                  className="w-full pl-4 pr-11 py-3 rounded-xl bg-[#0e1017] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-white focus:ring-1 focus:ring-white/20 transition-all"
                 />
                 <button
                   type="button"
@@ -264,7 +263,7 @@ export default function RegisterPage() {
               มีบัญชีอยู่แล้ว?{" "}
               <Link
                 href="/login"
-                className="text-rose-500 hover:text-rose-400 font-semibold transition-colors underline-offset-2 hover:underline"
+                className="text-white hover:text-neutral-300 font-semibold transition-colors underline-offset-2 hover:underline"
               >
                 เข้าสู่ระบบ
               </Link>
@@ -283,7 +282,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading || showSuccessToast}
-              className="w-full py-3.5 rounded-xl font-bold text-sm bg-[#ff334b] hover:bg-[#e02b41] active:scale-[0.99] text-white shadow-lg shadow-rose-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              className="w-full py-3.5 rounded-xl font-extrabold text-sm bg-white hover:bg-neutral-200 active:scale-[0.99] text-black shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

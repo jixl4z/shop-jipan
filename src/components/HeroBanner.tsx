@@ -35,9 +35,21 @@ export default function HeroBanner() {
   const defaultBanners = [
     {
       id: 1,
-      image: "",
-      title: setting?.shopName || "ยินดีต้อนรับสู่ JIPAN STORE",
+      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1600&auto=format&fit=crop&q=80",
+      title: "ยินดีต้อนรับสู่ " + (setting?.shopName || "JIPAN STORE"),
       subtitle: setting?.shopSlogan || "บริการจัดส่งรหัสสินค้าดิจิทัลและไอดีเกมอัตโนมัติ 24 ชั่วโมง",
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=1600&auto=format&fit=crop&q=80",
+      title: "ระบบสแกนสลิปออโต้ & ทรูมันนี่",
+      subtitle: "เติมเงินปุ๊บ ยอดเข้ากระเป๋าทันที พร้อมเพย์และซองของขวัญ 24 ชม.",
+    },
+    {
+      id: 3,
+      image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1600&auto=format&fit=crop&q=80",
+      title: "สินค้าดิจิทัลพร้อมส่ง รับประกันคุณภาพ",
+      subtitle: "รับสินค้าและรหัสทันทีหลังชำระเงิน ตรวจสอบประวัติได้ตลอดเวลา",
     },
   ];
 

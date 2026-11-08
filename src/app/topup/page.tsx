@@ -780,7 +780,7 @@ export default function DedicatedTopupPage() {
                   <button
                     type="submit"
                     disabled={loading || !slipBase64}
-                    className="w-full py-4 rounded-xl bg-[#ff334b] hover:bg-[#ff203a] text-white font-bold text-sm transition-all shadow-xl shadow-red-950/30 active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -915,7 +915,7 @@ export default function DedicatedTopupPage() {
                   <button
                     type="submit"
                     disabled={loading || !voucherLink.trim()}
-                    className="w-full py-4 rounded-xl bg-[#ff334b] hover:bg-[#ff203a] text-white font-bold text-sm transition-all shadow-xl shadow-red-950/30 active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <>
@@ -995,7 +995,7 @@ export default function DedicatedTopupPage() {
                   <button
                     type="submit"
                     disabled={loading || !redeemCode.trim()}
-                    className="w-full py-4 rounded-xl bg-[#ff334b] hover:bg-[#ff203a] text-white font-bold text-sm transition-all shadow-xl shadow-red-950/30 active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-4 rounded-xl bg-white hover:bg-neutral-200 text-black font-extrabold text-sm transition-all shadow-xl active:scale-[0.99] disabled:opacity-40 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <>

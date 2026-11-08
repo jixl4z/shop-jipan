@@ -259,11 +259,11 @@ export default function AccountPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
+      <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-white selection:text-black">
         <Navbar />
         <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 py-20 w-full flex items-center justify-center">
           <div className="w-full max-w-md p-8 rounded-3xl bg-[#0e1017] border border-white/[0.08] text-center space-y-5 shadow-2xl">
-            <div className="w-16 h-16 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[#ff334b] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 rounded-2xl bg-white/[0.06] border border-white/10 text-white flex items-center justify-center mx-auto shadow-md">
               <User className="w-8 h-8" />
             </div>
             <div className="space-y-1.5">
@@ -274,7 +274,7 @@ export default function AccountPage() {
             </div>
             <button
               onClick={() => openAuth("login")}
-              className="w-full py-3 rounded-xl font-bold text-xs bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md active:scale-95 cursor-pointer"
+              className="w-full py-3.5 rounded-xl font-extrabold text-sm bg-white hover:bg-neutral-200 text-black transition-all shadow-xl active:scale-95 cursor-pointer"
             >
               เข้าสู่ระบบทันที
             </button>
@@ -286,7 +286,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-white selection:text-black">
       <Navbar />
 
       <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full space-y-6">
@@ -390,7 +390,7 @@ export default function AccountPage() {
                 <div className="flex items-center gap-2 shrink-0">
                   <Link
                     href="/topup"
-                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md active:scale-95 cursor-pointer"
+                    className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-extrabold text-xs bg-white hover:bg-neutral-200 text-black transition-all shadow-md active:scale-95 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>เติมเงิน</span>
@@ -487,7 +487,7 @@ export default function AccountPage() {
                     type="button"
                     onClick={handleToggleNotifications}
                     className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                      notificationsEnabled ? "bg-[#ff334b]" : "bg-neutral-800"
+                      notificationsEnabled ? "bg-emerald-500" : "bg-neutral-850 border-white/10"
                     }`}
                   >
                     <span
@@ -892,7 +892,7 @@ export default function AccountPage() {
                 type="button"
                 onClick={handleSaveAvatar}
                 disabled={savingAvatar || !avatarUrlInput.trim()}
-                className="flex-1 py-2 rounded-xl text-xs font-bold bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
+                className="flex-1 py-2 rounded-xl text-xs font-bold bg-white hover:bg-neutral-200 text-black transition-all shadow-md active:scale-95 disabled:opacity-50 cursor-pointer"
               >
                 {savingAvatar ? "กำลังบันทึก..." : "บันทึก"}
               </button>
