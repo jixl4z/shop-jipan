@@ -31,12 +31,18 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
+  const [redirectUrl, setRedirectUrl] = useState("/");
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const err = params.get("error");
       if (err) {
         setErrorMsg(decodeURIComponent(err));
+      }
+      const redir = params.get("redirect");
+      if (redir) {
+        setRedirectUrl(redir);
       }
     }
   }, []);
@@ -72,8 +78,8 @@ export default function LoginPage() {
       await refreshUser();
 
       setTimeout(() => {
-        router.push("/");
-      }, 1800);
+        router.push(redirectUrl);
+      }, 1500);
     } catch {
       setErrorMsg("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้ โปรดลองอีกครั้ง");
       setLoading(false);
@@ -203,7 +209,7 @@ export default function LoginPage() {
               <div className="text-neutral-400">
                 ยังไม่มีบัญชี?{" "}
                 <Link
-                  href="/register"
+                  href={redirectUrl !== "/" ? `/register?redirect=${encodeURIComponent(redirectUrl)}` : "/register"}
                   className="text-white hover:text-neutral-300 font-semibold transition-colors underline-offset-2 hover:underline"
                 >
                   สมัครสมาชิก

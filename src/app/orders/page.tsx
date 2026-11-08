@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo, Suspense } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthModal from "@/components/AuthModal";
@@ -31,6 +31,7 @@ import {
   Building2,
   Gift,
   KeyRound,
+  Loader2,
 } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 
@@ -63,11 +64,20 @@ interface TopupRecord {
 }
 
 function OrdersContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialTab = searchParams.get("tab") === "topup" ? "topup" : "orders";
 
-  const { user, openAuth, addToast } = useStore();
+  const { user, loadingUser, openAuth, addToast } = useStore();
   const [activeCategory, setActiveCategory] = useState<"orders" | "topup">(initialTab);
+
+  // Auth guard: If guest, warp to login
+  useEffect(() => {
+    if (!loadingUser && !user) {
+      addToast("กรุณาเข้าสู่ระบบเพื่อดูประวัติการสั่งซื้อ", "info");
+      router.push("/login?redirect=/orders");
+    }
+  }, [user, loadingUser, router, addToast]);
   const [orders, setOrders] = useState<OrderRecord[]>([]);
   const [topups, setTopups] = useState<TopupRecord[]>([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
@@ -290,20 +300,18 @@ ${o.deliveredData}`;
         {/* Content Section */}
         {!user ? (
           <div className="rounded-3xl border border-dashed border-white/10 bg-neutral-950/40 p-12 sm:p-16 text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center mx-auto shadow-md">
-              <Package className="w-7 h-7" />
-            </div>
+            <Loader2 className="w-8 h-8 animate-spin text-white mx-auto" />
             <div className="space-y-1">
-              <h3 className="font-bold text-base text-white">กรุณาเข้าสู่ระบบ</h3>
+              <h3 className="font-bold text-base text-white">กำลังพาไปยังหน้าเข้าสู่ระบบ...</h3>
               <p className="text-xs text-neutral-400 max-w-sm mx-auto">
-                เข้าสู่ระบบเพื่อตรวจสอบประวัติการสั่งซื้อและประวัติการเติมเงินของคุณ
+                กรุณาเข้าสู่ระบบเพื่อตรวจสอบประวัติการสั่งซื้อและประวัติการเติมเงินของคุณ
               </p>
             </div>
             <button
-              onClick={() => openAuth("login")}
+              onClick={() => router.push("/login?redirect=/orders")}
               className="px-6 py-2.5 rounded-xl font-bold text-xs bg-white hover:bg-neutral-200 text-black transition-all shadow-lg active:scale-95 cursor-pointer"
             >
-              เข้าสู่ระบบทันที
+              คลิกที่นี่หากหน้าเว็บไม่เปลี่ยนอัตโนมัติ
             </button>
           </div>
         ) : activeCategory === "orders" ? (

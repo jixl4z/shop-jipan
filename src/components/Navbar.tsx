@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useStore } from "@/context/StoreContext";
 import { THEMES, ThemeColor } from "@/lib/theme";
 import SearchModal from "./SearchModal";
@@ -43,6 +43,7 @@ import {
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const {
     user,
     setting,
@@ -51,6 +52,15 @@ export default function Navbar() {
     toggleThemeMode,
     addToast,
   } = useStore();
+
+  const handleProtectedNavigation = (targetUrl: string, featureName: string) => {
+    if (!user) {
+      addToast(`กรุณาเข้าสู่ระบบก่อนใช้งานเมนู ${featureName}`, "info");
+      router.push(`/login?redirect=${encodeURIComponent(targetUrl)}`);
+    } else {
+      router.push(targetUrl);
+    }
+  };
 
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -132,9 +142,10 @@ export default function Navbar() {
               )}
             </Link>
 
-            <Link
-              href="/topup"
-              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
+            <button
+              type="button"
+              onClick={() => handleProtectedNavigation("/topup", "เติมเงิน")}
+              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
                 pathname?.startsWith("/topup")
                   ? "text-white font-bold"
                   : "text-neutral-400 hover:text-white"
@@ -145,11 +156,12 @@ export default function Navbar() {
               {pathname?.startsWith("/topup") && (
                 <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-white rounded-full" />
               )}
-            </Link>
+            </button>
 
-            <Link
-              href="/orders"
-              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
+            <button
+              type="button"
+              onClick={() => handleProtectedNavigation("/orders", "ประวัติการสั่งซื้อ")}
+              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 cursor-pointer ${
                 pathname?.startsWith("/orders")
                   ? "text-white font-bold"
                   : "text-neutral-400 hover:text-white"
@@ -160,7 +172,7 @@ export default function Navbar() {
               {pathname?.startsWith("/orders") && (
                 <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-white rounded-full" />
               )}
-            </Link>
+            </button>
 
             {/* Extra Features Dropdown (GenzX Inspired) */}
             <div className="relative">
@@ -188,9 +200,12 @@ export default function Navbar() {
                     onClick={() => setIsExtraMenuOpen(false)}
                   />
                   <div className="absolute left-0 mt-2.5 w-64 rounded-2xl bg-[#0e1017]/95 backdrop-blur-2xl border border-white/10 p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
-                    <Link
-                      href="/topup"
-                      onClick={() => setIsExtraMenuOpen(false)}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsExtraMenuOpen(false);
+                        handleProtectedNavigation("/topup", "เติมเงิน");
+                      }}
                       className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
                     >
                       <Wallet className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -200,12 +215,15 @@ export default function Navbar() {
                           พร้อมเพย์ & ทรูวอเล็ท & โค้ด 24 ชม.
                         </div>
                       </div>
-                    </Link>
+                    </button>
 
-                    <Link
-                      href="/orders"
-                      onClick={() => setIsExtraMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsExtraMenuOpen(false);
+                        handleProtectedNavigation("/orders", "คลังสินค้า");
+                      }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
                     >
                       <Package className="w-4 h-4 text-neutral-300 shrink-0" />
                       <div>
@@ -214,7 +232,7 @@ export default function Navbar() {
                           เช็คโค้ด & รหัสคำสั่งซื้อ
                         </div>
                       </div>
-                    </Link>
+                    </button>
 
                     <Link
                       href="/reviews"
@@ -540,13 +558,16 @@ export default function Navbar() {
                     </div>
                   </div>
                 </Link>
-                <Link
-                  href="/topup"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleProtectedNavigation("/topup", "เติมเงิน");
+                  }}
                   className="px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 cursor-pointer shadow-sm bg-white text-black hover:bg-neutral-200"
                 >
                   + เติมเงิน
-                </Link>
+                </button>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2 p-1">
@@ -585,22 +606,28 @@ export default function Navbar() {
                 <Layers className="w-4 h-4 text-neutral-400" />
                 <span>หมวดหมู่สินค้า</span>
               </Link>
-              <Link
-                href="/topup"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-neutral-200 flex items-center gap-2.5 font-medium"
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleProtectedNavigation("/topup", "เติมเงิน");
+                }}
+                className="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-neutral-200 flex items-center gap-2.5 font-medium cursor-pointer"
               >
                 <Wallet className="w-4 h-4 text-white" />
                 <span>เติมเงินเข้ากระเป๋า</span>
-              </Link>
-              <Link
-                href="/orders"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-neutral-200 flex items-center gap-2.5 font-medium"
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  handleProtectedNavigation("/orders", "ประวัติคำสั่งซื้อ");
+                }}
+                className="w-full text-left px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-neutral-200 flex items-center gap-2.5 font-medium cursor-pointer"
               >
                 <Package className="w-4 h-4 text-neutral-400" />
                 <span>คลังสินค้าของฉัน (คำสั่งซื้อ)</span>
-              </Link>
+              </button>
               <Link
                 href="/reviews"
                 onClick={() => setIsMobileMenuOpen(false)}

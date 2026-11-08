@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthModal from "@/components/AuthModal";
@@ -89,7 +90,15 @@ function RedeemGiftIcon({ className = "w-7 h-7" }: { className?: string }) {
 }
 
 export default function DedicatedTopupPage() {
-  const { user, setting, refreshUser, updateBalance, openAuth, addToast } = useStore();
+  const router = useRouter();
+  const { user, loadingUser, setting, refreshUser, updateBalance, openAuth, addToast } = useStore();
+
+  useEffect(() => {
+    if (!loadingUser && !user) {
+      addToast("กรุณาเข้าสู่ระบบก่อนเข้าใช้งานหน้าเติมเงิน", "info");
+      router.push("/login?redirect=/topup");
+    }
+  }, [user, loadingUser, router, addToast]);
 
   // Active payment method
   const [activeMethod, setActiveMethod] = useState<"bank" | "truemoney" | "redeem">("bank");
@@ -365,6 +374,19 @@ export default function DedicatedTopupPage() {
   useEffect(() => {
     loadHistory();
   }, [user]);
+
+  if (loadingUser || !user) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-white flex flex-col selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+        <Navbar />
+        <main className="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-28 w-full flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-8 h-8 animate-spin text-slate-900 dark:text-white" />
+          <p className="text-xs text-slate-500 dark:text-neutral-400">กำลังตรวจสอบสถานะการเข้าสู่ระบบ...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#060608] text-slate-900 dark:text-white flex flex-col selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">

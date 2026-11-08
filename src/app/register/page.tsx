@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
@@ -34,6 +34,17 @@ export default function RegisterPage() {
 
   // Success Notification Toast state
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("/");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const redir = params.get("redirect");
+      if (redir) {
+        setRedirectUrl(redir);
+      }
+    }
+  }, []);
 
   // Criteria validation
   const hasMinLength = password.length >= 8;
@@ -81,10 +92,10 @@ export default function RegisterPage() {
       triggerRegisterSuccess();
       await refreshUser();
 
-      // Smoothly redirect to home page after toast is seen & heard
+      // Smoothly redirect to target page after toast is seen & heard
       setTimeout(() => {
-        router.push("/");
-      }, 1800);
+        router.push(redirectUrl);
+      }, 1500);
     } catch {
       setErrorMsg("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้ โปรดลองอีกครั้ง");
       setLoading(false);
@@ -262,7 +273,7 @@ export default function RegisterPage() {
             <div className="text-xs text-neutral-400 pt-1">
               มีบัญชีอยู่แล้ว?{" "}
               <Link
-                href="/login"
+                href={redirectUrl !== "/" ? `/login?redirect=${encodeURIComponent(redirectUrl)}` : "/login"}
                 className="text-white hover:text-neutral-300 font-semibold transition-colors underline-offset-2 hover:underline"
               >
                 เข้าสู่ระบบ
