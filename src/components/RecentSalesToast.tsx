@@ -100,15 +100,15 @@ export default function RecentSalesToast() {
           : "opacity-0 translate-y-6 scale-95 pointer-events-none"
       }`}
     >
-      <div className="rounded-2xl border border-white/[0.1] bg-[#0c0d12]/95 backdrop-blur-2xl p-3 sm:p-3.5 shadow-2xl shadow-black/90 flex items-center gap-3 relative group hover:border-white/20 transition-colors">
+      <div className="rounded-2xl border border-slate-200 bg-white/95 text-slate-900 shadow-2xl p-3 sm:p-3.5 backdrop-blur-2xl dark:border-white/[0.1] dark:bg-[#0c0d12]/95 dark:text-white dark:shadow-black/90 flex items-center gap-3 relative group hover:border-slate-300 dark:hover:border-white/20 transition-colors">
         {/* Product Thumbnail / Icon */}
-        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-tr from-white/[0.08] to-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
-          <PackageCheck className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 dark:bg-gradient-to-tr dark:from-white/[0.08] dark:to-white/[0.03] dark:border-white/10 dark:text-white flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
+          <PackageCheck className="w-5 h-5 sm:w-6 sm:h-6 text-current" />
         </div>
 
         {/* Content Info */}
         <div className="flex-1 min-w-0 pr-1">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-neutral-300">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-600 dark:text-neutral-300">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -116,14 +116,14 @@ export default function RecentSalesToast() {
             <span className="truncate">คุณ {current.username} เพิ่งสั่งซื้อ</span>
           </div>
 
-          <div className="text-xs font-bold text-white truncate mt-0.5">
+          <div className="text-xs font-bold text-slate-900 dark:text-white truncate mt-0.5">
             {current.productName}
           </div>
 
-          <div className="text-[10px] text-neutral-400 flex items-center gap-1.5 mt-0.5">
+          <div className="text-[10px] text-slate-400 dark:text-neutral-400 flex items-center gap-1.5 mt-0.5">
             <span>{current.timeAgo}</span>
-            <span className="text-neutral-600">•</span>
-            <span className="text-emerald-400 font-medium inline-flex items-center gap-0.5">
+            <span className="text-slate-300 dark:text-neutral-600">•</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-medium inline-flex items-center gap-0.5">
               <Check className="w-3 h-3" />
               <span>จัดส่งสำเร็จ</span>
             </span>
@@ -134,7 +134,7 @@ export default function RecentSalesToast() {
         <button
           type="button"
           onClick={() => setIsDismissed(true)}
-          className="text-neutral-500 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer self-start -mr-1 -mt-1 shrink-0"
+          className="text-slate-400 hover:text-slate-700 dark:text-neutral-500 dark:hover:text-white p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/10 transition-colors cursor-pointer self-start -mr-1 -mt-1 shrink-0"
           title="ปิดการแจ้งเตือน"
           aria-label="ปิดการแจ้งเตือน"
         >

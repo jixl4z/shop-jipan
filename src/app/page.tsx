@@ -125,7 +125,7 @@ export default function HomePage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="ค้นหาชื่อสินค้า..."
-                className="w-full pl-10 pr-4 py-2 rounded-xl glass-panel text-white placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-white/30 transition-colors"
+                className="w-full pl-10 pr-4 py-2 rounded-xl glass-panel text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-black/20 dark:focus:border-white/30 transition-colors"
               />
             </div>
           </div>

@@ -182,9 +182,23 @@ html.light body {
     radial-gradient(circle 600px at 50% 600px, rgba(0, 0, 0, 0.02), transparent 70%) !important;
 }
 
-/* Glass Panels & Surfaces */
-html.light .glass-panel {
-  background: rgba(255, 255, 255, 0.94) !important;
+/* Page Background Overrides */
+html.light .bg-neutral-950,
+html.light [class*="bg-[#060608]"],
+html.light [class*="bg-[#07080a]"],
+html.light [class*="bg-[#0a0b0e]"] {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Glass Panels & All Dark Container Surfaces become Crisp White */
+html.light .glass-panel,
+html.light [class*="bg-[#0c0d12]"],
+html.light [class*="bg-[#0e1017]"],
+html.light [class*="bg-[#0e0f15]"],
+html.light [class*="bg-[#11121a]"],
+html.light [class*="bg-neutral-900"] {
+  background-color: #ffffff !important;
   border-color: rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03) !important;
 }
@@ -195,7 +209,16 @@ html.light header > div {
   box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* Text Adaptations */
+/* General Text Color on Light Surfaces */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
+  color: #0f172a !important;
+}
+
 html.light .text-white {
   color: #0f172a !important;
 }
@@ -220,25 +243,7 @@ html.light .text-neutral-500 {
   color: #94a3b8 !important;
 }
 
-/* Background Overrides for Dark Hexes */
-html.light .bg-\[\#060608\],
-html.light .bg-\[\#07080a\],
-html.light .bg-\[\#0a0b0e\],
-html.light .bg-\[\#0c0d12\],
-html.light .bg-\[\#0c0d12\]\/85,
-html.light .bg-\[\#0c0d12\]\/95,
-html.light .bg-\[\#0e1017\],
-html.light .bg-\[\#0e1017\]\/95,
-html.light .bg-neutral-950 {
-  background-color: #f8fafc !important;
-}
-
-html.light .bg-neutral-900,
-html.light .bg-neutral-900\/95,
-html.light .bg-neutral-900\/80 {
-  background-color: #ffffff !important;
-}
-
+/* Secondary Backgrounds */
 html.light .bg-neutral-800 {
   background-color: #f1f5f9 !important;
 }
@@ -286,11 +291,34 @@ html.light .bg-white.text-black {
 html.light .bg-white.text-black:hover {
   background-color: #1e293b !important;
 }
-html.light .bg-white.text-black .text-white {
+html.light .bg-white.text-black * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* INTENTIONALLY DARK ELEMENTS MUST MAINTAIN WHITE TEXT */
+html.light .bg-slate-900,
+html.light .bg-slate-950,
+html.light [class*="bg-slate-900"],
+html.light [class*="bg-slate-950"],
+html.light .bg-black,
+html.light button.btn-shine,
+html.light [class*="bg-black/7"],
+html.light [class*="bg-black/8"],
+html.light [class*="bg-black/9"] {
   color: #ffffff !important;
 }
-html.light .bg-white.text-black .fill-black {
-  fill: #ffffff !important;
+
+html.light .bg-slate-900 *,
+html.light .bg-slate-950 *,
+html.light [class*="bg-slate-900"] *,
+html.light [class*="bg-slate-950"] *,
+html.light .bg-black *,
+html.light button.btn-shine *,
+html.light [class*="bg-black/7"] *,
+html.light [class*="bg-black/8"] *,
+html.light [class*="bg-black/9"] * {
+  color: #ffffff !important;
 }
 
 /* Badges with dark text */
@@ -302,26 +330,28 @@ html.light .bg-white\/10.text-white {
 
 /* Preserve specific colored accents */
 html.light .text-emerald-400 { color: #059669 !important; }
+html.light .text-emerald-500 { color: #059669 !important; }
 html.light .text-rose-400 { color: #e11d48 !important; }
 html.light .text-cyan-400 { color: #0891b2 !important; }
 html.light .text-amber-400 { color: #d97706 !important; }
 html.light .text-violet-400 { color: #7c3aed !important; }
 
 /* Keep white text on colorful buttons/badges */
-html.light [class*="bg-rose-"] .text-white,
-html.light [class*="bg-violet-"] .text-white,
-html.light [class*="bg-emerald-"] .text-white,
-html.light [class*="bg-cyan-"] .text-white,
-html.light [class*="bg-amber-"] .text-white,
-html.light [class*="bg-gradient-to-"] .text-white,
-html.light .bg-red-500 .text-white,
-html.light .bg-emerald-500 .text-white {
+html.light [class*="bg-rose-"] *,
+html.light [class*="bg-violet-"] *,
+html.light [class*="bg-emerald-"] *,
+html.light [class*="bg-cyan-"] *,
+html.light [class*="bg-amber-"] *,
+html.light [class*="bg-blue-"] *,
+html.light [class*="bg-gradient-to-"] *,
+html.light .bg-red-500 *,
+html.light .bg-emerald-500 * {
   color: #ffffff !important;
 }
 
 /* Modals & Dialogs in Light Mode */
 html.light .backdrop-blur-2xl {
-  background-color: rgba(255, 255, 255, 0.96) !important;
+  background-color: rgba(255, 255, 255, 0.98) !important;
   border-color: rgba(0, 0, 0, 0.09) !important;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15) !important;
 }

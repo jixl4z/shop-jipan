@@ -94,12 +94,12 @@ export default function CategoryFilter({
               onClick={() => onSelectCategory(isSelected ? "all" : cat.slug)}
               className={`relative overflow-hidden rounded-2xl border transition-all duration-300 p-5 sm:p-6 cursor-pointer flex flex-col justify-between min-h-[160px] group ${
                 isSelected
-                  ? "border-white/50 bg-white/[0.08] ring-2 ring-white/30 shadow-2xl shadow-black/80 -translate-y-1"
-                  : "border-white/[0.08] bg-[#0c0d12]/90 hover:border-white/20 hover:bg-[#11121a]/90 hover:-translate-y-1 shadow-lg"
+                  ? "bg-slate-900 border-slate-900 text-white shadow-xl -translate-y-1 dark:bg-white/[0.1] dark:border-white/40 dark:text-white dark:ring-2 dark:ring-white/20"
+                  : "bg-white border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/80 shadow-sm hover:-translate-y-1 text-slate-900 dark:bg-[#0c0d12]/90 dark:border-white/[0.08] dark:hover:border-white/20 dark:hover:bg-[#11121a]/90 dark:text-white"
               }`}
             >
               {/* Giant Translucent Stroke Watermark in Background */}
-              <div className="absolute -right-4 -bottom-4 w-32 h-32 text-white/[0.03] group-hover:text-white/[0.08] transition-all duration-300 pointer-events-none flex items-center justify-center">
+              <div className="absolute -right-4 -bottom-4 w-32 h-32 text-black/[0.03] group-hover:text-black/[0.06] dark:text-white/[0.03] dark:group-hover:text-white/[0.08] transition-all duration-300 pointer-events-none flex items-center justify-center">
                 <Icon className="w-full h-full stroke-[1]" />
               </div>
 
@@ -108,8 +108,8 @@ export default function CategoryFilter({
                 <div
                   className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all ${
                     isSelected
-                      ? "bg-white text-black shadow-md"
-                      : "bg-white/[0.06] border border-white/10 text-white group-hover:scale-105 group-hover:border-white/20"
+                      ? "bg-white/20 text-white dark:bg-white dark:text-black shadow-md"
+                      : "bg-slate-100 border border-slate-200 text-slate-700 group-hover:scale-105 group-hover:border-slate-300 dark:bg-white/[0.06] dark:border-white/10 dark:text-white dark:group-hover:border-white/20"
                   }`}
                 >
                   {isIconUrl ? (
@@ -124,39 +124,55 @@ export default function CategoryFilter({
                   )}
                 </div>
 
-                <span className="text-xs font-mono font-medium px-2.5 py-1 rounded-lg bg-white/[0.05] border border-white/10 text-neutral-300">
+                <span className={`text-xs font-mono font-medium px-2.5 py-1 rounded-lg border ${
+                  isSelected
+                    ? "bg-white/10 border-white/20 text-white"
+                    : "bg-slate-100 border-slate-200 text-slate-600 dark:bg-white/[0.05] dark:border-white/10 dark:text-neutral-300"
+                }`}>
                   {cat.productCount} รายการ
                 </span>
               </div>
 
               {/* Middle Row: Name & Description */}
               <div className="relative z-10 mt-3 space-y-1">
-                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-neutral-100 transition-colors">
+                <h3 className={`text-lg sm:text-xl font-bold tracking-tight transition-colors ${
+                  isSelected
+                    ? "text-white"
+                    : "text-slate-900 group-hover:text-black dark:text-white dark:group-hover:text-neutral-100"
+                }`}>
                   {cat.name}
                 </h3>
-                <p className="text-xs text-neutral-400 font-light line-clamp-1">
+                <p className={`text-xs font-light line-clamp-1 ${
+                  isSelected
+                    ? "text-slate-300 dark:text-neutral-300"
+                    : "text-slate-500 dark:text-neutral-400"
+                }`}>
                   {cat.description || `รวมสินค้าดิจิทัลในหมวดหมู่ ${cat.name}`}
                 </p>
               </div>
 
               {/* Bottom Row: Clean Single Action Indicator */}
-              <div className="relative z-10 pt-3.5 mt-3.5 border-t border-white/[0.06] flex items-center justify-between text-xs font-medium">
+              <div className={`relative z-10 pt-3.5 mt-3.5 border-t flex items-center justify-between text-xs font-medium ${
+                isSelected
+                  ? "border-white/20"
+                  : "border-slate-100 dark:border-white/[0.06]"
+              }`}>
                 {isSelected ? (
                   <>
                     <span className="text-white flex items-center gap-1.5 font-semibold">
-                      <Check className="w-4 h-4 text-white" />
+                      <Check className="w-4 h-4 text-emerald-400" />
                       <span>กำลังกรองสินค้านี้</span>
                     </span>
-                    <span className="text-[11px] text-neutral-400 hover:text-white bg-white/10 px-2.5 py-1 rounded-lg border border-white/15">
+                    <span className="text-[11px] text-white/80 hover:text-white bg-white/10 px-2.5 py-1 rounded-lg border border-white/20">
                       คลิกเพื่อยกเลิก
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="text-neutral-400 group-hover:text-white transition-colors">
+                    <span className="text-slate-400 group-hover:text-slate-700 dark:text-neutral-400 dark:group-hover:text-white transition-colors">
                       คลิกเพื่อเลือกหมวดหมู่นี้
                     </span>
-                    <span className="flex items-center gap-1 text-white group-hover:translate-x-1 transition-transform bg-white/[0.05] group-hover:bg-white group-hover:text-black px-2.5 py-1 rounded-lg border border-white/10 text-[11px] font-medium">
+                    <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform bg-slate-100 text-slate-700 group-hover:bg-slate-900 group-hover:text-white dark:bg-white/[0.05] dark:text-white dark:group-hover:bg-white dark:group-hover:text-black px-2.5 py-1 rounded-lg border border-slate-200 dark:border-white/10 text-[11px] font-medium">
                       <span>เลือก</span>
                       <ArrowRight className="w-3 h-3" />
                     </span>

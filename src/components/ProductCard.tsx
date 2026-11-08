@@ -48,33 +48,30 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         )}
 
-        {/* Top Badges (Monochrome Contrast) */}
-        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
-          {product.badge ? (
-            <span className="px-2.5 py-0.5 rounded-md bg-white text-black text-[10px] font-black uppercase tracking-wider shadow-md backdrop-blur-md flex items-center gap-1">
-              <Sparkles className="w-3 h-3 fill-black" />
-              <span>{product.badge}</span>
-            </span>
-          ) : (
-            <span className="px-2.5 py-0.5 rounded-md bg-black/80 border border-white/20 text-white text-[10px] font-mono backdrop-blur-md">
-              HOT ITEM
-            </span>
-          )}
-        </div>
+        {/* Top Badges (Left: Custom Badge, Right: Stock Status Pill) */}
+        <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
+          <div>
+            {product.badge && (
+              <span className="px-2.5 py-0.5 rounded-md bg-white text-black text-[10px] font-black uppercase tracking-wider shadow-md backdrop-blur-md flex items-center gap-1">
+                <Sparkles className="w-3 h-3 fill-current" />
+                <span>{product.badge}</span>
+              </span>
+            )}
+          </div>
 
-        {/* Stock Status Pill (Monochrome Glass) */}
-        <div className="absolute bottom-2.5 right-2.5 z-10">
-          {inStock ? (
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-black/75 border border-white/30 text-white text-[11px] font-medium backdrop-blur-md shadow-md">
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              <span>พร้อมขาย</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-black/75 border border-neutral-750 text-neutral-400 text-[11px] font-medium backdrop-blur-md shadow-md">
-              <span className="w-2 h-2 rounded-full bg-neutral-500" />
-              <span>สินค้าหมด</span>
-            </div>
-          )}
+          <div>
+            {inStock ? (
+              <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[10px] font-semibold backdrop-blur-md shadow-md">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>พร้อมขาย</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/70 border border-white/10 text-neutral-400 text-[10px] font-medium backdrop-blur-md shadow-md">
+                <span className="w-1.5 h-1.5 rounded-full bg-neutral-500" />
+                <span>สินค้าหมด</span>
+              </div>
+            )}
+          </div>
         </div>
       </Link>
 

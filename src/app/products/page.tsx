@@ -94,17 +94,17 @@ export default function ProductsPage() {
         </div>
 
         {/* Search & Filter Toolbar */}
-        <div className="p-4 rounded-3xl bg-neutral-900/60 border border-neutral-800/80 space-y-4">
+        <div className="p-4 rounded-3xl glass-panel space-y-4">
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             {/* Search Input */}
             <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="ค้นหาชื่อสินค้า รายละเอียด หรือคีย์เวิร์ด..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-neutral-950 border border-neutral-800 text-white placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-neutral-500"
+                className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-black/[0.04] dark:bg-white/[0.05] border border-black/10 dark:border-white/10 text-neutral-900 dark:text-white placeholder-neutral-400 text-xs sm:text-sm focus:outline-none focus:border-black/30 dark:focus:border-white/30 transition-colors"
               />
             </div>
 
@@ -114,11 +114,11 @@ export default function ProductsPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="pl-3.5 pr-8 py-2.5 rounded-2xl bg-neutral-950 border border-neutral-800 text-white text-xs focus:outline-none focus:border-neutral-500 cursor-pointer appearance-none"
+                  className="pl-3.5 pr-8 py-2.5 rounded-2xl bg-black/[0.04] dark:bg-white/[0.05] border border-black/10 dark:border-white/10 text-neutral-900 dark:text-white text-xs focus:outline-none focus:border-black/30 dark:focus:border-white/30 cursor-pointer appearance-none transition-colors"
                 >
-                  <option value="latest">เรียงตาม: ล่าสุด</option>
-                  <option value="price-asc">ราคา: ต่ำไปสูง</option>
-                  <option value="price-desc">ราคา: สูงไปต่ำ</option>
+                  <option value="latest" className="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white">เรียงตาม: ล่าสุด</option>
+                  <option value="price-asc" className="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white">ราคา: ต่ำไปสูง</option>
+                  <option value="price-desc" className="bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white">ราคา: สูงไปต่ำ</option>
                 </select>
                 <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-400 pointer-events-none" />
               </div>
@@ -129,11 +129,11 @@ export default function ProductsPage() {
                 onClick={() => setOnlyInStock(!onlyInStock)}
                 className={`px-3.5 py-2.5 rounded-2xl text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
                   onlyInStock
-                    ? "bg-emerald-950/80 border-emerald-500/40 text-emerald-300"
-                    : "bg-neutral-950 border-neutral-800 text-neutral-400 hover:text-white"
+                    ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                    : "bg-black/[0.04] dark:bg-white/[0.05] border-black/10 dark:border-white/10 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
                 }`}
               >
-                <span className={`w-2 h-2 rounded-full ${onlyInStock ? "bg-emerald-400" : "bg-neutral-600"}`} />
+                <span className={`w-2 h-2 rounded-full ${onlyInStock ? "bg-emerald-500" : "bg-neutral-400"}`} />
                 <span>เฉพาะพร้อมส่ง</span>
               </button>
             </div>
@@ -143,10 +143,10 @@ export default function ProductsPage() {
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
             <button
               onClick={() => setSelectedCat("all")}
-              className={`px-3.5 py-1.5 rounded-xl transition-all shrink-0 cursor-pointer ${
+              className={`px-3.5 py-1.5 rounded-xl transition-all shrink-0 cursor-pointer font-medium ${
                 selectedCat === "all"
-                  ? "bg-white text-black font-bold shadow"
-                  : "bg-neutral-950 border border-neutral-800 text-neutral-400 hover:text-white"
+                  ? "bg-neutral-900 text-white dark:bg-white dark:text-black font-bold shadow-sm"
+                  : "bg-black/[0.04] dark:bg-white/[0.05] border border-black/10 dark:border-white/10 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
               }`}
             >
               ทั้งหมด
@@ -155,10 +155,10 @@ export default function ProductsPage() {
               <button
                 key={c.id}
                 onClick={() => setSelectedCat(c.slug)}
-                className={`px-3.5 py-1.5 rounded-xl transition-all shrink-0 cursor-pointer ${
+                className={`px-3.5 py-1.5 rounded-xl transition-all shrink-0 cursor-pointer font-medium ${
                   selectedCat === c.slug
-                    ? "bg-white text-black font-bold shadow"
-                    : "bg-neutral-950 border border-neutral-800 text-neutral-400 hover:text-white"
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-black font-bold shadow-sm"
+                    : "bg-black/[0.04] dark:bg-white/[0.05] border border-black/10 dark:border-white/10 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
                 }`}
               >
                 {c.name}
