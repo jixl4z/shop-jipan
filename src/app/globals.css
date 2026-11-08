@@ -203,6 +203,7 @@ html.light [class*="bg-[#0c0d12]"],
 html.light [class*="bg-[#0e1017]"],
 html.light [class*="bg-[#0e0f15]"],
 html.light [class*="bg-[#11121a]"],
+html.light [class*="bg-[#0a0a0d]"],
 html.light [class*="bg-neutral-900"] {
   background-color: #ffffff !important;
   border-color: rgba(0, 0, 0, 0.08) !important;

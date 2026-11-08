@@ -37,6 +37,8 @@ import {
   ArrowRight,
   Clock,
   CreditCard,
+  Bell,
+  MessageCircle,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -76,11 +78,12 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 px-4 sm:px-6 pt-3 sm:pt-4">
-        <div className="max-w-6xl mx-auto rounded-2xl border border-white/[0.08] bg-[#0c0d12]/85 backdrop-blur-xl px-4 sm:px-6 h-16 flex items-center justify-between shadow-2xl shadow-black/50">
+      {/* Edge-to-Edge Full-Width Header (genzxshop reference) */}
+      <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-[#060608]/95 backdrop-blur-2xl">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Brand Logo & Name */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-neutral-800 to-neutral-700 border border-neutral-700 flex items-center justify-center font-black text-white text-base shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-600 to-red-500 border border-white/20 flex items-center justify-center font-black text-white text-base shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0">
               {setting?.logoUrl && setting.logoUrl !== "/logo.png" ? (
                 <img
                   src={setting.logoUrl}
@@ -92,49 +95,76 @@ export default function Navbar() {
               )}
             </div>
             <div className="flex items-center gap-2 min-w-0">
-              <span className="font-bold text-sm sm:text-base tracking-wide text-white truncate max-w-[130px] sm:max-w-none">
+              <span className="font-extrabold text-sm sm:text-base tracking-wide text-white truncate">
                 {setting?.shopName || "JIPAN STORE"}
-              </span>
-              <span className="hidden sm:inline-flex items-center text-[10px] px-2 py-0.5 rounded-md font-mono uppercase tracking-wider bg-white/[0.06] text-neutral-300 border border-white/10">
-                Auto 24h
               </span>
             </div>
           </Link>
 
-          {/* Center Nav links (Desktop) */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Center Nav links (Desktop) - Exact genzxshop order */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
             <Link
               href="/"
-              className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
                 pathname === "/"
-                  ? "bg-white/[0.08] text-white font-semibold"
-                  : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+                  ? "text-rose-500 font-bold"
+                  : "text-neutral-300 hover:text-white"
               }`}
             >
-              หน้าแรก
+              <Home className="w-3.5 h-3.5" />
+              <span>หน้าหลัก</span>
+              {pathname === "/" && (
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+              )}
             </Link>
+
             <Link
               href="/categories"
-              className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
+              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
                 pathname?.startsWith("/categories")
-                  ? "bg-white/[0.08] text-white font-semibold"
-                  : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+                  ? "text-rose-500 font-bold"
+                  : "text-neutral-300 hover:text-white"
               }`}
             >
-              หมวดหมู่
+              <ShoppingBag className="w-3.5 h-3.5" />
+              <span>ร้านค้า</span>
+              {pathname?.startsWith("/categories") && (
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+              )}
+            </Link>
+
+            <button
+              onClick={openTopup}
+              className="relative px-3.5 py-2 text-xs font-semibold text-neutral-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <Wallet className="w-3.5 h-3.5" />
+              <span>เติมเงิน</span>
+            </button>
+
+            <Link
+              href="/orders"
+              className={`relative px-3.5 py-2 text-xs font-semibold transition-all duration-150 flex items-center gap-1.5 ${
+                pathname?.startsWith("/orders")
+                  ? "text-rose-500 font-bold"
+                  : "text-neutral-300 hover:text-white"
+              }`}
+            >
+              <Clock className="w-3.5 h-3.5" />
+              <span>ประวัติการสั่งซื้อ</span>
+              {pathname?.startsWith("/orders") && (
+                <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-rose-500 rounded-full" />
+              )}
             </Link>
 
             {/* Extra Features Dropdown (GenzX Inspired) */}
             <div className="relative">
               <button
                 onClick={() => setIsExtraMenuOpen(!isExtraMenuOpen)}
-                className={`flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 cursor-pointer ${
+                className={`flex items-center gap-1 px-3 py-2 text-xs font-semibold transition-all duration-150 cursor-pointer ${
                   isExtraMenuOpen ||
-                  ["/reviews", "/news", "/orders", "/topup", "/docs"].some((p) =>
-                    pathname?.startsWith(p)
-                  )
-                    ? "bg-white/[0.08] text-white font-semibold"
-                    : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
+                  ["/reviews", "/news", "/docs"].some((p) => pathname?.startsWith(p))
+                    ? "text-rose-500 font-bold"
+                    : "text-neutral-300 hover:text-white"
                 }`}
               >
                 <span>ฟังก์ชั่นเสริม</span>
@@ -237,27 +267,31 @@ export default function Navbar() {
             </div>
           </nav>
 
-          {/* Right Action Utilities */}
-          <div className="flex items-center gap-2">
-            {/* Quick Search Command Button */}
+          {/* Right Action Utilities (genzxshop reference) */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Quick Contact / Chat Button */}
             <button
-              onClick={() => setIsSearchOpen(true)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 text-neutral-400 hover:text-white transition-all cursor-pointer text-xs"
-              title="ค้นหาสินค้า (Ctrl + K)"
+              onClick={() => setIsContactOpen(true)}
+              className="w-9 h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 flex items-center justify-center text-neutral-300 hover:text-white transition-all cursor-pointer text-xs"
+              title="ติดต่อทีมงาน"
             >
-              <Search className="w-3.5 h-3.5 text-neutral-400" />
-              <span className="hidden xl:inline text-neutral-400">ค้นหา...</span>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 text-[10px] font-mono text-neutral-400 bg-white/[0.06] px-1.5 py-0.5 rounded border border-white/10">
-                ⌘K
-              </kbd>
+              <MessageCircle className="w-4 h-4 text-neutral-400" />
             </button>
 
-            {/* Theme Mode Toggle (Dark / Light with Circular Wipe Animation) */}
+            {/* Quick Search Button */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="w-9 h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 flex items-center justify-center text-neutral-300 hover:text-white transition-all cursor-pointer text-xs"
+              title="ค้นหาสินค้า (Ctrl + K)"
+            >
+              <Search className="w-4 h-4 text-neutral-400" />
+            </button>
+
+            {/* Theme Mode Toggle */}
             <button
               onClick={(e) => toggleThemeMode(e)}
-              className="w-8 h-8 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 flex items-center justify-center text-neutral-300 hover:text-white transition-all cursor-pointer text-xs group shrink-0"
-              title={themeMode === "dark" ? "เปลี่ยนเป็นโหมดสว่าง (Light Mode)" : "เปลี่ยนเป็นโหมดมืด (Dark Mode)"}
-              aria-label="เปลี่ยนโหมดสี"
+              className="w-9 h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 flex items-center justify-center text-neutral-300 hover:text-white transition-all cursor-pointer text-xs group shrink-0"
+              title={themeMode === "dark" ? "เปลี่ยนเป็นโหมดสว่าง" : "เปลี่ยนเป็นโหมดมืด"}
             >
               {themeMode === "dark" ? (
                 <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
@@ -266,38 +300,25 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Quick Contact Shortcut Button */}
-            <button
-              onClick={() => setIsContactOpen(true)}
-              className="hidden min-[480px]:flex items-center justify-center w-8 h-8 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] hover:border-white/15 text-neutral-400 hover:text-white transition-all cursor-pointer"
-              title="ติดต่อทีมงาน / แจ้งปัญหา"
-            >
-              <Headphones className="w-3.5 h-3.5" />
-            </button>
-
-            {/* User Profile & Top-up CTA */}
+            {/* User Profile Or Auth Buttons */}
             {user ? (
               <div className="flex items-center gap-2">
-                {/* Direct Top-up Action Button */}
-                <button
-                  onClick={openTopup}
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 text-white text-xs font-medium transition-all cursor-pointer"
-                  title="เติมเงินเข้าบัญชี"
-                >
-                  <Plus className="w-3.5 h-3.5 text-white" />
-                  <span>เติมเงิน</span>
-                </button>
-
                 <div className="relative">
-                  {/* User pill in Navbar (Reference GenZX style: balance + circular avatar) */}
+                  {/* User pill in Navbar (Reference GenZX style: username + balance on left, avatar on right) */}
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="flex items-center gap-2 pl-3 pr-1 py-1 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/20 transition-all cursor-pointer group shadow-sm"
+                    className="flex items-center gap-2.5 cursor-pointer group text-right select-none pl-2"
                   >
-                    <span className="text-xs font-bold font-mono text-rose-500">
-                      ฿{user.balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
-                    </span>
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 border border-white/25 flex items-center justify-center text-white font-bold text-xs shadow-sm shrink-0 overflow-hidden">
+                    <div className="hidden sm:flex flex-col items-end leading-tight">
+                      <span className="text-xs font-bold text-white max-w-[120px] truncate group-hover:text-rose-400 transition-colors">
+                        {user.username}
+                      </span>
+                      <span className="text-xs font-extrabold font-mono text-rose-500">
+                        ฿{user.balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+
+                    <div className="w-9 h-9 rounded-full ring-2 ring-rose-500/30 group-hover:ring-rose-500/60 bg-gradient-to-tr from-rose-600 to-red-500 border border-white/20 flex items-center justify-center text-white font-bold text-xs shadow-md shrink-0 overflow-hidden transition-all">
                       {user.avatar ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
@@ -645,6 +666,20 @@ export default function Navbar() {
           </div>
         )}
       </header>
+
+      {/* Top Scrolling Marquee Announcement Bar (Edge-to-Edge genzxshop reference) */}
+      <div className="w-full bg-[#0a0a0d] border-b border-white/[0.06] py-2 overflow-hidden flex items-center select-none relative z-20">
+        <div className="animate-marquee flex items-center whitespace-nowrap">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="flex items-center gap-2 mr-16 shrink-0">
+              <Bell className="w-3.5 h-3.5 text-rose-500 fill-rose-500 shrink-0" />
+              <span className="text-xs text-neutral-300 font-normal tracking-wide">
+                {setting?.shopNotice || "เติมเงินซื้อสินค้าแล้ว ไม่มีนโยบาย คืนเงินทุกกรณี"}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Popups & Modals */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />

@@ -55,44 +55,6 @@ export default function HeroBanner() {
   return (
     <section className="relative pt-4 pb-6 sm:pt-6 sm:pb-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4 sm:space-y-5">
-        
-        {/* Monochrome LED Marquee Announcement Ticker */}
-        <div className="w-full rounded-2xl glass-panel p-2.5 sm:p-3 flex items-center gap-3 overflow-hidden shadow-lg border border-white/[0.08]">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white text-xs font-mono shrink-0">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-            </span>
-            <span className="font-semibold">ระบบพร้อมใช้งาน</span>
-          </div>
-          <div className="flex-1 overflow-hidden relative">
-            <div className="whitespace-nowrap animate-marquee flex items-center gap-8 text-xs text-neutral-300 font-light">
-              <span className="inline-flex items-center gap-1.5">
-                <Zap className="w-3.5 h-3.5 text-white shrink-0" />
-                <span>{setting?.shopNotice || "พร้อมให้บริการแล้วนะ ระบบสแกนสลิปพร้อมเพย์ & ซองของขวัญทรูมันนี่ เงินเข้าทันทีตลอด 24 ชม."}</span>
-              </span>
-              <span className="text-neutral-600">•</span>
-              <span className="inline-flex items-center gap-1.5">
-                <MessageCircle className="w-3.5 h-3.5 text-white shrink-0" />
-                <span>
-                  LINE Official:{" "}
-                  <strong className="text-white font-medium">
-                    {(() => {
-                      const raw = setting?.contactLine || "@jipanstore";
-                      const cleaned = raw.replace(/^https?:\/\/(line\.me\/R\/ti\/p\/|lin\.ee\/)/i, "").trim();
-                      return cleaned.startsWith("@") ? cleaned : `@${cleaned}`;
-                    })()}
-                  </strong>
-                </span>
-              </span>
-              <span className="text-neutral-600">•</span>
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-white shrink-0" />
-                <span>ปลอดภัย มั่นใจ ได้ของจริง 100% จัดส่งอัตโนมัติในคลังของฉัน</span>
-              </span>
-            </div>
-          </div>
-        </div>
 
         {/* Banner Carousel Slider */}
         <div className="relative rounded-2xl overflow-hidden border border-white/[0.08] bg-[#07080a] shadow-2xl group">
