@@ -461,16 +461,14 @@ export default function Navbar() {
                           <div className="border-t border-white/[0.08] my-1" />
 
                           {/* Group 3: Profile & Logout */}
-                          <button
-                            onClick={() => {
-                              setIsUserMenuOpen(false);
-                              setIsProfileOpen(true);
-                            }}
+                          <Link
+                            href="/account"
+                            onClick={() => setIsUserMenuOpen(false)}
                             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors text-left cursor-pointer"
                           >
                             <UserIcon className="w-4 h-4 text-neutral-400 shrink-0" />
-                            <span>โปรไฟล์ส่วนตัว</span>
-                          </button>
+                            <span>บัญชีของฉัน</span>
+                          </Link>
 
                           <button
                             onClick={() => {
@@ -523,9 +521,18 @@ export default function Navbar() {
             {/* User Profile / Auth Area in Mobile Drawer */}
             {user ? (
               <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-between">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-9 h-9 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center font-bold text-white text-xs shrink-0">
-                    {user.username.slice(0, 1).toUpperCase()}
+                <Link
+                  href="/account"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-90 transition-opacity"
+                >
+                  <div className="w-9 h-9 rounded-xl bg-neutral-800 border border-neutral-700 flex items-center justify-center font-bold text-white text-xs shrink-0 overflow-hidden">
+                    {user.avatar ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img src={user.avatar} alt={user.username} className="w-full h-full object-cover" />
+                    ) : (
+                      user.username.slice(0, 1).toUpperCase()
+                    )}
                   </div>
                   <div className="min-w-0">
                     <div className="font-bold text-white text-xs truncate">{user.username}</div>
@@ -533,7 +540,7 @@ export default function Navbar() {
                       ยอดเงิน: <strong className="text-white font-mono">฿{user.balance.toFixed(2)}</strong>
                     </div>
                   </div>
-                </div>
+                </Link>
                 <button
                   onClick={() => {
                     setIsMobileMenuOpen(false);

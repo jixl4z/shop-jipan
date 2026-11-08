@@ -13,6 +13,10 @@ export interface SessionUser {
   username: string;
   role: string;
   email?: string | null;
+  avatar?: string | null;
+  discordId?: string | null;
+  googleId?: string | null;
+  createdAt?: Date | string;
 }
 
 export function signToken(payload: SessionUser): string {
@@ -49,6 +53,10 @@ export async function getCurrentUser(): Promise<(SessionUser & { balance: number
         email: true,
         role: true,
         balance: true,
+        avatar: true,
+        discordId: true,
+        googleId: true,
+        createdAt: true,
       },
     });
 

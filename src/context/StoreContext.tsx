@@ -10,6 +10,10 @@ export interface UserSession {
   email?: string | null;
   role: string;
   balance: number;
+  avatar?: string | null;
+  discordId?: string | null;
+  googleId?: string | null;
+  createdAt?: string | Date;
 }
 
 export interface PublicSetting {
