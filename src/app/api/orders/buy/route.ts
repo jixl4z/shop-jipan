@@ -249,15 +249,32 @@ export async function POST(req: Request) {
           status: "COMPLETED",
         },
       });
-    } catch (orderErr) {
-      // Refund balance if order creation failed
-      if (totalCost > 0) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { balance: { increment: totalCost } },
-        }).catch(() => {});
+    } catch {
+      // Fallback without newly added variant/coupon columns if D1 schema differs
+      try {
+        newOrder = await prisma.order.create({
+          data: {
+            orderNumber,
+            userId: user.id,
+            productId: product.id,
+            productName: product.name,
+            price: unitPrice,
+            quantity,
+            totalAmount: totalCost,
+            deliveredData: deliveredText,
+            status: "COMPLETED",
+          },
+        });
+      } catch (orderErr) {
+        // Refund balance if order creation completely failed
+        if (totalCost > 0) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { balance: { increment: totalCost } },
+          }).catch(() => {});
+        }
+        throw orderErr;
       }
-      throw orderErr;
     }
 
     // 3. Atomic stock claim

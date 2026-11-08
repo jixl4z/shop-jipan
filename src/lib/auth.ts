@@ -104,24 +104,31 @@ export function getSafeBaseUrl(req: Request): string {
 }
 
 /**
- * Auto-ensures User table on Cloudflare D1 has googleId, discordId, and avatar columns
+ * Auto-ensures tables on Cloudflare D1 have all required columns
  */
-export async function ensureSocialAuthColumns() {
-  try {
-    await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "googleId" TEXT;`);
-  } catch {}
-  try {
-    await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "discordId" TEXT;`);
-  } catch {}
-  try {
-    await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "avatar" TEXT;`);
-  } catch {}
-  try {
-    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_googleId_key" ON "User"("googleId");`);
-  } catch {}
-  try {
-    await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_discordId_key" ON "User"("discordId");`);
-  } catch {}
+export async function ensureDatabaseSchema() {
+  // User columns
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "googleId" TEXT;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "discordId" TEXT;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "avatar" TEXT;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_googleId_key" ON "User"("googleId");`); } catch {}
+  try { await prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_discordId_key" ON "User"("discordId");`); } catch {}
+
+  // Order columns
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Order" ADD COLUMN "optionName" TEXT;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Order" ADD COLUMN "discountAmount" REAL DEFAULT 0;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Order" ADD COLUMN "couponCode" TEXT;`); } catch {}
+
+  // TopupTransaction columns
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "TopupTransaction" ADD COLUMN "senderName" TEXT;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "TopupTransaction" ADD COLUMN "bank" TEXT;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "TopupTransaction" ADD COLUMN "rawPayload" TEXT;`); } catch {}
+
+  // Product & StockItem columns
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "Product" ADD COLUMN "hasVariants" INTEGER DEFAULT 0;`); } catch {}
+  try { await prisma.$executeRawUnsafe(`ALTER TABLE "StockItem" ADD COLUMN "optionId" TEXT;`); } catch {}
 }
+
+export const ensureSocialAuthColumns = ensureDatabaseSchema;
 
 export const AUTH_COOKIE_NAME = COOKIE_NAME;

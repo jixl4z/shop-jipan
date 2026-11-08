@@ -29,7 +29,14 @@ export async function GET() {
       prisma.order.findMany({
         take: 5,
         orderBy: { createdAt: "desc" },
-        include: { user: { select: { username: true } } },
+        select: {
+          id: true,
+          orderNumber: true,
+          productName: true,
+          totalAmount: true,
+          createdAt: true,
+          user: { select: { username: true } },
+        },
       }),
       prisma.product.findMany({
         where: { isActive: true },
