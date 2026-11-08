@@ -177,13 +177,9 @@ export default function DeliveredDataViewer({
                   </div>
                 </div>
               ) : (
-                /* Raw text/key display (NO select-all, completely natural select-text!) */
+                /* Raw text/key display (Standard plain text, easily drag-selectable with mouse) */
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div
-                    onClick={() => handleCopy(itemKey, item.raw, isMultiple ? `ชิ้นที่ #${index + 1}` : "ข้อมูลสินค้า")}
-                    className="flex-1 p-3 rounded-xl bg-neutral-900/90 border border-white/[0.06] hover:border-white/20 text-white font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-all select-text cursor-pointer transition-colors"
-                    title="คลิกเพื่อคัดลอก หรือลากเมาส์คลุมข้อความเฉพาะส่วนที่ต้องการได้อิสระ"
-                  >
+                  <div className="flex-1 p-3 rounded-xl bg-neutral-900/90 border border-white/[0.06] text-white font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-all select-text cursor-text">
                     {item.raw}
                   </div>
 
@@ -191,6 +187,7 @@ export default function DeliveredDataViewer({
                     type="button"
                     onClick={() => handleCopy(itemKey, item.raw, isMultiple ? `ชิ้นที่ #${index + 1}` : "ข้อมูลสินค้า")}
                     className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 active:scale-95 shadow-sm"
+                    title="คัดลอกข้อความทั้งหมด"
                   >
                     {isItemCopied ? (
                       <>
@@ -212,7 +209,7 @@ export default function DeliveredDataViewer({
       </div>
 
       <div className="text-[11px] text-neutral-500 flex items-center justify-between pt-1">
-        <span>* สามารถใช้เมาส์หรือนิ้วลากคลุมเพื่อก๊อปปี้เฉพาะส่วนที่ต้องการได้อิสระ</span>
+        <span>* สามารถใช้เมาส์ลากคลุมข้อความเพื่อคัดลอกเฉพาะส่วนได้ตามต้องการ</span>
         <span className="font-mono text-[10px] text-neutral-400">JIPAN SECURE VAULT</span>
       </div>
     </div>
