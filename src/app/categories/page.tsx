@@ -96,55 +96,53 @@ export default function CategoriesPage() {
                 <Link
                   key={cat.id}
                   href={`/categories/${cat.slug}`}
-                  className="group relative rounded-2xl overflow-hidden border transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 min-h-[180px] p-5 sm:p-6 flex flex-col justify-between bg-white border-slate-200/80 hover:border-black text-slate-900 dark:bg-gradient-to-br dark:from-[#0e0f15]/90 dark:to-[#07080a]/90 dark:border-white/[0.08] dark:hover:border-white dark:text-white"
+                  className="rounded-2xl glass-panel interactive-card p-3 sm:p-3.5 border border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 shadow-lg flex flex-col justify-between gap-3 group"
                 >
-                  {/* Banner Image Background (If present) */}
-                  {hasBanner ? (
-                    <div className="absolute inset-0 z-0 pointer-events-none">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                  {/* Top Banner Graphic / Artwork */}
+                  <div className="relative aspect-[21/8] sm:aspect-[21/7] w-full rounded-xl overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-950 to-black border border-black/5 dark:border-white/10 shadow-inner">
+                    {hasBanner ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
                       <img
                         src={cat.bannerImage!}
                         alt={cat.name}
-                        className="w-full h-full object-cover opacity-15 dark:opacity-20 group-hover:opacity-25 dark:group-hover:opacity-30 group-hover:scale-105 transition-all duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-white via-white/80 to-transparent dark:from-[#07080a] dark:via-[#07080a]/80" />
+                    ) : (
+                      <div className="w-full h-full relative flex items-center justify-between px-5 sm:px-6 bg-gradient-to-r from-red-950/80 via-neutral-900 to-black overflow-hidden">
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_50%,rgba(244,63,94,0.22),transparent_65%)]" />
+                        <div className="relative z-10 space-y-0.5">
+                          <span className="text-[10px] font-mono tracking-widest text-rose-400 uppercase font-bold">
+                            PRODUCT
+                          </span>
+                          <div className="text-lg sm:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                            {cat.name}
+                          </div>
+                          <span className="text-[11px] text-neutral-400 font-light block">
+                            JIPAN STORE
+                          </span>
+                        </div>
+                        <div className="relative z-10 opacity-25 group-hover:opacity-50 transition-opacity">
+                          <Icon className="w-14 h-14 sm:w-16 sm:h-16 text-rose-500 stroke-[1.2]" />
+                        </div>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                  </div>
+
+                  {/* Bottom Row: Category Name & Count (Left) + Arrow Icon (Right) */}
+                  <div className="flex items-center justify-between px-1">
+                    <div className="min-w-0 space-y-0.5">
+                      <h3 className="font-extrabold text-sm sm:text-base text-neutral-900 dark:text-white tracking-tight group-hover:text-rose-500 transition-colors truncate">
+                        {cat.name}
+                      </h3>
+                      <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light">
+                        {cat.productCount} สินค้าในหมวดหมู่นี้
+                      </p>
                     </div>
-                  ) : null}
 
-                  {/* Giant Translucent Stroke Watermark in Background */}
-                  <div className="absolute -right-4 -bottom-4 w-36 h-36 text-black/[0.03] group-hover:text-black/[0.06] dark:text-white/[0.03] dark:group-hover:text-white/[0.08] transition-all duration-300 pointer-events-none flex items-center justify-center">
-                    <Icon className="w-full h-full stroke-[1]" />
-                  </div>
-
-                  {/* Top Row: Icon Badge & Count */}
-                  <div className="relative z-10 flex items-start justify-between">
-                    <div className="w-11 h-11 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 dark:bg-white/[0.06] dark:border-white/10 dark:text-white flex items-center justify-center group-hover:scale-105 group-hover:border-slate-300 dark:group-hover:border-white/20 transition-all shadow-sm">
-                      <Icon className="w-5 h-5 text-current" />
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-slate-100 text-slate-600 group-hover:bg-rose-500 group-hover:text-white dark:bg-white/[0.05] dark:text-neutral-400 dark:group-hover:bg-rose-500 dark:group-hover:text-white border border-slate-200 dark:border-white/10 transition-all shrink-0">
+                      <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     </div>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 dark:bg-white/[0.05] dark:border-white/10 text-xs font-mono dark:text-neutral-300">
-                      <span>{cat.productCount} รายการ</span>
-                    </span>
-                  </div>
-
-                  {/* Middle Row: Name & Description */}
-                  <div className="relative z-10 mt-4 space-y-1.5">
-                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 group-hover:text-black dark:text-white dark:group-hover:text-neutral-100 transition-colors">
-                      {cat.name}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-slate-500 dark:text-neutral-400 font-light line-clamp-2 leading-relaxed">
-                      {cat.description || `รวมสินค้าดิจิทัลและไอดีในหมวดหมู่ ${cat.name}`}
-                    </p>
-                  </div>
-
-                  {/* Bottom Row: Clean Single Action Indicator */}
-                  <div className="relative z-10 pt-4 mt-4 border-t border-slate-100 dark:border-white/[0.06] flex items-center justify-between text-xs font-medium">
-                    <span className="text-slate-400 group-hover:text-slate-700 dark:text-neutral-400 dark:group-hover:text-white transition-colors">
-                      ดูสินค้าทั้งหมดในหมวดหมู่นี้
-                    </span>
-                    <span className="flex items-center gap-1.5 bg-slate-100 text-slate-700 group-hover:bg-slate-900 group-hover:text-white border-slate-200 dark:bg-white/[0.05] dark:text-white dark:group-hover:bg-white dark:group-hover:text-black px-3 py-1.5 rounded-xl border dark:border-white/10 transition-all font-medium">
-                      <span>เปิดดูสินค้า</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </span>
                   </div>
                 </Link>
               );
