@@ -180,24 +180,28 @@ export default function HeroBanner() {
             </div>
 
             {/* Stacked Action Buttons (Right) */}
-            <div className="flex flex-col gap-2 w-full sm:w-48 shrink-0">
+            <div className="flex flex-col gap-2.5 w-full sm:w-48 shrink-0">
               <a
                 href="#products"
-                className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-neutral-200 text-black flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer btn-shine"
+                className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all cursor-pointer btn-shine ${
+                  isLight
+                    ? "bg-slate-900 hover:bg-slate-800 text-white shadow-slate-900/10"
+                    : "bg-white hover:bg-neutral-200 text-black shadow-white/10"
+                }`}
               >
-                <ShoppingBag className="w-4 h-4 text-black" />
-                <span className="text-black">เลือกดูสินค้า</span>
-                <ArrowRight className="w-4 h-4 text-black" />
+                <ShoppingBag className="w-4 h-4" />
+                <span>เลือกดูสินค้า</span>
+                <ArrowRight className="w-4 h-4" />
               </a>
               <Link
                 href="/topup"
-                className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-medium flex items-center justify-center gap-2 transition-all cursor-pointer border shadow-sm active:scale-95 ${
+                className={`w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer border shadow-sm active:scale-95 ${
                   isLight
-                    ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-800"
-                    : "bg-white/[0.04] hover:bg-white/[0.08] border-white/10 text-white"
+                    ? "bg-white hover:bg-slate-50 border-slate-300 text-slate-900 shadow-slate-200/60"
+                    : "bg-white/10 hover:bg-white/15 border-white/20 text-white shadow-black/20"
                 }`}
               >
-                <Wallet className={`w-4 h-4 ${isLight ? "text-slate-500" : "text-neutral-400"}`} />
+                <Wallet className={`w-4 h-4 ${isLight ? "text-slate-700" : "text-neutral-300"}`} />
                 <span>เติมเงินเข้ากระเป๋า</span>
               </Link>
             </div>

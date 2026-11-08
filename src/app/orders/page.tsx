@@ -193,24 +193,24 @@ ${o.deliveredData}`;
       case "REDEEM":
         return {
           label: "โค้ดเติมเงิน",
-          icon: <Gift className="w-4 h-4 text-rose-400" />,
+          icon: <Gift className="w-4 h-4 text-neutral-300" />,
         };
       default:
         return {
           label: t.type,
-          icon: <CreditCard className="w-4 h-4 text-cyan-400" />,
+          icon: <CreditCard className="w-4 h-4 text-neutral-300" />,
         };
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-[#ff334b] selection:text-white">
+    <div className="min-h-screen bg-[#060608] text-white flex flex-col font-sans selection:bg-white selection:text-black">
       <Navbar />
 
       <main className="flex-1 max-w-5xl mx-auto px-4 sm:px-6 py-10 w-full space-y-6">
-        {/* Dynamic Header (Exact match to Reference 1 & 2) */}
+        {/* Dynamic Header */}
         <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#ff334b]">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
             {activeCategory === "orders" ? "ประวัติการสั่งซื้อ" : "ประวัติการเติมเงิน"}
           </h1>
           <p className="text-xs sm:text-sm text-neutral-400 font-light">
@@ -290,7 +290,7 @@ ${o.deliveredData}`;
         {/* Content Section */}
         {!user ? (
           <div className="rounded-3xl border border-dashed border-white/10 bg-neutral-950/40 p-12 sm:p-16 text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[#ff334b] flex items-center justify-center mx-auto shadow-md">
+            <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center mx-auto shadow-md">
               <Package className="w-7 h-7" />
             </div>
             <div className="space-y-1">
@@ -301,7 +301,7 @@ ${o.deliveredData}`;
             </div>
             <button
               onClick={() => openAuth("login")}
-              className="px-6 py-2.5 rounded-xl font-bold text-xs bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-lg active:scale-95 cursor-pointer"
+              className="px-6 py-2.5 rounded-xl font-bold text-xs bg-white hover:bg-neutral-200 text-black transition-all shadow-lg active:scale-95 cursor-pointer"
             >
               เข้าสู่ระบบทันที
             </button>
@@ -320,7 +320,7 @@ ${o.deliveredData}`;
           ) : orders.length === 0 ? (
             /* Empty State for Orders (Exact match to Reference 1) */
             <div className="rounded-3xl border border-dashed border-white/10 bg-neutral-950/40 p-12 sm:p-16 text-center space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[#ff334b] flex items-center justify-center mx-auto shadow-md">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center mx-auto shadow-md">
                 <ShoppingBag className="w-7 h-7" />
               </div>
               <div className="space-y-1">
@@ -332,7 +332,7 @@ ${o.deliveredData}`;
               <div className="pt-2">
                 <Link
                   href="/categories"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#ff334b] hover:bg-[#e02b41] text-white font-bold text-xs transition-all shadow-lg active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>ไปเลือกซื้อสินค้าเลย</span>
@@ -347,7 +347,7 @@ ${o.deliveredData}`;
               </div>
               <button
                 onClick={() => setSearchQuery("")}
-                className="text-xs text-rose-400 underline cursor-pointer"
+                className="text-xs text-neutral-300 hover:text-white underline cursor-pointer"
               >
                 ดูคำสั่งซื้อทั้งหมด
               </button>
@@ -388,7 +388,7 @@ ${o.deliveredData}`;
                             ออเดอร์: {o.orderNumber}
                           </span>
                         </div>
-                        <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-rose-400 transition-colors truncate">
+                        <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-neutral-300 transition-colors truncate">
                           {o.productName}
                         </h3>
                         <div className="flex items-center gap-1.5 text-[11px] text-neutral-400 font-light">
@@ -435,7 +435,7 @@ ${o.deliveredData}`;
           ) : topups.length === 0 ? (
             /* Empty State for Topup (Exact match to Reference 2) */
             <div className="rounded-3xl border border-dashed border-white/10 bg-neutral-950/40 p-12 sm:p-16 text-center space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[#ff334b] flex items-center justify-center mx-auto shadow-md">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center mx-auto shadow-md">
                 <Wallet className="w-7 h-7" />
               </div>
               <div className="space-y-1">
@@ -447,7 +447,7 @@ ${o.deliveredData}`;
               <div className="pt-2">
                 <Link
                   href="/topup"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#ff334b] hover:bg-[#e02b41] text-white font-bold text-xs transition-all shadow-lg active:scale-95 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition-all shadow-lg active:scale-95 cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>เติมเงินเข้ากระเป๋า</span>
@@ -462,7 +462,7 @@ ${o.deliveredData}`;
               </div>
               <button
                 onClick={() => setSearchQuery("")}
-                className="text-xs text-rose-400 underline cursor-pointer"
+                className="text-xs text-neutral-300 hover:text-white underline cursor-pointer"
               >
                 ดูประวัติทั้งหมด
               </button>
@@ -495,7 +495,7 @@ ${o.deliveredData}`;
                             รหัส: {t.transactionId}
                           </span>
                         </div>
-                        <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-rose-400 transition-colors truncate">
+                        <h3 className="font-bold text-sm sm:text-base text-white group-hover:text-neutral-300 transition-colors truncate">
                           {badge.label}
                         </h3>
                         <div className="flex items-center gap-1.5 text-[11px] text-neutral-400 font-light">
@@ -535,7 +535,7 @@ ${o.deliveredData}`;
               {/* Modal Header */}
               <div className="flex items-start justify-between pb-3 border-b border-white/[0.08]">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-[#ff334b] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center shrink-0">
                     <Package className="w-5 h-5" />
                   </div>
                   <div>
@@ -588,7 +588,7 @@ ${o.deliveredData}`;
                   <div className="text-xs text-neutral-400 flex items-center gap-2">
                     <span>จำนวน: <strong className="text-white font-mono">{selectedOrder.quantity} ชิ้น</strong></span>
                     <span>•</span>
-                    <span>ยอดรวม: <strong className="text-rose-400 font-mono">฿{selectedOrder.totalAmount.toFixed(2)}</strong></span>
+                    <span>ยอดรวม: <strong className="text-white font-mono">฿{selectedOrder.totalAmount.toFixed(2)}</strong></span>
                   </div>
                 </div>
               </div>
@@ -646,7 +646,7 @@ ${o.deliveredData}`;
                     setClaimOrder(selectedOrder);
                     setSelectedOrder(null);
                   }}
-                  className="flex-1 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                  className="flex-1 py-2.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] text-neutral-200 border border-white/20 font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                 >
                   <ShieldAlert className="w-4 h-4" />
                   <span>แจ้งปัญหา / เคลม</span>
@@ -768,7 +768,7 @@ ${o.deliveredData}`;
             <div className="relative w-full max-w-lg bg-[#0f1016] border border-white/15 rounded-3xl p-6 shadow-2xl z-10 space-y-4 text-white">
               <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-white/10 border border-white/20 text-white flex items-center justify-center">
                     <ShieldAlert className="w-5 h-5" />
                   </div>
                   <div>
@@ -824,7 +824,7 @@ ${o.deliveredData}`;
                 <button
                   type="button"
                   onClick={() => handleCopyClaim(claimOrder)}
-                  className="flex-1 py-2.5 rounded-xl bg-[#ff334b] hover:bg-[#e02b41] text-white font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-95"
+                  className="flex-1 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-95"
                 >
                   {claimCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   <span>{claimCopied ? "คัดลอกเรียบร้อยแล้ว!" : "คัดลอกข้อความเคลม"}</span>

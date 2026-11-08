@@ -207,7 +207,7 @@ export default function Navbar() {
                       onClick={() => setIsExtraMenuOpen(false)}
                       className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
                     >
-                      <Package className="w-4 h-4 text-cyan-400 shrink-0" />
+                      <Package className="w-4 h-4 text-neutral-300 shrink-0" />
                       <div>
                         <div className="font-semibold text-white">คลังสินค้าของฉัน</div>
                         <div className="text-[10px] text-neutral-500">

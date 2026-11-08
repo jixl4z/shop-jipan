@@ -178,7 +178,7 @@ export default function BuyModal() {
                   {orderResult.orderNumber}
                 </span>
                 {orderResult.optionName && (
-                  <span className="text-sky-400 font-bold ml-1.5">
+                  <span className="text-white font-bold ml-1.5">
                     [{orderResult.optionName}]
                   </span>
                 )}
@@ -232,7 +232,7 @@ export default function BuyModal() {
                 <h3 className="font-bold text-base text-white line-clamp-2 leading-tight">
                   {buyingProduct.name}
                 </h3>
-                <div className="text-sm font-bold font-mono text-sky-400 mt-1">
+                <div className="text-sm font-bold font-mono text-white mt-1">
                   ฿{unitPrice.toFixed(2)} / ชิ้น
                 </div>
               </div>
@@ -253,7 +253,7 @@ export default function BuyModal() {
                         onClick={() => setSelectedOptionId(opt.id)}
                         className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer ${
                           isSelected
-                            ? "bg-[#0090ff]/10 border-[#0090ff] ring-1 ring-[#0090ff]/50 text-white"
+                            ? "bg-white/10 border-white ring-1 ring-white/50 text-white"
                             : "bg-neutral-950 border-neutral-800 text-neutral-300 hover:border-neutral-700"
                         }`}
                       >
@@ -261,8 +261,8 @@ export default function BuyModal() {
                           {opt.name} {opt.badge && <span>{opt.badge}</span>}
                         </div>
                         <div className="flex items-center justify-between mt-1 text-[11px]">
-                          <span className="text-sky-400 font-mono font-bold">฿{opt.price.toFixed(0)}</span>
-                          <span className={optInStock ? "text-neutral-400" : "text-rose-500 font-bold"}>
+                          <span className="text-white font-mono font-bold">฿{opt.price.toFixed(0)}</span>
+                          <span className={optInStock ? "text-neutral-400" : "text-neutral-400 font-medium"}>
                             {optInStock ? `เหลือ ${opt.stockCount}` : "หมด"}
                           </span>
                         </div>

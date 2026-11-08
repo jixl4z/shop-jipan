@@ -92,12 +92,12 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
           <div>
             {product.isRecommended || product.badge === "ยอดนิยม" ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-sky-500 text-white text-[10px] font-bold shadow-md">
-                <Droplets className="w-3 h-3 fill-current" />
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-black text-[10px] font-black shadow-md">
+                <Sparkles className="w-3 h-3 fill-current" />
                 <span>ยอดนิยม</span>
               </span>
             ) : product.badge ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold shadow-md">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/15 backdrop-blur-md text-white border border-white/25 text-[10px] font-bold shadow-md">
                 <Sparkles className="w-3 h-3 fill-current" />
                 <span>{product.badge}</span>
               </span>
@@ -121,10 +121,10 @@ export default function ProductCard({ product }: { product: Product }) {
         ) : !inStock ? (
           <div className="absolute inset-0 flex items-center justify-center p-3 pointer-events-none z-10">
             <div className="px-3.5 py-2.5 rounded-2xl bg-black/85 border border-white/10 backdrop-blur-md flex flex-col items-center justify-center text-center shadow-2xl">
-              <div className="w-7 h-7 rounded-lg bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-500 mb-1">
+              <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white mb-1">
                 <PackageX className="w-4 h-4" />
               </div>
-              <span className="text-rose-500 font-bold text-xs">สินค้าหมด</span>
+              <span className="text-white font-bold text-xs">สินค้าหมด</span>
               <span className="text-neutral-400 text-[10px] font-light mt-0.5">
                 รอเติมสต็อก
               </span>
@@ -138,14 +138,14 @@ export default function ProductCard({ product }: { product: Product }) {
         <div>
           {/* Title */}
           <Link href={`/products/${product.slug}`} className="block">
-            <h3 className="font-bold text-xs sm:text-sm text-white group-hover:text-sky-400 transition-colors line-clamp-1 leading-snug">
+            <h3 className="font-bold text-xs sm:text-sm text-white group-hover:text-neutral-300 transition-colors line-clamp-1 leading-snug">
               {product.name}
             </h3>
           </Link>
 
           {/* Price & Discount Tag */}
           <div className="flex items-center gap-1.5 sm:gap-2 mt-1 flex-wrap">
-            <span className="text-sky-400 font-extrabold text-sm sm:text-base font-mono">
+            <span className="text-white font-extrabold text-sm sm:text-base font-mono">
               ฿{product.price.toFixed(2)}
             </span>
             {hasDiscount && (
@@ -153,7 +153,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 <span className="text-neutral-500 line-through text-xs font-mono">
                   ฿{product.originalPrice!.toFixed(2)}
                 </span>
-                <span className="px-1.5 py-0.5 rounded-md bg-rose-500/15 border border-rose-500/30 text-rose-500 text-[10px] font-bold">
+                <span className="px-1.5 py-0.5 rounded-md bg-white/10 border border-white/20 text-neutral-200 text-[10px] font-bold">
                   ลด {discountPercent}%
                 </span>
               </>
@@ -194,7 +194,7 @@ export default function ProductCard({ product }: { product: Product }) {
         ) : (
           <Link
             href={`/products/${product.slug}`}
-            className="w-full mt-3 py-2 sm:py-2.5 rounded-xl bg-[#0090ff] hover:bg-[#0077e6] text-white font-bold text-xs flex items-center justify-center gap-1 shadow-md shadow-sky-500/20 active:scale-95 transition-all cursor-pointer"
+            className="w-full mt-3 py-2 sm:py-2.5 rounded-xl bg-white text-black hover:bg-neutral-200 font-bold text-xs flex items-center justify-center gap-1 shadow-md active:scale-95 transition-all cursor-pointer"
           >
             <span>รายละเอียด</span>
             <ChevronRight className="w-3.5 h-3.5" />

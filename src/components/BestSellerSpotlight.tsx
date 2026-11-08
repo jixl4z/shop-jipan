@@ -57,19 +57,19 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
             <h3 className="text-lg sm:text-xl font-extrabold text-neutral-900 dark:text-white tracking-tight leading-snug">
               สินค้ายอดนิยม
             </h3>
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light">
+            <p className="text-xs text-neutral-600 dark:text-neutral-300 font-light">
               สินค้าขายดีที่คัดสรรมาเพื่อคุณ
             </p>
           </div>
 
           {/* Bottom Right: Real Sold Count */}
           <div className="relative z-10 self-end text-right pt-2">
-            <span className="text-[11px] text-neutral-500 dark:text-neutral-400 block font-light">
+            <span className="text-[11px] text-neutral-600 dark:text-neutral-300 block font-light">
               ขายแล้ว
             </span>
             <div className="text-2xl sm:text-3xl font-black font-mono text-neutral-900 dark:text-white tracking-tight leading-none">
               {soldCount.toLocaleString()}{" "}
-              <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">
+              <span className="text-xs font-normal text-neutral-600 dark:text-neutral-300">
                 ชิ้น
               </span>
             </div>
@@ -106,7 +106,7 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
                   {bestSeller.name}
                 </h4>
               </Link>
-              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-[11px] text-neutral-500 dark:text-neutral-400 font-mono">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-[11px] text-neutral-600 dark:text-neutral-300 font-mono">
                 <span className="inline-flex items-center gap-1">
                   <ShoppingBag className="w-3 h-3 text-neutral-400" />
                   <span>ขายแล้ว {soldCount.toLocaleString()}</span>
@@ -123,7 +123,7 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
           {/* Price & CTA Button */}
           <div className="flex items-center sm:flex-col sm:items-end justify-between sm:justify-center gap-2 sm:gap-2.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-white/[0.06] shrink-0">
             <div className="text-left sm:text-right">
-              <div className="text-base sm:text-xl font-black font-mono text-white tracking-tight">
+              <div className="text-base sm:text-xl font-black font-mono text-neutral-900 dark:text-white tracking-tight">
                 ฿{bestSeller.price.toFixed(2)}
               </div>
               {bestSeller.originalPrice && bestSeller.originalPrice > bestSeller.price && (

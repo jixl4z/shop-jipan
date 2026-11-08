@@ -62,7 +62,7 @@ export default function AnnouncementPopup() {
         {/* Header */}
         <div className="p-4 sm:p-5 pb-3 flex items-center justify-between gap-3 border-b border-white/[0.06]">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/25 flex items-center justify-center text-sky-400 shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
               <Megaphone className="w-4 h-4" />
             </div>
             <h3 className="font-bold text-sm sm:text-base text-white truncate">

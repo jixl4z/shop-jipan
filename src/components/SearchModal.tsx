@@ -168,7 +168,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 onClick={onClose}
                 className="p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] hover:border-white/20 text-neutral-300 hover:text-white transition-all flex items-center gap-2 group"
               >
-                <div className="w-7 h-7 rounded-lg bg-neutral-900 border border-white/10 flex items-center justify-center text-cyan-400 shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
                   <ShieldCheck className="w-3.5 h-3.5" />
                 </div>
                 <span className="truncate font-medium text-xs">ศูนย์เคลม</span>

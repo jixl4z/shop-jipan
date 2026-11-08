@@ -226,7 +226,7 @@ export function SupportModal({
 
           <div className="p-3.5 rounded-2xl bg-neutral-950 border border-neutral-800 space-y-2">
             <h4 className="font-bold text-white flex items-center gap-1.5">
-              <HelpCircle className="w-4 h-4 text-cyan-400" />
+              <HelpCircle className="w-4 h-4 text-white" />
               <span>ช่องทางติดต่อเปิดทิคเก็ตเคลมสินค้า</span>
             </h4>
             <p className="text-neutral-400 text-[11px]">
@@ -268,19 +268,19 @@ export function GuideModal({
       step: "01",
       title: "เติมเงินเข้าสู่ระบบ",
       desc: "สแกน QR PromptPay แนบสลิปผ่านระบบ SlipOK ตรวจสอบอัตโนมัติ หรือส่งซองของขวัญ TrueMoney Wallet เงินเข้าทันทีใน 1 นาที",
-      icon: <CreditCard className="w-5 h-5 text-emerald-400" />,
+      icon: <CreditCard className="w-5 h-5 text-neutral-200" />,
     },
     {
       step: "02",
       title: "เลือกดูสินค้าที่ต้องการ",
       desc: "ค้นหาสินค้า บัตรเติมเงิน หรือแอปพรีเมียมในหมวดหมู่ต่างๆ อ่านรายละเอียดการรับประกันและจำนวนคงเหลือในสต็อก",
-      icon: <ShoppingBag className="w-5 h-5 text-cyan-400" />,
+      icon: <ShoppingBag className="w-5 h-5 text-neutral-200" />,
     },
     {
       step: "03",
       title: "กดสั่งซื้อและชำระเงิน",
       desc: "กดยืนยันการสั่งซื้อ ระบบจะตัดเงินจากยอดคงเหลือในกระเป๋าของคุณ และตัดสต็อกอัตโนมัติ 24 ชม.",
-      icon: <Sparkles className="w-5 h-5 text-amber-400" />,
+      icon: <Sparkles className="w-5 h-5 text-neutral-200" />,
     },
     {
       step: "04",
@@ -355,7 +355,7 @@ export function ContactModal({
       <div className="relative w-full max-w-md bg-neutral-900 border border-neutral-800 rounded-3xl p-6 shadow-2xl z-10 space-y-5">
         <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-white/10 text-white border border-white/20 flex items-center justify-center">
               <PhoneCall className="w-5 h-5" />
             </div>
             <div>

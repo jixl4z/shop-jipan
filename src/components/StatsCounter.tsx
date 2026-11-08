@@ -74,21 +74,21 @@ export default function StatsCounter() {
             >
               {/* Content (Text & Number) */}
               <div className="relative z-10 space-y-1">
-                <span className="text-[11px] sm:text-xs font-medium text-neutral-400 block tracking-wide">
+                <span className="text-[11px] sm:text-xs font-semibold text-neutral-600 dark:text-neutral-300 block tracking-wide">
                   {item.label}
                 </span>
                 <div className="flex items-baseline gap-1.5 pt-0.5">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-white font-mono tracking-tight group-hover:text-neutral-100 transition-colors">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900 dark:text-white font-mono tracking-tight group-hover:text-neutral-700 dark:group-hover:text-neutral-100 transition-colors">
                     {item.value.toLocaleString()}
                   </span>
-                  <span className="text-[11px] sm:text-xs text-neutral-400 font-normal">
+                  <span className="text-[11px] sm:text-xs text-neutral-500 dark:text-neutral-400 font-normal">
                     {item.unit}
                   </span>
                 </div>
               </div>
 
               {/* Giant Translucent Stroke Icon in Background (Overflowing Right & Bottom) */}
-              <div className="absolute -right-3 -bottom-3 sm:-right-4 sm:-bottom-4 w-20 h-20 sm:w-28 sm:h-28 text-white/[0.07] group-hover:text-white/[0.14] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
+              <div className="absolute -right-3 -bottom-3 sm:-right-4 sm:-bottom-4 w-20 h-20 sm:w-28 sm:h-28 text-black/[0.05] dark:text-white/[0.07] group-hover:text-black/[0.1] dark:group-hover:text-white/[0.14] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
                 <Icon className="w-full h-full stroke-[1.2]" />
               </div>
             </div>
