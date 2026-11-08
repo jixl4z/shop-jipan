@@ -96,7 +96,7 @@ export default function CategoriesPage() {
                 <Link
                   key={cat.id}
                   href={`/categories/${cat.slug}`}
-                  className="group relative rounded-2xl overflow-hidden border transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 min-h-[180px] p-5 sm:p-6 flex flex-col justify-between bg-white border-slate-200/80 hover:border-slate-300 text-slate-900 dark:bg-gradient-to-br dark:from-[#0e0f15]/90 dark:to-[#07080a]/90 dark:border-white/[0.08] dark:hover:border-white/20 dark:text-white"
+                  className="group relative rounded-2xl overflow-hidden border transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 min-h-[180px] p-5 sm:p-6 flex flex-col justify-between bg-white border-slate-200/80 hover:border-black text-slate-900 dark:bg-gradient-to-br dark:from-[#0e0f15]/90 dark:to-[#07080a]/90 dark:border-white/[0.08] dark:hover:border-white dark:text-white"
                 >
                   {/* Banner Image Background (If present) */}
                   {hasBanner ? (

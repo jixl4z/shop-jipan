@@ -27,7 +27,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const inStock = product.stockCount > 0;
 
   return (
-    <div className="flex flex-col rounded-2xl glass-panel interactive-card overflow-hidden group relative border border-white/[0.08]">
+    <div className="flex flex-col rounded-2xl glass-panel interactive-card overflow-hidden group relative border border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300">
       
       {/* Product Image Container */}
       <Link

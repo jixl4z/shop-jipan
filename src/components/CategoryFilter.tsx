@@ -95,7 +95,7 @@ export default function CategoryFilter({
               className={`relative overflow-hidden rounded-2xl border transition-all duration-300 p-5 sm:p-6 cursor-pointer flex flex-col justify-between min-h-[160px] group ${
                 isSelected
                   ? "bg-slate-900 border-slate-900 text-white shadow-xl -translate-y-1 dark:bg-white/[0.1] dark:border-white/40 dark:text-white dark:ring-2 dark:ring-white/20"
-                  : "bg-white border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/80 shadow-sm hover:-translate-y-1 text-slate-900 dark:bg-[#0c0d12]/90 dark:border-white/[0.08] dark:hover:border-white/20 dark:hover:bg-[#11121a]/90 dark:text-white"
+                  : "bg-white border-slate-200/80 hover:border-black hover:-translate-y-1 shadow-sm text-slate-900 dark:bg-[#0c0d12]/90 dark:border-white/[0.08] dark:hover:border-white dark:hover:bg-[#11121a]/90 dark:text-white"
               }`}
             >
               {/* Giant Translucent Stroke Watermark in Background */}
