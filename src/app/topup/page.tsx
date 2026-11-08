@@ -716,16 +716,6 @@ export default function DedicatedTopupPage() {
                   </div>
                 </div>
 
-                {/* How-to Notice */}
-                <div className="text-xs text-slate-600 dark:text-neutral-400 bg-slate-50 dark:bg-white/[0.02] p-3.5 rounded-xl border border-slate-200 dark:border-white/[0.06] space-y-1.5">
-                  <div className="text-slate-900 dark:text-neutral-200 font-semibold flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-slate-700 dark:text-white" />
-                    <span>วิธีเติมเงิน:</span>
-                  </div>
-                  <div>1. โอนเงินเข้าบัญชี <strong className="text-slate-900 dark:text-white font-medium">{bankName}</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
-                  <div>2. แนบรูปสลิปด้านล่าง ระบบจะตรวจยอดเงินจากสลิปและปรับเงินเข้ากระเป๋าให้อัตโนมัติ 24 ชม.</div>
-                </div>
-
                 {/* Slip Upload Area */}
                 <form onSubmit={handleSubmitBankSlip} className="space-y-4">
                   <div>
@@ -781,14 +771,6 @@ export default function DedicatedTopupPage() {
                         </div>
                       </div>
                     )}
-                  </div>
-
-                  {/* Warning Notice Box */}
-                  <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs flex items-start gap-2.5 leading-relaxed">
-                    <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                    <span>
-                      กรุณาโอนเงินเข้าบัญชีที่ระบุไว้เท่านั้น และอัปโหลดสลิปที่มี QR Code ชัดเจน ระบบจะตรวจสอบและเติมเงินให้อัตโนมัติ
-                    </span>
                   </div>
 
                   {errorMsg && (

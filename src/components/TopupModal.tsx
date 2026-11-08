@@ -418,16 +418,6 @@ export default function TopupModal() {
                         </div>
                       </div>
                     </div>
-
-                    {/* How-to Notice */}
-                    <div className="text-[11px] text-neutral-400 bg-white/[0.02] p-3 rounded-xl border border-white/[0.06] space-y-1">
-                      <div className="text-neutral-200 font-semibold flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-white" />
-                        <span>วิธีเติมเงิน:</span>
-                      </div>
-                      <div>1. โอนเงินเข้าบัญชี <strong className="text-white font-medium">ทีเอ็มบีธนชาต</strong> ด้านบนได้ทุกยอดเงิน (ไม่มีขั้นต่ำ)</div>
-                      <div>2. แนบรูปสลิปด้านล่าง ระบบจะตรวจยอดเงินจากสลิปและปรับเงินเข้ากระเป๋าให้อัตโนมัติ 24 ชม.</div>
-                    </div>
                   </div>
                 ) : (
                   <div className="p-4 rounded-2xl bg-neutral-950 border border-white/[0.08] flex flex-col sm:flex-row items-center gap-4 mb-4">
