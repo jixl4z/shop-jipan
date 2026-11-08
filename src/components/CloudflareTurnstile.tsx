@@ -71,9 +71,41 @@ export default function CloudflareTurnstile({
 
   if (!enabled || !siteKey) {
     return (
-      <div className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-neutral-950 border border-neutral-800 text-[11px] text-neutral-400">
-        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-        <span>คุ้มครองความปลอดภัยด้วย Cloudflare SSL & DDoS Protection</span>
+      <div className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white shadow-sm shadow-rose-500/30 shrink-0">
+            <svg
+              className="w-3 h-3 stroke-[3]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <span className="font-semibold text-rose-400 text-xs">
+            ยืนยันตัวตนแล้ว
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 text-right">
+          <svg
+            className="w-5 h-5 text-amber-500 fill-amber-500 shrink-0"
+            viewBox="0 0 24 24"
+          >
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
+          </svg>
+          <div className="leading-tight">
+            <div className="font-bold text-[11px] text-neutral-300">
+              Cloudflare
+            </div>
+            <div className="text-[9px] text-neutral-500">นโยบาย · เงื่อนไข</div>
+          </div>
+        </div>
       </div>
     );
   }

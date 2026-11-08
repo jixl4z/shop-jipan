@@ -34,6 +34,7 @@ import {
   Plus,
   Sun,
   Moon,
+  ArrowRight,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -41,7 +42,6 @@ export default function Navbar() {
   const {
     user,
     setting,
-    openAuth,
     openTopup,
     logout,
     themeMode,
@@ -443,18 +443,19 @@ export default function Navbar() {
             </div>
           ) : (
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => openAuth("login")}
-                  className="px-3.5 py-1.5 rounded-xl text-xs font-medium text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
-                >
-                  เข้าสู่ระบบ
-                </button>
-                <button
-                  onClick={() => openAuth("register")}
-                  className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-white text-black hover:bg-neutral-200 transition-all cursor-pointer shadow-md active:scale-95 btn-shine"
+                <Link
+                  href="/register"
+                  className="px-3.5 py-1.5 rounded-xl text-xs font-medium text-neutral-300 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 transition-colors"
                 >
                   สมัครสมาชิก
-                </button>
+                </Link>
+                <Link
+                  href="/login"
+                  className="px-4 py-1.5 rounded-xl text-xs font-bold bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md shadow-rose-600/20 active:scale-95 flex items-center gap-1.5"
+                >
+                  <ArrowRight className="w-3.5 h-3.5" />
+                  <span>เข้าสู่ระบบ</span>
+                </Link>
               </div>
             )}
 
@@ -498,24 +499,20 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2 p-1">
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    openAuth("login");
-                  }}
-                  className="w-full py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white font-medium text-xs text-center transition-colors cursor-pointer"
+                <Link
+                  href="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full py-2.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] text-white font-medium text-xs text-center transition-colors"
                 >
                   เข้าสู่ระบบ
-                </button>
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    openAuth("register");
-                  }}
-                  className="w-full py-2.5 rounded-xl font-bold text-xs text-center cursor-pointer shadow-md bg-white text-black hover:bg-neutral-200"
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full py-2.5 rounded-xl font-bold text-xs text-center shadow-md bg-[#ff334b] hover:bg-[#e02b41] text-white"
                 >
                   สมัครสมาชิกฟรี
-                </button>
+                </Link>
               </div>
             )}
 
