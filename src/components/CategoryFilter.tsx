@@ -37,8 +37,8 @@ export default function CategoryFilter({
   onSelectCategory,
 }: {
   categories: Category[];
-  selectedSlug: string;
-  onSelectCategory: (slug: string) => void;
+  selectedSlug?: string;
+  onSelectCategory?: (slug: string) => void;
 }) {
   return (
     <div className="w-full space-y-4">
@@ -50,7 +50,7 @@ export default function CategoryFilter({
           </div>
           <div className="flex items-baseline gap-2">
             <h2 className="text-base sm:text-lg font-bold text-neutral-900 dark:text-white tracking-tight leading-none">
-              หมวดหมู่แนะนำ
+              หมวดหมู่สินค้า
             </h2>
             <span className="text-xs text-neutral-400 font-normal hidden sm:inline">
               Recommended Categories
@@ -62,14 +62,6 @@ export default function CategoryFilter({
         <div className="hidden sm:block flex-1 h-[1px] bg-gradient-to-r from-rose-500/30 via-rose-500/10 to-transparent mx-4" />
 
         <div className="flex items-center gap-2 shrink-0">
-          {selectedSlug !== "all" && (
-            <button
-              onClick={() => onSelectCategory("all")}
-              className="text-xs text-neutral-700 dark:text-white bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-white/15 transition-all flex items-center gap-1.5 cursor-pointer font-medium"
-            >
-              <span>✕ ทั้งหมด</span>
-            </button>
-          )}
           <Link
             href="/categories"
             className="text-xs text-rose-500 hover:text-rose-400 flex items-center gap-1 transition-colors font-semibold px-2 py-1"
@@ -86,17 +78,15 @@ export default function CategoryFilter({
           const isIconUrl =
             cat.icon && (cat.icon.startsWith("http") || cat.icon.startsWith("/"));
           const Icon = (!isIconUrl && cat.icon && ICON_MAP[cat.icon]) || Package;
-          const isSelected = selectedSlug === cat.slug;
 
           return (
-            <div
+            <Link
               key={cat.id}
-              onClick={() => onSelectCategory(isSelected ? "all" : cat.slug)}
-              className={`rounded-2xl glass-panel interactive-card p-3 sm:p-3.5 border transition-all duration-300 cursor-pointer flex flex-col justify-between gap-3 group shadow-lg ${
-                isSelected
-                  ? "border-rose-500 ring-2 ring-rose-500/30 shadow-rose-500/10 -translate-y-1 bg-rose-500/5 dark:bg-rose-500/10"
-                  : "border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white"
-              }`}
+              href={`/categories/${cat.slug}`}
+              onClick={() => {
+                if (onSelectCategory) onSelectCategory(cat.slug);
+              }}
+              className="rounded-2xl glass-panel interactive-card p-3 sm:p-3.5 border border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 cursor-pointer flex flex-col justify-between gap-3 group shadow-lg"
             >
               {/* Top Banner Graphic / Artwork */}
               <div className="relative aspect-[21/8] sm:aspect-[21/7] w-full rounded-xl overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-950 to-black border border-black/5 dark:border-white/10 shadow-inner">
@@ -139,13 +129,6 @@ export default function CategoryFilter({
 
                 {/* Subtle bottom gradient vignette */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-
-                {isSelected && (
-                  <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold shadow-md flex items-center gap-1 z-10">
-                    <Check className="w-3 h-3" />
-                    <span>กำลังเลือก</span>
-                  </div>
-                )}
               </div>
 
               {/* Bottom Row: Category Name & Count (Left) + Arrow Icon (Right) */}
@@ -160,17 +143,11 @@ export default function CategoryFilter({
                 </div>
 
                 {/* Action Arrow Button */}
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all shrink-0 ${
-                    isSelected
-                      ? "bg-rose-500 text-white shadow-md shadow-rose-500/30"
-                      : "bg-slate-100 text-slate-600 group-hover:bg-rose-500 group-hover:text-white dark:bg-white/[0.05] dark:text-neutral-400 dark:group-hover:bg-rose-500 dark:group-hover:text-white border border-slate-200 dark:border-white/10"
-                  }`}
-                >
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center transition-all shrink-0 bg-slate-100 text-slate-600 group-hover:bg-rose-500 group-hover:text-white dark:bg-white/[0.05] dark:text-neutral-400 dark:group-hover:bg-rose-500 dark:group-hover:text-white border border-slate-200 dark:border-white/10">
                   <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

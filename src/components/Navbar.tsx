@@ -112,16 +112,6 @@ export default function Navbar() {
               หน้าแรก
             </Link>
             <Link
-              href="/products"
-              className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
-                pathname?.startsWith("/products")
-                  ? "bg-white/[0.08] text-white font-semibold"
-                  : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
-              }`}
-            >
-              สินค้าทั้งหมด
-            </Link>
-            <Link
               href="/categories"
               className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                 pathname?.startsWith("/categories")
@@ -538,14 +528,6 @@ export default function Navbar() {
               >
                 <Home className="w-4 h-4 text-neutral-400" />
                 <span>หน้าแรก</span>
-              </Link>
-              <Link
-                href="/products"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 rounded-xl hover:bg-white/[0.06] text-neutral-200 flex items-center gap-2.5 font-medium"
-              >
-                <ShoppingBag className="w-4 h-4 text-neutral-400" />
-                <span>สินค้าทั้งหมด</span>
               </Link>
               <Link
                 href="/categories"

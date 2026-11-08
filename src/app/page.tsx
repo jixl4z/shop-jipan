@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import HeroBanner from "@/components/HeroBanner";
 import RecentOrdersTicker from "@/components/RecentOrdersTicker";
 import FeatureHighlights from "@/components/FeatureHighlights";
 import CategoryFilter, { Category } from "@/components/CategoryFilter";
-import ProductCard, { Product } from "@/components/ProductCard";
+import { Product } from "@/components/ProductCard";
 import CustomerReviewsShowcase from "@/components/CustomerReviewsShowcase";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
@@ -15,19 +15,14 @@ import TopupModal from "@/components/TopupModal";
 import BuyModal from "@/components/BuyModal";
 import MyOrdersModal from "@/components/MyOrdersModal";
 import BestSellerSpotlight from "@/components/BestSellerSpotlight";
-import { Search, ShoppingBag, Loader2, Package } from "lucide-react";
 
 export default function HomePage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
 
   // Fetch categories & products
   useEffect(() => {
     async function loadData() {
-      setLoading(true);
       try {
         const [catRes, prodRes] = await Promise.all([
           fetch("/api/categories"),
@@ -40,25 +35,10 @@ export default function HomePage() {
         if (prodData.products) setProducts(prodData.products);
       } catch (err) {
         console.error("Failed to load store data:", err);
-      } finally {
-        setLoading(false);
       }
     }
     loadData();
   }, []);
-
-  // Filter products by selected category and search
-  const filteredProducts = useMemo(() => {
-    return products.filter((p) => {
-      const matchCat =
-        selectedCategory === "all" || p.category?.slug === selectedCategory;
-      const matchSearch =
-        searchQuery.trim() === "" ||
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
-      return matchCat && matchSearch;
-    });
-  }, [products, selectedCategory, searchQuery]);
 
   return (
     <div className="min-h-screen bg-[#060608] text-white flex flex-col selection:bg-white selection:text-black">
@@ -69,119 +49,15 @@ export default function HomePage() {
         {/* Hero Section (Banner + LED Marquee + 4 Quick Action Dock) */}
         <HeroBanner />
 
-        {/* Storefront Section (Directly Accessible, Balanced) */}
-        <div id="products" className="max-w-6xl mx-auto px-4 sm:px-6 pb-12 space-y-6 sm:space-y-8">
+        {/* Storefront Section */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 pb-12 space-y-6 sm:space-y-8">
           {/* Best Seller Spotlight Banner */}
           <BestSellerSpotlight products={products} />
 
-          {/* Categories Horizontal Tabs */}
+          {/* Categories Grid (Direct Navigation) */}
           <section id="categories">
-            <CategoryFilter
-              categories={categories}
-              selectedSlug={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
+            <CategoryFilter categories={categories} />
           </section>
-
-          {/* Search & Header */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/[0.08]">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white shrink-0">
-                  <ShoppingBag className="w-4 h-4 text-white" />
-                </div>
-                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                  <span>
-                    {(() => {
-                      const active = categories.find((c) => c.slug === selectedCategory);
-                      return active
-                        ? `สินค้าในหมวดหมู่: ${active.name}`
-                        : "สินค้าพร้อมส่งทั้งหมด (All Products)";
-                    })()}
-                  </span>
-                </h2>
-                <span className="text-xs font-mono font-medium text-neutral-300 px-2.5 py-0.5 rounded-lg bg-white/[0.06] border border-white/10">
-                  {filteredProducts.length} รายการ
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5 flex-wrap text-xs text-neutral-400">
-                <p>
-                  {selectedCategory !== "all"
-                    ? `กำลังแสดงสินค้าเฉพาะหมวดหมู่ ${categories.find((c) => c.slug === selectedCategory)?.name || selectedCategory}`
-                    : "เลือกซื้อสินค้าและรับรหัสเข้าคลังสินค้าทันทีตลอด 24 ชั่วโมง"}
-                </p>
-                {selectedCategory !== "all" && (
-                  <button
-                    onClick={() => setSelectedCategory("all")}
-                    className="text-xs text-white hover:text-neutral-200 bg-white/10 hover:bg-white/15 px-2.5 py-0.5 rounded-lg border border-white/15 transition-all flex items-center gap-1 cursor-pointer font-medium"
-                  >
-                    <span>✕ ล้างตัวกรอง (แสดงทั้งหมด {products.length})</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Minimalist Search Bar */}
-            <div className="relative w-full sm:w-72">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="ค้นหาชื่อสินค้า..."
-                className="w-full pl-10 pr-4 py-2 rounded-xl glass-panel text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-black/20 dark:focus:border-white/30 transition-colors"
-              />
-            </div>
-          </div>
-
-          {/* Product Grid */}
-          {loading ? (
-            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5 animate-pulse">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-                <div
-                  key={n}
-                  className="rounded-2xl glass-panel border border-white/[0.08] overflow-hidden p-4 space-y-3.5"
-                >
-                  <div className="w-full aspect-[16/10] bg-white/[0.04] rounded-xl" />
-                  <div className="space-y-2">
-                    <div className="w-20 h-3 bg-white/[0.04] rounded" />
-                    <div className="w-3/4 h-5 bg-white/[0.04] rounded" />
-                  </div>
-                  <div className="pt-2 flex items-center justify-between">
-                    <div className="w-16 h-6 bg-white/[0.04] rounded" />
-                    <div className="w-20 h-8 bg-white/[0.04] rounded-xl" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : filteredProducts.length === 0 ? (
-            <div className="py-16 text-center rounded-2xl glass-panel p-8 space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-white/[0.04] flex items-center justify-center mx-auto text-neutral-400">
-                <Package className="w-6 h-6 text-neutral-400" />
-              </div>
-              <h3 className="font-bold text-base text-neutral-200">
-                ไม่พบสินค้าในหมวดหมู่นี้
-              </h3>
-              <p className="text-xs text-neutral-400 max-w-sm mx-auto">
-                ลองค้นหาด้วยคำอื่น หรือเลือกดูหมวดหมู่อื่นเพื่อค้นหาสินค้าที่คุณต้องการ
-              </p>
-              <button
-                onClick={() => {
-                  setSelectedCategory("all");
-                  setSearchQuery("");
-                }}
-                className="px-4 py-2 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-semibold transition-colors cursor-pointer"
-              >
-                ดูสินค้าทั้งหมด
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5">
-              {filteredProducts.map((p) => (
-                <ProductCard key={p.id} product={p} />
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Live Orders Ticker */}
