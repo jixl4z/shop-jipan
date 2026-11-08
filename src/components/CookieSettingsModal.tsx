@@ -76,7 +76,7 @@ export default function CookieSettingsModal({
         {/* Modal Header */}
         <div className="p-5 sm:p-6 pb-4 flex items-start justify-between gap-3 border-b border-white/[0.06]">
           <div className="flex items-center gap-3.5 min-w-0">
-            <div className="w-11 h-11 rounded-2xl bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-500 shrink-0">
+            <div className="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0">
               <SlidersHorizontal className="w-5 h-5" />
             </div>
             <div className="min-w-0">
@@ -122,7 +122,7 @@ export default function CookieSettingsModal({
           <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/[0.08] flex items-start justify-between gap-4">
             <div className="space-y-1 min-w-0">
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-rose-500 fill-rose-500 shrink-0" />
+                <Zap className="w-4 h-4 text-neutral-300 fill-neutral-300 shrink-0" />
                 <span className="font-semibold text-sm text-white">
                   คุกกี้ประสิทธิภาพและความปลอดภัย
                 </span>
@@ -138,13 +138,13 @@ export default function CookieSettingsModal({
               aria-checked={perfEnabled}
               onClick={() => setPerfEnabled(!perfEnabled)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                perfEnabled ? "bg-[#ff334b]" : "bg-neutral-800"
+                perfEnabled ? "bg-white" : "bg-neutral-800"
               }`}
             >
               <span
                 aria-hidden="true"
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                  perfEnabled ? "translate-x-5" : "translate-x-0"
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out ${
+                  perfEnabled ? "translate-x-5 bg-black" : "translate-x-0 bg-white"
                 }`}
               />
             </button>
@@ -170,13 +170,13 @@ export default function CookieSettingsModal({
               aria-checked={persEnabled}
               onClick={() => setPersEnabled(!persEnabled)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                persEnabled ? "bg-[#ff334b]" : "bg-neutral-800"
+                persEnabled ? "bg-white" : "bg-neutral-800"
               }`}
             >
               <span
                 aria-hidden="true"
-                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                  persEnabled ? "translate-x-5" : "translate-x-0"
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out ${
+                  persEnabled ? "translate-x-5 bg-black" : "translate-x-0 bg-white"
                 }`}
               />
             </button>
@@ -188,7 +188,7 @@ export default function CookieSettingsModal({
           <button
             type="button"
             onClick={handleAcceptAll}
-            className="text-rose-500 hover:text-rose-400 font-semibold text-xs sm:text-sm transition-colors cursor-pointer px-1 py-1"
+            className="text-neutral-300 hover:text-white font-semibold text-xs sm:text-sm underline underline-offset-4 transition-colors cursor-pointer px-1 py-1"
           >
             ยอมรับทั้งหมด
           </button>
@@ -203,7 +203,7 @@ export default function CookieSettingsModal({
             <button
               type="button"
               onClick={handleSave}
-              className="px-5 py-2 rounded-xl bg-[#ff334b] hover:bg-[#e02b41] text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-500/25 active:scale-95 transition-all cursor-pointer"
+              className="px-5 py-2 rounded-xl bg-white hover:bg-neutral-200 text-black font-bold text-xs sm:text-sm shadow-lg shadow-white/10 active:scale-95 transition-all cursor-pointer"
             >
               บันทึกการตั้งค่า
             </button>

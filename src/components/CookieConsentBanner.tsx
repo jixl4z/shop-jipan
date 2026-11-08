@@ -104,7 +104,7 @@ export default function CookieConsentBanner() {
       <button
         type="button"
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-4 left-4 z-30 w-9 h-9 rounded-full bg-[#0e0f14]/80 hover:bg-[#161720] border border-white/10 text-neutral-400 hover:text-rose-400 backdrop-blur-md shadow-lg flex items-center justify-center transition-all hover:scale-105 cursor-pointer"
+        className="fixed bottom-4 left-4 z-30 w-9 h-9 rounded-full bg-[#0e0f14]/80 hover:bg-[#161720] border border-white/10 text-neutral-400 hover:text-white backdrop-blur-md shadow-lg flex items-center justify-center transition-all hover:scale-105 cursor-pointer"
         title="ตั้งค่าความเป็นส่วนตัวคุกกี้"
         aria-label="ตั้งค่าความเป็นส่วนตัวคุกกี้"
       >

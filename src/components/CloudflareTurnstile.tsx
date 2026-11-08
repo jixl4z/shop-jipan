@@ -73,7 +73,7 @@ export default function CloudflareTurnstile({
     return (
       <div className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-black/40 border border-white/10 text-xs">
         <div className="flex items-center gap-2.5">
-          <div className="w-5 h-5 rounded-full bg-rose-500 flex items-center justify-center text-white shadow-sm shadow-rose-500/30 shrink-0">
+          <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-black shadow-sm shrink-0">
             <svg
               className="w-3 h-3 stroke-[3]"
               fill="none"
@@ -87,7 +87,7 @@ export default function CloudflareTurnstile({
               />
             </svg>
           </div>
-          <span className="font-semibold text-rose-400 text-xs">
+          <span className="font-semibold text-neutral-200 text-xs">
             ยืนยันตัวตนแล้ว
           </span>
         </div>

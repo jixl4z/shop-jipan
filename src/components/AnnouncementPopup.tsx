@@ -122,7 +122,7 @@ export default function AnnouncementPopup() {
               type="checkbox"
               checked={hideForOneHour}
               onChange={(e) => setHideForOneHour(e.target.checked)}
-              className="w-4 h-4 rounded border-neutral-700 bg-neutral-800 text-rose-500 focus:ring-0 focus:outline-none cursor-pointer"
+              className="w-4 h-4 rounded border-neutral-700 bg-neutral-800 text-white accent-white focus:ring-0 focus:outline-none cursor-pointer"
             />
             <span>ไม่แสดงอีก 1 ชั่วโมง</span>
           </label>

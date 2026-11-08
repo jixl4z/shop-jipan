@@ -82,7 +82,7 @@ export default function Navbar() {
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Brand Logo & Name */}
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-rose-600 to-red-500 border border-white/20 flex items-center justify-center font-black text-white text-base shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center font-black text-white text-base shadow-md group-hover:scale-105 transition-transform overflow-hidden shrink-0">
               {setting?.logoUrl && setting.logoUrl !== "/logo.png" ? (
                 <img
                   src={setting.logoUrl}
@@ -235,7 +235,7 @@ export default function Navbar() {
                       onClick={() => setIsExtraMenuOpen(false)}
                       className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-neutral-300 hover:text-white hover:bg-white/[0.06] transition-colors"
                     >
-                      <Newspaper className="w-4 h-4 text-rose-400 shrink-0" />
+                      <Newspaper className="w-4 h-4 text-neutral-300 shrink-0" />
                       <div>
                         <div className="font-semibold text-white">ข่าวสาร & โปรโมชั่น</div>
                         <div className="text-[10px] text-neutral-500">อัปเดตกิจกรรมล่าสุด</div>
@@ -314,15 +314,15 @@ export default function Navbar() {
                     className="flex items-center gap-2.5 cursor-pointer group text-right select-none pl-2"
                   >
                     <div className="hidden sm:flex flex-col items-end leading-tight">
-                      <span className="text-xs font-bold text-white max-w-[120px] truncate group-hover:text-rose-400 transition-colors">
+                      <span className="text-xs font-bold text-white max-w-[120px] truncate group-hover:text-neutral-350 transition-colors">
                         {user.username}
                       </span>
-                      <span className="text-xs font-extrabold font-mono text-rose-500">
+                      <span className="text-xs font-extrabold font-mono text-neutral-100">
                         ฿{user.balance.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
                       </span>
                     </div>
 
-                    <div className="w-9 h-9 rounded-full ring-2 ring-rose-500/30 group-hover:ring-rose-500/60 bg-gradient-to-tr from-rose-600 to-red-500 border border-white/20 flex items-center justify-center text-white font-bold text-xs shadow-md shrink-0 overflow-hidden transition-all">
+                    <div className="w-9 h-9 rounded-full ring-2 ring-white/20 group-hover:ring-white/40 bg-white/10 border border-white/20 flex items-center justify-center text-white font-bold text-xs shadow-md shrink-0 overflow-hidden transition-all">
                       {user.avatar ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
@@ -346,7 +346,7 @@ export default function Navbar() {
                       <div className="absolute right-0 mt-3 w-80 rounded-3xl bg-[#12131a]/98 backdrop-blur-2xl border border-white/10 p-4 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-3">
                         {/* Profile Header (Avatar + Username + Role) */}
                         <div className="flex items-center gap-3 px-1 pt-1">
-                          <div className="w-12 h-12 rounded-full ring-2 ring-white/10 bg-gradient-to-tr from-rose-600 to-red-500 flex items-center justify-center font-extrabold text-white text-base shadow-md shrink-0 overflow-hidden">
+                          <div className="w-12 h-12 rounded-full ring-2 ring-white/10 bg-white/10 border border-white/20 flex items-center justify-center font-extrabold text-white text-base shadow-md shrink-0 overflow-hidden">
                             {user.avatar ? (
                               /* eslint-disable-next-line @next/next/no-img-element */
                               <img
@@ -375,7 +375,7 @@ export default function Navbar() {
                             <div className="text-[11px] text-neutral-400 font-light">
                               ยอดเงินคงเหลือ
                             </div>
-                            <div className="font-extrabold text-sm font-mono text-rose-500">
+                            <div className="font-extrabold text-sm font-mono text-white">
                               {user.balance.toFixed(2)}{" "}
                               <span className="text-xs font-normal text-neutral-400">
                                 บาท
@@ -384,12 +384,12 @@ export default function Navbar() {
                           </div>
 
                           {/* Points Card */}
-                          <div className="rounded-2xl bg-[#1c0f16] border border-rose-500/20 p-3 space-y-0.5">
-                            <div className="text-[11px] text-rose-400 font-light flex items-center gap-1">
-                              <Star className="w-3 h-3 text-rose-400 fill-rose-400" />
+                          <div className="rounded-2xl bg-[#0c0d12] border border-white/5 p-3 space-y-0.5">
+                            <div className="text-[11px] text-neutral-400 font-light flex items-center gap-1">
+                              <Star className="w-3 h-3 text-neutral-300 fill-neutral-300" />
                               <span>แต้มสะสม</span>
                             </div>
-                            <div className="font-extrabold text-sm font-mono text-rose-500">
+                            <div className="font-extrabold text-sm font-mono text-white">
                               {Math.floor(user.balance)}{" "}
                               <span className="text-xs font-normal text-neutral-400">
                                 แต้ม
@@ -474,9 +474,9 @@ export default function Navbar() {
                               setIsUserMenuOpen(false);
                               logout();
                             }}
-                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-rose-500 hover:text-rose-400 hover:bg-rose-500/10 font-bold transition-colors text-left cursor-pointer mt-1"
+                            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-neutral-400 hover:text-white hover:bg-white/[0.06] font-bold transition-colors text-left cursor-pointer mt-1"
                           >
-                            <LogOut className="w-4 h-4 text-rose-500 shrink-0" />
+                            <LogOut className="w-4 h-4 text-neutral-400 shrink-0" />
                             <span>ออกจากระบบ</span>
                           </button>
                         </div>
@@ -495,7 +495,7 @@ export default function Navbar() {
                 </Link>
                 <Link
                   href="/login"
-                  className="px-4 py-1.5 rounded-xl text-xs font-bold bg-[#ff334b] hover:bg-[#e02b41] text-white transition-all shadow-md shadow-rose-600/20 active:scale-95 flex items-center gap-1.5"
+                  className="px-4 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-neutral-200 text-black transition-all shadow-md shadow-white/10 active:scale-95 flex items-center gap-1.5"
                 >
                   <ArrowRight className="w-3.5 h-3.5" />
                   <span>เข้าสู่ระบบ</span>
@@ -663,7 +663,7 @@ export default function Navbar() {
                     setIsMobileMenuOpen(false);
                     logout();
                   }}
-                  className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-rose-500/10 text-rose-400 font-semibold text-xs hover:bg-rose-500/20 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-white/[0.06] text-neutral-300 font-semibold text-xs hover:bg-white/[0.1] transition-colors"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>ออกจากระบบ</span>

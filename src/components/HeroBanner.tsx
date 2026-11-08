@@ -209,15 +209,15 @@ export default function HeroBanner() {
           {/* Bottom Features Row */}
           <div className={`flex flex-wrap items-center gap-x-6 gap-y-2 text-xs ${isLight ? "text-slate-600" : "text-neutral-400"}`}>
             <span className="flex items-center gap-2">
-              <Star className="w-3.5 h-3.5 text-[#ff334b] fill-[#ff334b]/20" />
+              <Star className={`w-3.5 h-3.5 ${isLight ? "text-slate-800 fill-slate-800/20" : "text-white fill-white/20"}`} />
               <span>สินค้าคุณภาพสูง</span>
             </span>
             <span className="flex items-center gap-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#ff334b]" />
+              <ShieldCheck className={`w-3.5 h-3.5 ${isLight ? "text-slate-800" : "text-white"}`} />
               <span>ความปลอดภัยสูง ตรวจสอบได้</span>
             </span>
             <span className="flex items-center gap-2">
-              <Headphones className="w-3.5 h-3.5 text-[#ff334b]" />
+              <Headphones className={`w-3.5 h-3.5 ${isLight ? "text-slate-800" : "text-white"}`} />
               <span>บริการซัพพอร์ตตลอดการใช้งาน</span>
             </span>
           </div>
