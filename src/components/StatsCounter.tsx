@@ -70,11 +70,11 @@ export default function StatsCounter() {
           return (
             <div
               key={item.id}
-              className="relative overflow-hidden rounded-2xl glass-panel interactive-card p-4 sm:p-5 border border-black/10 dark:border-white/[0.08] hover:border-black dark:hover:border-white transition-all duration-300 group shadow-lg flex flex-col justify-between min-h-[95px] sm:min-h-[110px] cursor-pointer"
+              className="relative overflow-hidden rounded-2xl glass-panel interactive-card p-4 sm:p-5 border border-black/10 dark:border-white/[0.08] hover:border-black/30 dark:hover:border-white/30 transition-all duration-300 group shadow-lg flex items-center justify-between min-h-[95px] sm:min-h-[105px] cursor-pointer"
             >
               {/* Content (Text & Number) */}
-              <div className="relative z-10 space-y-1">
-                <span className="text-[11px] sm:text-xs font-semibold text-neutral-600 dark:text-neutral-300 block tracking-wide">
+              <div className="space-y-1 min-w-0 pr-2">
+                <span className="text-[11px] sm:text-xs font-semibold text-neutral-500 dark:text-neutral-400 block tracking-wide truncate">
                   {item.label}
                 </span>
                 <div className="flex items-baseline gap-1.5 pt-0.5">
@@ -87,9 +87,9 @@ export default function StatsCounter() {
                 </div>
               </div>
 
-              {/* Giant Translucent Stroke Icon in Background (Overflowing Right & Bottom) */}
-              <div className="absolute -right-3 -bottom-3 sm:-right-4 sm:-bottom-4 w-20 h-20 sm:w-28 sm:h-28 text-black/[0.05] dark:text-white/[0.07] group-hover:text-black/[0.1] dark:group-hover:text-white/[0.14] group-hover:scale-105 transition-all duration-300 pointer-events-none flex items-center justify-center">
-                <Icon className="w-full h-full stroke-[1.2]" />
+              {/* Crisp Solid Icon Badge on the Right */}
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-neutral-100 dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/10 text-neutral-700 dark:text-neutral-200 flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:bg-neutral-200 dark:group-hover:bg-white/10 group-hover:text-black dark:group-hover:text-white transition-all shadow-sm">
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.8]" />
               </div>
             </div>
           );
