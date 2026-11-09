@@ -51,9 +51,16 @@ export async function GET() {
       timeAgo: formatTimeAgo(o.createdAt),
     }));
 
-    return NextResponse.json({
-      orders: formattedOrders,
-    });
+    return NextResponse.json(
+      {
+        orders: formattedOrders,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=30, s-maxage=60, stale-while-revalidate=120",
+        },
+      }
+    );
   } catch (err: unknown) {
     const error = err as Error;
     return NextResponse.json({ error: error.message }, { status: 500 });

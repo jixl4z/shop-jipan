@@ -103,10 +103,15 @@ export function getSafeBaseUrl(req: Request): string {
   return `${protocol}://${host}`;
 }
 
+let schemaEnsured = false;
+
 /**
- * Auto-ensures tables on Cloudflare D1 have all required columns
+ * Auto-ensures tables on Cloudflare D1 have all required columns (runs at most ONCE per worker isolate)
  */
 export async function ensureDatabaseSchema() {
+  if (schemaEnsured) return;
+  schemaEnsured = true;
+
   // User columns
   try { await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "googleId" TEXT;`); } catch {}
   try { await prisma.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "discordId" TEXT;`); } catch {}

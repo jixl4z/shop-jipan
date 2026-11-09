@@ -3,8 +3,12 @@ import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rateLimit";
 
+let reviewTableEnsured = false;
+
 // Helper to auto-create Review table on Cloudflare D1 if it doesn't exist yet
 async function ensureReviewTable() {
+  if (reviewTableEnsured) return;
+  reviewTableEnsured = true;
   try {
     await prisma.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "Review" (
@@ -52,7 +56,14 @@ export async function GET() {
       }),
     }));
 
-    return NextResponse.json({ success: true, reviews: formatted });
+    return NextResponse.json(
+      { success: true, reviews: formatted },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+        },
+      }
+    );
   } catch (err: unknown) {
     console.error("[Reviews GET Error]:", err);
     return NextResponse.json({ success: true, reviews: [] });

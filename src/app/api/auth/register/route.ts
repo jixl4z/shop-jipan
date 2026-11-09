@@ -84,7 +84,8 @@ export async function POST(req: Request) {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // 8 rounds for edge serverless efficiency (~25ms CPU vs ~120ms with 10 rounds)
+    const hashedPassword = await bcrypt.hash(password, 8);
 
     const user = await prisma.user.create({
       data: {

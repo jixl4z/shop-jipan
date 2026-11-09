@@ -30,29 +30,6 @@ export async function GET(req: Request) {
     if (categorySlug && categorySlug !== "all") {
       const allCategories = await prisma.category.findMany();
 
-      // Auto-heal any corrupted category slugs in D1 (if slug was mistakenly saved as image URL)
-      for (const c of allCategories) {
-        if (
-          c.slug &&
-          (c.slug.startsWith("http://") || c.slug.startsWith("https://") || c.slug.startsWith("/"))
-        ) {
-          const cleanSlug = c.name.toLowerCase().replace(/[^a-z0-9]/g, "-") || c.id;
-          try {
-            await prisma.category.update({
-              where: { id: c.id },
-              data: {
-                slug: cleanSlug,
-                icon: c.slug,
-              },
-            });
-            c.icon = c.slug;
-            c.slug = cleanSlug;
-          } catch (healErr) {
-            console.warn("Category auto-heal warning:", healErr);
-          }
-        }
-      }
-
       const matchedCategory = allCategories.find((c) => {
         const isSlugUrl =
           c.slug &&
@@ -224,7 +201,14 @@ export async function GET(req: Request) {
       };
     });
 
-    return NextResponse.json({ products: formatted });
+    return NextResponse.json(
+      { products: formatted },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=15, s-maxage=60, stale-while-revalidate=120",
+        },
+      }
+    );
   } catch (err: unknown) {
     const error = err as Error;
     return NextResponse.json({ error: error.message }, { status: 500 });

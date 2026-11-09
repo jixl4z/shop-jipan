@@ -58,7 +58,14 @@ export async function GET() {
       popupLinkText: setting.popupLinkText || "เปิดลิงก์",
     };
 
-    return NextResponse.json({ setting: publicSetting });
+    return NextResponse.json(
+      { setting: publicSetting },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+        },
+      }
+    );
   } catch (err: unknown) {
     console.error("[Public Settings Error]:", err);
     return NextResponse.json({ error: "ไม่สามารถโหลดข้อมูลการตั้งค่าร้านค้าได้" }, { status: 500 });

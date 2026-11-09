@@ -16,28 +16,6 @@ export async function GET() {
       },
     });
 
-    for (const c of categories) {
-      if (
-        c.slug &&
-        (c.slug.startsWith("http://") || c.slug.startsWith("https://") || c.slug.startsWith("/"))
-      ) {
-        const cleanSlug = c.name.toLowerCase().replace(/[^a-z0-9]/g, "-") || c.id;
-        try {
-          await prisma.category.update({
-            where: { id: c.id },
-            data: {
-              slug: cleanSlug,
-              icon: c.slug,
-            },
-          });
-          c.icon = c.slug;
-          c.slug = cleanSlug;
-        } catch (healErr) {
-          console.warn("Category auto-heal warning:", healErr);
-        }
-      }
-    }
-
     const formatted = categories.map((c) => {
       const isIconUrl =
         c.icon &&
@@ -72,7 +50,14 @@ export async function GET() {
       };
     });
 
-    return NextResponse.json({ categories: formatted });
+    return NextResponse.json(
+      { categories: formatted },
+      {
+        headers: {
+          "Cache-Control": "public, max-age=30, s-maxage=120, stale-while-revalidate=300",
+        },
+      }
+    );
   } catch (err: unknown) {
     console.error("[Categories GET Error]:", err);
     const error = err as Error;

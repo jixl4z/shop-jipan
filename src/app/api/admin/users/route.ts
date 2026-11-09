@@ -54,7 +54,8 @@ export async function PUT(req: Request) {
           { status: 400 }
         );
       }
-      updateData.password = await bcrypt.hash(trimmedPwd, 10);
+      // 8 rounds for edge serverless efficiency (~25ms CPU vs ~120ms with 10 rounds)
+      updateData.password = await bcrypt.hash(trimmedPwd, 8);
     }
 
     if (role !== undefined) {

@@ -16,15 +16,22 @@ export async function GET() {
 
     const totalTopup = topupAggregate._sum.amount || 0;
 
-    return NextResponse.json({
-      stats: {
-        totalUsers,
-        totalProducts,
-        inStock,
-        totalOrders,
-        totalTopup,
+    return NextResponse.json(
+      {
+        stats: {
+          totalUsers,
+          totalProducts,
+          inStock,
+          totalOrders,
+          totalTopup,
+        },
       },
-    });
+      {
+        headers: {
+          "Cache-Control": "public, max-age=60, s-maxage=300, stale-while-revalidate=600",
+        },
+      }
+    );
   } catch (err) {
     console.error("[Public Stats API Error]:", err);
     return NextResponse.json(
