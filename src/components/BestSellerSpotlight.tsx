@@ -12,11 +12,15 @@ import {
 } from "lucide-react";
 
 export default function BestSellerSpotlight({ products }: { products: Product[] }) {
-  // Find the top best-selling product with accurate values
+  // Find the top spotlight product (prioritize admin's isRecommended, then soldCount)
   const bestSeller = useMemo(() => {
     if (!products || products.length === 0) return null;
 
-    // 1. Sort by actual soldCount descending
+    // 1. Priority #1: Explicitly marked as "สินค้าแนะนำ (ยอดนิยม)" (isRecommended)
+    const recommended = products.find((p) => p.isRecommended && p.isActive !== false && !p.isSuspended);
+    if (recommended) return recommended;
+
+    // 2. Sort by actual soldCount descending
     const sorted = [...products].sort(
       (a, b) => (b.soldCount ?? 0) - (a.soldCount ?? 0)
     );
@@ -24,7 +28,7 @@ export default function BestSellerSpotlight({ products }: { products: Product[] 
     // If top item has soldCount > 0, return it
     if ((sorted[0].soldCount ?? 0) > 0) return sorted[0];
 
-    // 2. Otherwise pick product marked with BEST SELLER badge or HOT, or first product
+    // 3. Otherwise pick product marked with BEST SELLER badge or HOT, or first product
     const marked = products.find(
       (p) =>
         p.badge?.toUpperCase().includes("BEST") ||

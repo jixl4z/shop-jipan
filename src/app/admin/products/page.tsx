@@ -253,6 +253,28 @@ export default function AdminProductsPage() {
     }
   };
 
+  const handleToggleRecommend = async (prod: ProductItem) => {
+    try {
+      const nextRecommended = !prod.isRecommended;
+      const res = await fetch("/api/admin/products", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: prod.id,
+          isRecommended: nextRecommended,
+        }),
+      });
+      if (res.ok) {
+        await loadData();
+      } else {
+        const d = await res.json();
+        alert(d.error || "เกิดข้อผิดพลาด");
+      }
+    } catch {
+      alert("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+    }
+  };
+
   const openStockModal = (prod: ProductItem) => {
     setSelectedProduct(prod);
     setSelectedStockOptionId(prod.options?.[0]?.id || "");
@@ -573,6 +595,18 @@ export default function AdminProductsPage() {
                     </td>
                     <td className="p-3.5 text-right">
                       <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleRecommend(prod)}
+                          className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
+                            prod.isRecommended
+                              ? "bg-amber-500/20 border-amber-500/40 text-amber-300 hover:bg-amber-500/30"
+                              : "bg-neutral-800 border-neutral-700 text-neutral-400 hover:text-amber-400 hover:bg-neutral-700"
+                          }`}
+                          title={prod.isRecommended ? "คลิกเพื่อยกเลิกสินค้าแนะนำ" : "คลิกเพื่อตั้งเป็นสินค้าแนะนำ (โชว์หน้าแรก)"}
+                        >
+                          <Star className={`w-3.5 h-3.5 ${prod.isRecommended ? "fill-amber-300" : ""}`} />
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleToggleSuspend(prod)}
@@ -904,18 +938,30 @@ export default function AdminProductsPage() {
               </div>
 
               {/* Initial Stock Keys */}
-              <div>
-                <label className="block text-neutral-300 font-medium mb-1">
-                  ใส่สต็อกสินค้าดิจิทัลเริ่มต้น (1 บรรทัด = 1 ชิ้น)
-                </label>
-                <textarea
-                  rows={4}
-                  value={formInitialStock}
-                  onChange={(e) => setFormInitialStock(e.target.value)}
-                  placeholder={"USER: account1 | PASS: 123456\nUSER: account2 | PASS: 654321\nKEY-ABCD-8891"}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-emerald-400 font-mono focus:outline-none focus:border-neutral-500"
-                />
-              </div>
+              {formHasVariants ? (
+                <div className="p-3.5 rounded-xl bg-sky-500/10 border border-sky-500/25 text-xs space-y-1.5">
+                  <div className="font-bold text-sky-400 flex items-center gap-1.5">
+                    <Key className="w-4 h-4 text-sky-400 shrink-0" />
+                    <span>วิธีเติมสต็อกสำหรับสินค้าที่มีตัวเลือกย่อย:</span>
+                  </div>
+                  <p className="text-neutral-300 leading-relaxed font-light">
+                    เมื่อกด <strong>"ยืนยันการเพิ่มสินค้า"</strong> เรียบร้อยแล้ว ให้ไปที่ตารางสินค้าแล้วกดปุ่ม <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">🔑 สต็อก</span> สีเขียว จะมีเมนูให้เลือกตัวเลือกย่อย (เช่น 1 วัน, 7 วัน ฯลฯ) เพื่อวางรหัสแยกตามแต่ละตัวเลือกได้ทันทีครับ
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <label className="block text-neutral-300 font-medium mb-1">
+                    ใส่สต็อกสินค้าดิจิทัลเริ่มต้น (1 บรรทัด = 1 ชิ้น)
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={formInitialStock}
+                    onChange={(e) => setFormInitialStock(e.target.value)}
+                    placeholder={"USER: account1 | PASS: 123456\nUSER: account2 | PASS: 654321\nKEY-ABCD-8891"}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-800 text-emerald-400 font-mono focus:outline-none focus:border-neutral-500"
+                  />
+                </div>
+              )}
 
               <button
                 type="submit"
