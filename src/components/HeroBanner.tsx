@@ -84,7 +84,7 @@ export default function HeroBanner() {
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={b.image}
-                    alt={b.title}
+                    alt={b.title || "Banner"}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -92,21 +92,6 @@ export default function HeroBanner() {
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,transparent_70%)]" />
                   </div>
                 )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent flex items-end p-4 sm:p-8">
-                  <div className="space-y-1 sm:space-y-1.5 max-w-2xl">
-                    <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-white px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/20 backdrop-blur-md">
-                      <Sparkles className="w-3 h-3 text-white" />
-                      <span>FEATURED</span>
-                    </span>
-                    <h2 className="font-extrabold text-sm sm:text-2xl text-white drop-shadow-md line-clamp-2">
-                      {b.title}
-                    </h2>
-                    <p className="text-xs sm:text-sm text-neutral-300 drop-shadow-md font-light hidden sm:block">
-                      {b.subtitle}
-                    </p>
-                  </div>
-                </div>
               </div>
             ))}
           </div>
