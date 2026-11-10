@@ -93,6 +93,7 @@ export default function BuyModal() {
     setLoading(true);
     setErrorMsg("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/orders/buy", {
         method: "POST",
@@ -104,39 +105,43 @@ export default function BuyModal() {
         }),
       });
 
-      const data = await res.json();
-
+      data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "สั่งซื้อไม่สำเร็จ");
+        setErrorMsg(data?.error || "สั่งซื้อไม่สำเร็จ");
+        setLoading(false);
         return;
       }
+    } catch {
+      setErrorMsg("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้");
+      setLoading(false);
+      return;
+    }
 
-      // Success
-      setOrderResult({
-        orderNumber: data.orderNumber,
-        productName: data.productName,
-        optionName: data.optionName,
-        deliveredData: data.deliveredData,
-        quantity,
-      });
+    setLoading(false);
+    setErrorMsg("");
 
-      // Burst confetti
+    // Success
+    setOrderResult({
+      orderNumber: data.orderNumber,
+      productName: data.productName,
+      optionName: data.optionName,
+      deliveredData: data.deliveredData,
+      quantity,
+    });
+
+    try {
       confetti({
         particleCount: 100,
         spread: 80,
         origin: { y: 0.6 },
       });
+    } catch {}
 
-      if (typeof data.newBalance === "number") {
-        updateBalance(data.newBalance);
-      }
-      addToast("สั่งซื้อสำเร็จ! ได้รับข้อมูลสินค้าเรียบร้อยแล้ว", "success");
-      await refreshUser();
-    } catch {
-      setErrorMsg("ไม่สามารถติดต่อเซิร์ฟเวอร์ได้");
-    } finally {
-      setLoading(false);
+    if (typeof data.newBalance === "number") {
+      updateBalance(data.newBalance);
     }
+    addToast("สั่งซื้อสำเร็จ! ได้รับข้อมูลสินค้าเรียบร้อยแล้ว", "success");
+    refreshUser().catch(() => {});
   };
 
   const handleClose = () => {

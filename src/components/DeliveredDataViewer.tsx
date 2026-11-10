@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { copyToClipboard, parseDeliveredItems, ParsedItem } from "@/lib/clipboard";
-import { Copy, Check, ShieldCheck, Key, User, Layers } from "lucide-react";
+import { copyToClipboard } from "@/lib/clipboard";
+import { Copy, Check, ShieldCheck, ExternalLink, Layers } from "lucide-react";
 
 interface DeliveredDataViewerProps {
   deliveredData: string;
@@ -19,7 +19,13 @@ export default function DeliveredDataViewer({
 }: DeliveredDataViewerProps) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
-  const items: ParsedItem[] = parseDeliveredItems(deliveredData);
+  // Split lines into raw items without any invasive credential parsing
+  const rawItems = (deliveredData || "")
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
+
+  const items = rawItems.length > 0 ? rawItems : [deliveredData || ""];
   const isMultiple = items.length > 1 || quantity > 1;
 
   const handleCopy = async (key: string, text: string, label: string) => {
@@ -40,7 +46,7 @@ export default function DeliveredDataViewer({
       {/* Top Header Controls */}
       <div className="flex items-center justify-between gap-2 pb-1.5 border-b border-white/[0.08]">
         <div className="flex items-center gap-2 text-xs font-semibold text-neutral-300">
-          <ShieldCheck className="w-4 h-4 text-white" />
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
           <span>
             ข้อมูลสินค้าที่ได้รับ {isMultiple ? `(${items.length} รายการ)` : ""}
           </span>
@@ -56,7 +62,7 @@ export default function DeliveredDataViewer({
           >
             {copiedKey === "all" ? (
               <>
-                <Check className="w-3.5 h-3.5 text-white" />
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
                 <span>คัดลอกทั้งหมดแล้ว</span>
               </>
             ) : (
@@ -71,18 +77,15 @@ export default function DeliveredDataViewer({
 
       {/* Item Cards List */}
       <div className="space-y-2.5">
-        {items.map((item, index) => {
+        {items.map((rawText, index) => {
           const itemKey = `item-${index}`;
           const isItemCopied = copiedKey === itemKey;
-          const userKey = `user-${index}`;
-          const isUserCopied = copiedKey === userKey;
-          const passKey = `pass-${index}`;
-          const isPassCopied = copiedKey === passKey;
+          const isUrl = rawText.startsWith("http://") || rawText.startsWith("https://");
 
           return (
             <div
               key={index}
-              className="p-3.5 sm:p-4 rounded-2xl bg-neutral-950/90 border border-white/[0.08] hover:border-white/20 transition-all space-y-2.5 shadow-md group relative"
+              className="p-3 sm:p-3.5 rounded-2xl bg-neutral-950/90 border border-white/[0.08] hover:border-white/20 transition-all space-y-2 shadow-md group relative"
             >
               {/* Item Header (for multiple items) */}
               {isMultiple && (
@@ -91,107 +94,46 @@ export default function DeliveredDataViewer({
                     ชิ้นที่ #{index + 1}
                   </span>
                   <span className="text-neutral-500 text-[10px]">
-                    คลิกปุ่มเพื่อคัดลอก หรือลากคลุมข้อความได้อิสระ
+                    คลิกปุ่มเพื่อคัดลอก หรือใช้เมาส์ลากคลุมข้อความได้อิสระ
                   </span>
                 </div>
               )}
 
-              {/* Formatted Credential Mode (If line is user:pass or user|pass) */}
-              {item.isCredential && item.username && item.password ? (
-                <div className="space-y-2">
-                  {/* Account / Username Row */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-xl bg-neutral-900/80 border border-white/[0.05]">
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <User className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                      <span className="text-[11px] text-neutral-400 shrink-0">บัญชี/อีเมล:</span>
-                      <span className="font-mono text-xs sm:text-sm text-white select-text truncate font-medium">
-                        {item.username}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(userKey, item.username!, "อีเมล/ไอดี")}
-                      className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-neutral-200 hover:text-white text-[11px] font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer shrink-0 active:scale-95"
-                    >
-                      {isUserCopied ? (
-                        <>
-                          <Check className="w-3 h-3 text-white" />
-                          <span>คัดลอกแล้ว</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>คัดลอกเมล</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Password Row */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-xl bg-neutral-900/80 border border-white/[0.05]">
-                    <div className="flex items-center gap-2 min-w-0 flex-1">
-                      <Key className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                      <span className="text-[11px] text-neutral-400 shrink-0">รหัสผ่าน:</span>
-                      <span className="font-mono text-xs sm:text-sm text-white select-text truncate font-medium">
-                        {item.password}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(passKey, item.password!, "รหัสผ่าน")}
-                      className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-neutral-200 hover:text-white text-[11px] font-semibold transition-all flex items-center justify-center gap-1 cursor-pointer shrink-0 active:scale-95"
-                    >
-                      {isPassCopied ? (
-                        <>
-                          <Check className="w-3 h-3 text-white" />
-                          <span>คัดลอกแล้ว</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>คัดลอกรหัส</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-
-                  {/* Quick Copy Full Row */}
-                  <div className="flex justify-end pt-0.5">
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(itemKey, item.raw, `ชิ้นที่ #${index + 1}`)}
-                      className="text-[11px] text-neutral-400 hover:text-white flex items-center gap-1.5 transition-colors cursor-pointer py-0.5 px-1"
-                    >
-                      {isItemCopied ? (
-                        <>
-                          <Check className="w-3 h-3 text-white" />
-                          <span className="text-white font-medium">คัดลอกทั้งแถวแล้ว</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>คัดลอกทั้งแถว (เมล:รหัส)</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
+              {/* Raw Content Display + Action Buttons */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                <div className="flex-1 p-3 rounded-xl bg-neutral-900/90 border border-white/[0.06] text-white font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-all select-text cursor-text">
+                  {rawText}
                 </div>
-              ) : (
-                /* Raw text/key display (Standard plain text, easily drag-selectable with mouse) */
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <div className="flex-1 p-3 rounded-xl bg-neutral-900/90 border border-white/[0.06] text-white font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-all select-text cursor-text">
-                    {item.raw}
-                  </div>
+
+                <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                  {isUrl && (
+                    <a
+                      href={rawText}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-neutral-200 hover:text-white text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 border border-white/10"
+                      title="เปิดลิงก์ในแท็บใหม่"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>เปิดลิงก์</span>
+                    </a>
+                  )}
 
                   <button
                     type="button"
-                    onClick={() => handleCopy(itemKey, item.raw, isMultiple ? `ชิ้นที่ #${index + 1}` : "ข้อมูลสินค้า")}
-                    className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0 active:scale-95 shadow-sm"
+                    onClick={() =>
+                      handleCopy(
+                        itemKey,
+                        rawText,
+                        isMultiple ? `ชิ้นที่ #${index + 1}` : "ข้อมูลสินค้า"
+                      )
+                    }
+                    className="px-4 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-sm"
                     title="คัดลอกข้อความทั้งหมด"
                   >
                     {isItemCopied ? (
                       <>
-                        <Check className="w-3.5 h-3.5" />
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
                         <span>คัดลอกแล้ว</span>
                       </>
                     ) : (
@@ -202,7 +144,7 @@ export default function DeliveredDataViewer({
                     )}
                   </button>
                 </div>
-              )}
+              </div>
             </div>
           );
         })}

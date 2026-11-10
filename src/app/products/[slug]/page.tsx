@@ -327,6 +327,7 @@ export default function ProductDetailPage() {
     setSubmittingOrder(true);
     setOrderError("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/orders/buy", {
         method: "POST",
@@ -339,36 +340,42 @@ export default function ProductDetailPage() {
         }),
       });
 
-      const data = await res.json();
+      data = await res.json();
       if (!res.ok) {
-        setOrderError(data.error || "สั่งซื้อสินค้าไม่สำเร็จ");
+        setOrderError(data?.error || "สั่งซื้อสินค้าไม่สำเร็จ");
+        setSubmittingOrder(false);
         return;
       }
+    } catch {
+      setOrderError("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง");
+      setSubmittingOrder(false);
+      return;
+    }
 
-      // Success
-      setSuccessOrder({
-        orderNumber: data.orderNumber,
-        productName: data.productName,
-        optionName: data.optionName,
-        deliveredData: data.deliveredData,
-        quantity,
-        totalAmount: data.totalAmount,
-      });
+    setSubmittingOrder(false);
+    setOrderError("");
 
-      playSuccessSound();
+    // Success
+    setSuccessOrder({
+      orderNumber: data.orderNumber,
+      productName: data.productName,
+      optionName: data.optionName,
+      deliveredData: data.deliveredData,
+      quantity,
+      totalAmount: data.totalAmount,
+    });
+
+    playSuccessSound();
+    try {
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
       });
+    } catch {}
 
-      await refreshUser();
-      addToast("สั่งซื้อสำเร็จ! ได้รับข้อมูลสินค้าเรียบร้อยแล้ว", "success");
-    } catch {
-      setOrderError("เกิดข้อผิดพลาดในการสั่งซื้อ กรุณาลองใหม่อีกครั้ง");
-    } finally {
-      setSubmittingOrder(false);
-    }
+    refreshUser().catch(() => {});
+    addToast("สั่งซื้อสำเร็จ! ได้รับข้อมูลสินค้าเรียบร้อยแล้ว", "success");
   };
 
   if (loading) {

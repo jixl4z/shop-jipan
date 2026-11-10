@@ -217,6 +217,7 @@ export default function DedicatedTopupPage() {
   };
 
   // Submit Bank Slip
+  // Submit Bank Slip
   const handleSubmitBankSlip = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
@@ -231,6 +232,7 @@ export default function DedicatedTopupPage() {
     setLoading(true);
     setErrorMsg("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/topup/slip", {
         method: "POST",
@@ -238,29 +240,35 @@ export default function DedicatedTopupPage() {
         body: JSON.stringify({ slipImage: slipBase64 }),
       });
 
-      const data = await res.json();
+      data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "ตรวจสอบสลิปไม่สำเร็จ กรุณาลองใหม่อีกครั้ง");
+        setErrorMsg(data?.error || "ตรวจสอบสลิปไม่สำเร็จ กรุณาลองใหม่อีกครั้ง");
+        setLoading(false);
         return;
       }
-
-      setSuccessResult({
-        amount: data.amount,
-        title: "เติมเงินผ่านสลิปสำเร็จ!",
-        msg: `ยอดเงิน ฿${data.amount.toFixed(2)} ได้รับการอนุมัติเข้าสู่กระเป๋าแล้ว`,
-      });
-
-      playSuccessSound();
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      if (typeof data.newBalance === "number") updateBalance(data.newBalance);
-      await refreshUser();
-      handleClearSlip();
-      loadHistory();
     } catch {
       setErrorMsg("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาลองใหม่อีกครั้ง");
-    } finally {
       setLoading(false);
+      return;
     }
+
+    // Success confirmed by backend
+    setLoading(false);
+    setErrorMsg("");
+    setSuccessResult({
+      amount: data.amount,
+      title: "เติมเงินผ่านสลิปสำเร็จ!",
+      msg: `ยอดเงิน ฿${Number(data.amount).toFixed(2)} ได้รับการอนุมัติเข้าสู่กระเป๋าแล้ว`,
+    });
+
+    handleClearSlip();
+    if (typeof data.newBalance === "number") updateBalance(data.newBalance);
+    playSuccessSound();
+    try {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    } catch {}
+    refreshUser().catch(() => {});
+    loadHistory().catch(() => {});
   };
 
   // Submit TrueMoney Voucher
@@ -278,6 +286,7 @@ export default function DedicatedTopupPage() {
     setLoading(true);
     setErrorMsg("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/topup/truemoney", {
         method: "POST",
@@ -285,29 +294,35 @@ export default function DedicatedTopupPage() {
         body: JSON.stringify({ voucherLink: voucherLink.trim() }),
       });
 
-      const data = await res.json();
+      data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "รับซองของขวัญไม่สำเร็จ");
+        setErrorMsg(data?.error || "รับซองของขวัญไม่สำเร็จ");
+        setLoading(false);
         return;
       }
-
-      setSuccessResult({
-        amount: data.amount,
-        title: "รับซองของขวัญสำเร็จ!",
-        msg: `ยอดเงิน ฿${data.amount.toFixed(2)} ได้ถูกเพิ่มเข้าบัญชีของคุณแล้ว`,
-      });
-
-      playSuccessSound();
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      if (typeof data.newBalance === "number") updateBalance(data.newBalance);
-      await refreshUser();
-      setVoucherLink("");
-      loadHistory();
     } catch {
       setErrorMsg("ไม่สามารถเชื่อมต่อระบบได้ กรุณาลองใหม่อีกครั้ง");
-    } finally {
       setLoading(false);
+      return;
     }
+
+    // Success confirmed by backend
+    setLoading(false);
+    setErrorMsg("");
+    setSuccessResult({
+      amount: data.amount,
+      title: "รับซองของขวัญสำเร็จ!",
+      msg: `ยอดเงิน ฿${Number(data.amount).toFixed(2)} ได้ถูกเพิ่มเข้าบัญชีของคุณแล้ว`,
+    });
+
+    setVoucherLink("");
+    if (typeof data.newBalance === "number") updateBalance(data.newBalance);
+    playSuccessSound();
+    try {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    } catch {}
+    refreshUser().catch(() => {});
+    loadHistory().catch(() => {});
   };
 
   // Submit Redeem Code
@@ -325,6 +340,7 @@ export default function DedicatedTopupPage() {
     setLoading(true);
     setErrorMsg("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/topup/redeem", {
         method: "POST",
@@ -332,29 +348,35 @@ export default function DedicatedTopupPage() {
         body: JSON.stringify({ code: redeemCode.trim() }),
       });
 
-      const data = await res.json();
+      data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "รหัสคูปองไม่ถูกต้อง");
+        setErrorMsg(data?.error || "รหัสคูปองไม่ถูกต้อง");
+        setLoading(false);
         return;
       }
-
-      setSuccessResult({
-        amount: data.amount,
-        title: "แลกรับโค้ดสำเร็จ!",
-        msg: `ยอดเงิน ฿${data.amount.toFixed(2)} ได้ถูกเพิ่มเข้าบัญชีของคุณเรียบร้อยแล้ว`,
-      });
-
-      playSuccessSound();
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      if (typeof data.newBalance === "number") updateBalance(data.newBalance);
-      await refreshUser();
-      setRedeemCode("");
-      loadHistory();
     } catch {
       setErrorMsg("ไม่สามารถเชื่อมต่อระบบได้ กรุณาลองใหม่อีกครั้ง");
-    } finally {
       setLoading(false);
+      return;
     }
+
+    // Success confirmed by backend
+    setLoading(false);
+    setErrorMsg("");
+    setSuccessResult({
+      amount: data.amount,
+      title: "แลกรับโค้ดสำเร็จ!",
+      msg: `ยอดเงิน ฿${Number(data.amount).toFixed(2)} ได้ถูกเพิ่มเข้าบัญชีของคุณเรียบร้อยแล้ว`,
+    });
+
+    setRedeemCode("");
+    if (typeof data.newBalance === "number") updateBalance(data.newBalance);
+    playSuccessSound();
+    try {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    } catch {}
+    refreshUser().catch(() => {});
+    loadHistory().catch(() => {});
   };
 
   const loadHistory = async () => {

@@ -95,6 +95,7 @@ export default function TopupModal() {
     setLoading(true);
     setErrorMsg("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/topup/slip", {
         method: "POST",
@@ -104,36 +105,40 @@ export default function TopupModal() {
         }),
       });
 
-      const data = await res.json();
-
+      data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "ตรวจสอบสลิปไม่ผ่าน");
+        setErrorMsg(data?.error || "ตรวจสอบสลิปไม่ผ่าน");
+        setLoading(false);
         return;
       }
+    } catch {
+      setErrorMsg("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
+      setLoading(false);
+      return;
+    }
 
-      const creditedAmount = data.transaction?.amount || 0;
-      if (typeof data.newBalance === "number") {
-        updateBalance(data.newBalance);
-      }
-      setSuccessInfo({
-        amount: creditedAmount,
-        balance: data.newBalance,
-        channel: isTTB ? "ธนาคารทีเอ็มบีธนชาต (ttb)" : "พร้อมเพย์ (สลิป)",
-      });
+    setLoading(false);
+    setErrorMsg("");
+    const creditedAmount = data.transaction?.amount || data.amount || 0;
+    if (typeof data.newBalance === "number") {
+      updateBalance(data.newBalance);
+    }
+    setSuccessInfo({
+      amount: creditedAmount,
+      balance: data.newBalance,
+      channel: isTTB ? "ธนาคารทีเอ็มบีธนชาต (ttb)" : "พร้อมเพย์ (สลิป)",
+    });
 
+    try {
       confetti({
         particleCount: 80,
         spread: 70,
         origin: { y: 0.6 },
       });
+    } catch {}
 
-      addToast(`เติมเงินสำเร็จ +฿${creditedAmount.toFixed(2)} ยอดเงินเข้ากระเป๋าเรียบร้อยแล้ว`, "success");
-      await refreshUser();
-    } catch {
-      setErrorMsg("เกิดข้อผิดพลาดในการเชื่อมต่อเซิร์ฟเวอร์");
-    } finally {
-      setLoading(false);
-    }
+    addToast(`เติมเงินสำเร็จ +฿${creditedAmount.toFixed(2)} ยอดเงินเข้ากระเป๋าเรียบร้อยแล้ว`, "success");
+    refreshUser().catch(() => {});
   };
 
   // Submit TrueMoney Angpao Voucher
@@ -146,6 +151,7 @@ export default function TopupModal() {
     setLoading(true);
     setErrorMsg("");
 
+    let data: any = null;
     try {
       const res = await fetch("/api/topup/truemoney", {
         method: "POST",
@@ -153,36 +159,40 @@ export default function TopupModal() {
         body: JSON.stringify({ voucherLink }),
       });
 
-      const data = await res.json();
-
+      data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || "รับซองของขวัญไม่สำเร็จ");
+        setErrorMsg(data?.error || "รับซองของขวัญไม่สำเร็จ");
+        setLoading(false);
         return;
       }
+    } catch {
+      setErrorMsg("เกิดข้อผิดพลาดในการเชื่อมต่อ");
+      setLoading(false);
+      return;
+    }
 
-      if (typeof data.newBalance === "number") {
-        updateBalance(data.newBalance);
-      }
-      setSuccessInfo({
-        amount: data.amount,
-        balance: data.newBalance,
-        channel: "TrueMoney Wallet (ซองอั่งเปา)",
-      });
+    setLoading(false);
+    setErrorMsg("");
+    if (typeof data.newBalance === "number") {
+      updateBalance(data.newBalance);
+    }
+    setSuccessInfo({
+      amount: data.amount,
+      balance: data.newBalance,
+      channel: "TrueMoney Wallet (ซองอั่งเปา)",
+    });
 
+    try {
       confetti({
         particleCount: 100,
         spread: 80,
         origin: { y: 0.6 },
       });
+    } catch {}
 
-      addToast("เติมเงินผ่าน TrueMoney สำเร็จ!", "success");
-      setVoucherLink("");
-      await refreshUser();
-    } catch {
-      setErrorMsg("เกิดข้อผิดพลาดในการเชื่อมต่อ");
-    } finally {
-      setLoading(false);
-    }
+    addToast("เติมเงินผ่าน TrueMoney สำเร็จ!", "success");
+    setVoucherLink("");
+    refreshUser().catch(() => {});
   };
 
   const handleClose = () => {
