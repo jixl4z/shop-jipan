@@ -190,10 +190,10 @@ export async function GET(req: Request) {
         originalPrice: p.originalPrice,
         image: p.image,
         badge: p.badge,
-        isRecommended: p.isRecommended,
-        isSuspended: p.isSuspended,
-        isActive: p.isActive,
-        hasVariants: p.hasVariants,
+        isRecommended: Boolean(p.isRecommended),
+        isSuspended: Boolean(p.isSuspended),
+        isActive: p.isActive !== undefined ? Boolean(p.isActive) : true,
+        hasVariants: Boolean(p.hasVariants),
         options: optionsFormatted,
         category: cleanCat,
         stockCount: totalStock,
@@ -205,7 +205,7 @@ export async function GET(req: Request) {
       { products: formatted },
       {
         headers: {
-          "Cache-Control": "public, max-age=15, s-maxage=60, stale-while-revalidate=120",
+          "Cache-Control": "public, max-age=5, s-maxage=10, stale-while-revalidate=30",
         },
       }
     );

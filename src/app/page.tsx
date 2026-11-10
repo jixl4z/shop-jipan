@@ -21,8 +21,19 @@ export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
 
   const recommendedProducts = useMemo(() => {
-    return products.filter((p) => p.isRecommended && p.isActive !== false && !p.isSuspended);
+    return products.filter(
+      (p) =>
+        (Boolean(p.isRecommended) || p.badge === "แนะนำ" || p.badge === "ยอดนิยม") &&
+        p.isActive !== false &&
+        !p.isSuspended
+    );
   }, [products]);
+
+  // Prioritize explicitly recommended products; if none tagged yet, show top active products
+  const displayRecommended = useMemo(() => {
+    if (recommendedProducts.length > 0) return recommendedProducts;
+    return products.filter((p) => p.isActive !== false && !p.isSuspended).slice(0, 4);
+  }, [recommendedProducts, products]);
 
   // Fetch categories & products
   useEffect(() => {
@@ -30,7 +41,7 @@ export default function HomePage() {
       try {
         const [catRes, prodRes] = await Promise.all([
           fetch("/api/categories"),
-          fetch("/api/products"),
+          fetch("/api/products", { cache: "no-store" }),
         ]);
         const catData = (await catRes.json()) as any;
         const prodData = (await prodRes.json()) as any;
@@ -61,8 +72,8 @@ export default function HomePage() {
           {/* Best Seller Spotlight Banner */}
           <BestSellerSpotlight products={products} />
 
-          {/* Recommended Products Grid */}
-          {recommendedProducts.length > 0 && (
+          {/* Recommended Products Grid (Always located directly before Categories) */}
+          {displayRecommended.length > 0 && (
             <section id="recommended" className="space-y-4 pt-2">
               <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
                 <div className="flex items-center gap-2.5">
@@ -84,7 +95,7 @@ export default function HomePage() {
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3.5 sm:gap-4">
-                {recommendedProducts.map((p) => (
+                {displayRecommended.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
               </div>
